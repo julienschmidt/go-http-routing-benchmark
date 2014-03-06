@@ -246,7 +246,7 @@ func BenchmarkGocraftWeb_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
-func BenchmarkGorilla_Param(b *testing.B) {
+func BenchmarkGorillaMux_Param(b *testing.B) {
 	router := mux.NewRouter()
 	router.HandleFunc("/user/{name}", httpHandlerFunc).Methods("GET")
 
@@ -308,7 +308,7 @@ func BenchmarkGocraftWeb_ParamWrite(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
-func BenchmarkGorilla_ParamWrite(b *testing.B) {
+func BenchmarkGorillaMux_ParamWrite(b *testing.B) {
 	router := mux.NewRouter()
 	router.HandleFunc("/user/{name}", gorillaHandlerWrite).Methods("GET")
 
