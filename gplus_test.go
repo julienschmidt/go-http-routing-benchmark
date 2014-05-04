@@ -43,6 +43,7 @@ var (
 	gplusPat        http.Handler
 	gplusTigerTonic http.Handler
 	gplusTraffic    http.Handler
+	gplusGoji       http.Handler
 )
 
 func init() {
@@ -55,6 +56,7 @@ func init() {
 	gplusPat = loadPat(gplusAPI)
 	gplusTigerTonic = loadTigerTonic(gplusAPI)
 	gplusTraffic = loadTraffic(gplusAPI)
+	gplusGoji = loadGoji(gplusAPI)
 }
 
 // Static
@@ -86,6 +88,10 @@ func BenchmarkTraffic_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusTraffic, req)
 }
+func BenchmarkGoji_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	benchRequest(b, gplusGoji, req)
+}
 
 // One Param
 func BenchmarkGocraftWeb_GPlusParam(b *testing.B) {
@@ -115,6 +121,10 @@ func BenchmarkTigerTonic_GPlusParam(b *testing.B) {
 func BenchmarkTraffic_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusTraffic, req)
+}
+func BenchmarkGoji_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	benchRequest(b, gplusGoji, req)
 }
 
 // Two Params
@@ -146,6 +156,10 @@ func BenchmarkTraffic_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusTraffic, req)
 }
+func BenchmarkGoji_GPlus2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	benchRequest(b, gplusGoji, req)
+}
 
 // All Routes
 func BenchmarkGocraftWeb_GPlusAll(b *testing.B) {
@@ -168,4 +182,7 @@ func BenchmarkTigerTonic_GPlusAll(b *testing.B) {
 }
 func BenchmarkTraffic_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusTraffic, gplusAPI)
+}
+func BenchmarkGoji_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusGoji, gplusAPI)
 }

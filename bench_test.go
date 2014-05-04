@@ -5,6 +5,12 @@
 package benchmark
 
 import (
+	"io"
+	"log"
+	"net/http"
+	"regexp"
+	"testing"
+
 	"github.com/bmizerany/pat"
 	"github.com/codegangsta/martini"
 	"github.com/gocraft/web"
@@ -12,11 +18,7 @@ import (
 	"github.com/julienschmidt/httprouter"
 	"github.com/pilu/traffic"
 	"github.com/rcrowley/go-tigertonic"
-	"io"
-	"log"
-	"net/http"
-	"regexp"
-	"testing"
+	goji "github.com/zenazn/goji/web"
 )
 
 type route struct {
@@ -236,6 +238,32 @@ func loadTraffic(routes []route) *traffic.Router {
 	return router
 }
 
+// goji
+func gojiFuncWrite(c goji.C, w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, c.URLParams["name"])
+}
+
+func loadGoji(routes []route) *goji.Mux {
+	router := goji.New()
+	for _, route := range routes {
+		switch route.method {
+		case "GET":
+			router.Get(route.path, httpHandlerFunc)
+		case "POST":
+			router.Post(route.path, httpHandlerFunc)
+		case "PUT":
+			router.Put(route.path, httpHandlerFunc)
+		case "PATCH":
+			router.Patch(route.path, httpHandlerFunc)
+		case "DELETE":
+			router.Delete(route.path, httpHandlerFunc)
+		default:
+			panic("Unknown HTTP method: " + route.method)
+		}
+	}
+	return router
+}
+
 // Micro Benchmarks
 
 // Route with Param (no write)
@@ -299,6 +327,86 @@ func BenchmarkTraffic_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkGoji_Param(b *testing.B) {
+	router := goji.New()
+	router.Get("/user/:name", httpHandlerFunc)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+
+var twentyPat = "/:a/:b/:c/:d/:e/:f/:g/:h/:i/:j/:k/:l/:m/:n/:o/:p/:q/:r/:s/:t"
+var twentyBrace = "/{a}/{b}/{c}/{d}/{e}/{f}/{g}/{h}/{i}/{j}/{k}/{l}/{m}/{n}/{o}/{p}/{q}/{r}/{s}/{t}"
+var twentyRoute = "/a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p/q/r/s/t"
+
+// Route with 20 Params (no write)
+func BenchmarkGocraftWeb_Param20(b *testing.B) {
+	router := web.New(gocraftWebContext{})
+	router.Get(twentyPat, gocraftWebHandler)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkGorillaMux_Param20(b *testing.B) {
+	router := mux.NewRouter()
+	router.HandleFunc(twentyBrace, httpHandlerFunc).Methods("GET")
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkHttpRouter_Param20(b *testing.B) {
+	router := httprouter.New()
+	router.GET(twentyPat, httpRouterHandle)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkMartini_Param20(b *testing.B) {
+	router := martini.NewRouter()
+	router.Get(twentyPat, martiniHandler)
+	martini := martini.New()
+	martini.Action(router.Handle)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, martini, r)
+}
+func BenchmarkPat_Param20(b *testing.B) {
+	router := pat.New()
+	router.Get(twentyPat, http.HandlerFunc(httpHandlerFunc))
+
+	w := new(mockResponseWriter)
+	b.ReportAllocs()
+	b.ResetTimer()
+
+	for i := 0; i < b.N; i++ {
+		r, _ := http.NewRequest("GET", twentyRoute, nil)
+		router.ServeHTTP(w, r)
+	}
+
+	//benchRequest(b, router, r)
+}
+func BenchmarkTigerTonic_Param20(b *testing.B) {
+	router := tigertonic.NewTrieServeMux()
+	router.HandleFunc("GET", twentyBrace, httpHandlerFunc)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkTraffic_Param20(b *testing.B) {
+	traffic.SetVar("env", "bench")
+	router := traffic.New()
+	router.Get(twentyPat, trafficHandler)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkGoji_Param20(b *testing.B) {
+	router := goji.New()
+	router.Get(twentyPat, httpHandlerFunc)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
 
 // Route with Param and write
 func BenchmarkGocraftWeb_ParamWrite(b *testing.B) {
@@ -348,6 +456,13 @@ func BenchmarkTraffic_ParamWrite(b *testing.B) {
 	traffic.SetVar("env", "bench")
 	router := traffic.New()
 	router.Get("/user/:name", trafficHandlerWrite)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkGoji_ParamWrite(b *testing.B) {
+	router := goji.New()
+	router.Get("/user/:name", gojiFuncWrite)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)

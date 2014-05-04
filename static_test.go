@@ -179,6 +179,7 @@ var (
 	staticPat        http.Handler
 	staticTigerTonic http.Handler
 	staticTraffic    http.Handler
+	staticGoji       http.Handler
 )
 
 func init() {
@@ -197,6 +198,7 @@ func init() {
 	staticPat = loadPat(staticRoutes)
 	staticTigerTonic = loadTigerTonic(staticRoutes)
 	staticTraffic = loadTraffic(staticRoutes)
+	staticGoji = loadGoji(staticRoutes)
 }
 
 // All routes
@@ -223,4 +225,7 @@ func BenchmarkTigerTonic_StaticAll(b *testing.B) {
 }
 func BenchmarkTraffic_StaticAll(b *testing.B) {
 	benchRoutes(b, staticTraffic, staticRoutes)
+}
+func BenchmarkGoji_StaticAll(b *testing.B) {
+	benchRoutes(b, staticGoji, staticRoutes)
 }
