@@ -274,13 +274,14 @@ var githubAPI = []route{
 }
 
 var (
-	githubGocraftWeb http.Handler
-	githubGorillaMux http.Handler
-	githubHttpRouter http.Handler
-	githubMartini    http.Handler
-	githubPat        http.Handler
-	githubTigerTonic http.Handler
-	githubTraffic    http.Handler
+	githubGocraftWeb  http.Handler
+	githubGorillaMux  http.Handler
+	githubHttpRouter  http.Handler
+	githubHttpTreeMux http.Handler
+	githubMartini     http.Handler
+	githubPat         http.Handler
+	githubTigerTonic  http.Handler
+	githubTraffic     http.Handler
 )
 
 func init() {
@@ -289,6 +290,7 @@ func init() {
 	githubGocraftWeb = loadGocraftWeb(githubAPI)
 	githubGorillaMux = loadGorillaMux(githubAPI)
 	githubHttpRouter = loadHttpRouter(githubAPI)
+	githubHttpTreeMux = loadHttpTreeMux(githubAPI)
 	githubMartini = loadMartini(githubAPI)
 	githubPat = loadPat(githubAPI)
 	githubTigerTonic = loadTigerTonic(githubAPI)
@@ -307,6 +309,10 @@ func BenchmarkGorillaMux_GithubStatic(b *testing.B) {
 func BenchmarkHttpRouter_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
 	benchRequest(b, githubHttpRouter, req)
+}
+func BenchmarkHttpTreeMux_GithubStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/user/repos", nil)
+	benchRequest(b, githubHttpTreeMux, req)
 }
 func BenchmarkMartini_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
@@ -338,6 +344,10 @@ func BenchmarkHttpRouter_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubHttpRouter, req)
 }
+func BenchmarkHttpTreeMux_GithubParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
+	benchRequest(b, githubHttpTreeMux, req)
+}
 func BenchmarkMartini_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubMartini, req)
@@ -364,6 +374,9 @@ func BenchmarkGorillaMux_GithubAll(b *testing.B) {
 }
 func BenchmarkHttpRouter_GithubAll(b *testing.B) {
 	benchRoutes(b, githubHttpRouter, githubAPI)
+}
+func BenchmarkHttpTreeMux_GithubAll(b *testing.B) {
+	benchRoutes(b, githubHttpTreeMux, githubAPI)
 }
 func BenchmarkMartini_GithubAll(b *testing.B) {
 	benchRoutes(b, githubMartini, githubAPI)
