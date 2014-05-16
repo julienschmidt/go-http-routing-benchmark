@@ -71,6 +71,7 @@ func benchRoutes(b *testing.B, router http.Handler, routes []route) {
 	for i := 0; i < b.N; i++ {
 		for _, route := range routes {
 			r.Method = route.method
+			r.RequestURI = route.path
 			u.Path = route.path
 			u.RawQuery = rq
 			router.ServeHTTP(w, r)
@@ -283,6 +284,7 @@ func BenchmarkHttpTreeMux_Param(b *testing.B) {
 	router.GET("/user/:name", httpTreeMuxHandler)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	r.RequestURI = "/user/gordon"
 	benchRequest(b, router, r)
 }
 
@@ -353,6 +355,7 @@ func BenchmarkHttpTreeMux_ParamWrite(b *testing.B) {
 	router.GET("/user/:name", httpTreeMuxHandlerWrite)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	r.RequestURI = "/user/gordon"
 	benchRequest(b, router, r)
 }
 func BenchmarkMartini_ParamWrite(b *testing.B) {
