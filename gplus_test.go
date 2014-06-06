@@ -36,13 +36,14 @@ var gplusAPI = []route{
 }
 
 var (
-	gplusGocraftWeb http.Handler
-	gplusGorillaMux http.Handler
-	gplusHttpRouter http.Handler
-	gplusMartini    http.Handler
-	gplusPat        http.Handler
-	gplusTigerTonic http.Handler
-	gplusTraffic    http.Handler
+	gplusGocraftWeb  http.Handler
+	gplusGorillaMux  http.Handler
+	gplusHttpRouter  http.Handler
+	gplusHttpTreeMux http.Handler
+	gplusMartini     http.Handler
+	gplusPat         http.Handler
+	gplusTigerTonic  http.Handler
+	gplusTraffic     http.Handler
 )
 
 func init() {
@@ -51,6 +52,7 @@ func init() {
 	gplusGocraftWeb = loadGocraftWeb(gplusAPI)
 	gplusGorillaMux = loadGorillaMux(gplusAPI)
 	gplusHttpRouter = loadHttpRouter(gplusAPI)
+	gplusHttpTreeMux = loadHttpTreeMux(gplusAPI)
 	gplusMartini = loadMartini(gplusAPI)
 	gplusPat = loadPat(gplusAPI)
 	gplusTigerTonic = loadTigerTonic(gplusAPI)
@@ -69,6 +71,11 @@ func BenchmarkGorillaMux_GPlusStatic(b *testing.B) {
 func BenchmarkHttpRouter_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusHttpRouter, req)
+}
+func BenchmarkHttpTreeMux_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	req.RequestURI = "/people"
+	benchRequest(b, gplusHttpTreeMux, req)
 }
 func BenchmarkMartini_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
@@ -100,6 +107,11 @@ func BenchmarkHttpRouter_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusHttpRouter, req)
 }
+func BenchmarkHttpTreeMux_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	req.RequestURI = "/people/118051310819094153327"
+	benchRequest(b, gplusHttpTreeMux, req)
+}
 func BenchmarkMartini_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusMartini, req)
@@ -130,6 +142,11 @@ func BenchmarkHttpRouter_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusHttpRouter, req)
 }
+func BenchmarkHttpTreeMux_GPlus2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	req.RequestURI = "/people/118051310819094153327/activities/123456789"
+	benchRequest(b, gplusHttpTreeMux, req)
+}
 func BenchmarkMartini_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusMartini, req)
@@ -156,6 +173,9 @@ func BenchmarkGorillaMux_GPlusAll(b *testing.B) {
 }
 func BenchmarkHttpRouter_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusHttpRouter, gplusAPI)
+}
+func BenchmarkHttpTreeMux_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusHttpTreeMux, gplusAPI)
 }
 func BenchmarkMartini_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusMartini, gplusAPI)

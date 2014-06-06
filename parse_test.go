@@ -56,13 +56,14 @@ var parseAPI = []route{
 }
 
 var (
-	parseGocraftWeb http.Handler
-	parseGorillaMux http.Handler
-	parseHttpRouter http.Handler
-	parseMartini    http.Handler
-	parsePat        http.Handler
-	parseTigerTonic http.Handler
-	parseTraffic    http.Handler
+	parseGocraftWeb  http.Handler
+	parseGorillaMux  http.Handler
+	parseHttpRouter  http.Handler
+	parseHttpTreeMux http.Handler
+	parseMartini     http.Handler
+	parsePat         http.Handler
+	parseTigerTonic  http.Handler
+	parseTraffic     http.Handler
 )
 
 func init() {
@@ -71,6 +72,7 @@ func init() {
 	parseGocraftWeb = loadGocraftWeb(parseAPI)
 	parseGorillaMux = loadGorillaMux(parseAPI)
 	parseHttpRouter = loadHttpRouter(parseAPI)
+	parseHttpTreeMux = loadHttpTreeMux(parseAPI)
 	parseMartini = loadMartini(parseAPI)
 	parsePat = loadPat(parseAPI)
 	parseTigerTonic = loadTigerTonic(parseAPI)
@@ -89,6 +91,11 @@ func BenchmarkGorillaMux_ParseStatic(b *testing.B) {
 func BenchmarkHttpRouter_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseHttpRouter, req)
+}
+func BenchmarkHttpTreeMux_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	req.RequestURI = "/1/users"
+	benchRequest(b, parseHttpTreeMux, req)
 }
 func BenchmarkMartini_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
@@ -120,6 +127,11 @@ func BenchmarkHttpRouter_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseHttpRouter, req)
 }
+func BenchmarkHttpTreeMux_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	req.RequestURI = "/1/classes/go"
+	benchRequest(b, parseHttpTreeMux, req)
+}
 func BenchmarkMartini_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseMartini, req)
@@ -150,6 +162,11 @@ func BenchmarkHttpRouter_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseHttpRouter, req)
 }
+func BenchmarkHttpTreeMux_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	req.RequestURI = "/1/classes/go/123456789"
+	benchRequest(b, parseHttpTreeMux, req)
+}
 func BenchmarkMartini_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseMartini, req)
@@ -176,6 +193,9 @@ func BenchmarkGorillaMux_ParseAll(b *testing.B) {
 }
 func BenchmarkHttpRouter_ParseAll(b *testing.B) {
 	benchRoutes(b, parseHttpRouter, parseAPI)
+}
+func BenchmarkHttpTreeMux_ParseAll(b *testing.B) {
+	benchRoutes(b, parseHttpTreeMux, parseAPI)
 }
 func BenchmarkMartini_ParseAll(b *testing.B) {
 	benchRoutes(b, parseMartini, parseAPI)
