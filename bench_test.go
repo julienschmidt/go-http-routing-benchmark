@@ -12,8 +12,8 @@ import (
 	"testing"
 
 	"github.com/bmizerany/pat"
-	"github.com/codegangsta/martini"
 	"github.com/dimfeld/httptreemux"
+	"github.com/go-martini/martini"
 	"github.com/gocraft/web"
 	"github.com/gorilla/mux"
 	"github.com/julienschmidt/httprouter"
