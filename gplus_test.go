@@ -37,6 +37,7 @@ var gplusAPI = []route{
 
 var (
 	gplusGocraftWeb  http.Handler
+	gplusGoji        http.Handler
 	gplusGorillaMux  http.Handler
 	gplusHttpRouter  http.Handler
 	gplusHttpTreeMux http.Handler
@@ -50,6 +51,7 @@ func init() {
 	println("#GPlusAPI Routes:", len(gplusAPI))
 
 	gplusGocraftWeb = loadGocraftWeb(gplusAPI)
+	gplusGoji = loadGoji(gplusAPI)
 	gplusGorillaMux = loadGorillaMux(gplusAPI)
 	gplusHttpRouter = loadHttpRouter(gplusAPI)
 	gplusHttpTreeMux = loadHttpTreeMux(gplusAPI)
@@ -63,6 +65,10 @@ func init() {
 func BenchmarkGocraftWeb_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusGocraftWeb, req)
+}
+func BenchmarkGoji_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	benchRequest(b, gplusGoji, req)
 }
 func BenchmarkGorillaMux_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
@@ -99,6 +105,10 @@ func BenchmarkGocraftWeb_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusGocraftWeb, req)
 }
+func BenchmarkGoji_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	benchRequest(b, gplusGoji, req)
+}
 func BenchmarkGorillaMux_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusGorillaMux, req)
@@ -134,6 +144,10 @@ func BenchmarkGocraftWeb_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusGocraftWeb, req)
 }
+func BenchmarkGoji_GPlus2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	benchRequest(b, gplusGoji, req)
+}
 func BenchmarkGorillaMux_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusGorillaMux, req)
@@ -167,6 +181,9 @@ func BenchmarkTraffic_GPlus2Params(b *testing.B) {
 // All Routes
 func BenchmarkGocraftWeb_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusGocraftWeb, gplusAPI)
+}
+func BenchmarkGoji_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusGoji, gplusAPI)
 }
 func BenchmarkGorillaMux_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusGorillaMux, gplusAPI)

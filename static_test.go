@@ -173,6 +173,7 @@ var (
 	staticHttpServeMux http.Handler
 
 	staticGocraftWeb  http.Handler
+	staticGoji        http.Handler
 	staticGorillaMux  http.Handler
 	staticHttpRouter  http.Handler
 	staticHttpTreeMux http.Handler
@@ -192,6 +193,7 @@ func init() {
 	staticHttpServeMux = serveMux
 
 	staticGocraftWeb = loadGocraftWeb(staticRoutes)
+	staticGoji = loadGoji(staticRoutes)
 	staticGorillaMux = loadGorillaMux(staticRoutes)
 	staticHttpRouter = loadHttpRouter(staticRoutes)
 	staticHttpTreeMux = loadHttpTreeMux(staticRoutes)
@@ -207,6 +209,9 @@ func BenchmarkHttpServeMux_StaticAll(b *testing.B) {
 }
 func BenchmarkGocraftWeb_StaticAll(b *testing.B) {
 	benchRoutes(b, staticGocraftWeb, staticRoutes)
+}
+func BenchmarkGoji_StaticAll(b *testing.B) {
+	benchRoutes(b, staticGoji, staticRoutes)
 }
 func BenchmarkGorillaMux_StaticAll(b *testing.B) {
 	benchRoutes(b, staticGorillaMux, staticRoutes)
