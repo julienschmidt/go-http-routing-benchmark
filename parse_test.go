@@ -100,7 +100,6 @@ func BenchmarkHttpRouter_ParseStatic(b *testing.B) {
 }
 func BenchmarkHttpTreeMux_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
-	req.RequestURI = "/1/users"
 	benchRequest(b, parseHttpTreeMux, req)
 }
 func BenchmarkMartini_ParseStatic(b *testing.B) {
@@ -139,7 +138,6 @@ func BenchmarkHttpRouter_ParseParam(b *testing.B) {
 }
 func BenchmarkHttpTreeMux_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
-	req.RequestURI = "/1/classes/go"
 	benchRequest(b, parseHttpTreeMux, req)
 }
 func BenchmarkMartini_ParseParam(b *testing.B) {
@@ -178,7 +176,6 @@ func BenchmarkHttpRouter_Parse2Params(b *testing.B) {
 }
 func BenchmarkHttpTreeMux_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
-	req.RequestURI = "/1/classes/go/123456789"
 	benchRequest(b, parseHttpTreeMux, req)
 }
 func BenchmarkMartini_Parse2Params(b *testing.B) {

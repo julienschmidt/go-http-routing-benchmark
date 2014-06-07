@@ -318,7 +318,6 @@ func BenchmarkHttpRouter_GithubStatic(b *testing.B) {
 }
 func BenchmarkHttpTreeMux_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
-	req.RequestURI = "/user/repos"
 	benchRequest(b, githubHttpTreeMux, req)
 }
 func BenchmarkMartini_GithubStatic(b *testing.B) {
@@ -357,7 +356,6 @@ func BenchmarkHttpRouter_GithubParam(b *testing.B) {
 }
 func BenchmarkHttpTreeMux_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
-	req.RequestURI = "/repos/julienschmidt/httprouter/stargazers"
 	benchRequest(b, githubHttpTreeMux, req)
 }
 func BenchmarkMartini_GithubParam(b *testing.B) {

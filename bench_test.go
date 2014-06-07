@@ -51,6 +51,7 @@ func benchRequest(b *testing.B, router http.Handler, r *http.Request) {
 	w := new(mockResponseWriter)
 	u := r.URL
 	rq := u.RawQuery
+	r.RequestURI = u.RequestURI()
 
 	b.ReportAllocs()
 	b.ResetTimer()
@@ -171,12 +172,11 @@ func loadHttpRouter(routes []route) *httprouter.Router {
 }
 
 // httpTreeMux
+func httpTreeMuxHandler(w http.ResponseWriter, r *http.Request, vars map[string]string) {}
 
 func httpTreeMuxHandlerWrite(w http.ResponseWriter, r *http.Request, vars map[string]string) {
 	io.WriteString(w, vars["name"])
 }
-
-func httpTreeMuxHandler(w http.ResponseWriter, r *http.Request, vars map[string]string) {}
 
 func loadHttpTreeMux(routes []route) *httptreemux.TreeMux {
 	router := httptreemux.New()
@@ -313,16 +313,13 @@ func BenchmarkHttpRouter_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
-
 func BenchmarkHttpTreeMux_Param(b *testing.B) {
 	router := httptreemux.New()
 	router.GET("/user/:name", httpTreeMuxHandler)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
-	r.RequestURI = "/user/gordon"
 	benchRequest(b, router, r)
 }
-
 func BenchmarkMartini_Param(b *testing.B) {
 	router := martini.NewRouter()
 	router.Get("/user/:name", martiniHandler)
@@ -454,7 +451,6 @@ func BenchmarkHttpTreeMux_ParamWrite(b *testing.B) {
 	router.GET("/user/:name", httpTreeMuxHandlerWrite)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
-	r.RequestURI = "/user/gordon"
 	benchRequest(b, router, r)
 }
 func BenchmarkMartini_ParamWrite(b *testing.B) {
