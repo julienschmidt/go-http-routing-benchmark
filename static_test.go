@@ -174,6 +174,7 @@ var (
 
 	staticGocraftWeb  http.Handler
 	staticGoji        http.Handler
+	staticGoJsonRest  http.Handler
 	staticGorillaMux  http.Handler
 	staticHttpRouter  http.Handler
 	staticHttpTreeMux http.Handler
@@ -194,6 +195,7 @@ func init() {
 
 	staticGocraftWeb = loadGocraftWeb(staticRoutes)
 	staticGoji = loadGoji(staticRoutes)
+	staticGoJsonRest = loadGoJsonRest(staticRoutes)
 	staticGorillaMux = loadGorillaMux(staticRoutes)
 	staticHttpRouter = loadHttpRouter(staticRoutes)
 	staticHttpTreeMux = loadHttpTreeMux(staticRoutes)
@@ -212,6 +214,9 @@ func BenchmarkGocraftWeb_StaticAll(b *testing.B) {
 }
 func BenchmarkGoji_StaticAll(b *testing.B) {
 	benchRoutes(b, staticGoji, staticRoutes)
+}
+func BenchmarkGoJsonRest_StaticAll(b *testing.B) {
+	benchRoutes(b, staticGoJsonRest, staticRoutes)
 }
 func BenchmarkGorillaMux_StaticAll(b *testing.B) {
 	benchRoutes(b, staticGorillaMux, staticRoutes)

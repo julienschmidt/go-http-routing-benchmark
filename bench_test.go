@@ -11,6 +11,7 @@ import (
 	"regexp"
 	"testing"
 
+	"github.com/ant0ine/go-json-rest/rest"
 	"github.com/bmizerany/pat"
 	"github.com/dimfeld/httptreemux"
 	"github.com/go-martini/martini"
@@ -43,8 +44,12 @@ func (m *mockResponseWriter) WriteString(s string) (n int, err error) {
 
 func (m *mockResponseWriter) WriteHeader(int) {}
 
+var nullLogger *log.Logger
+
 func init() {
+	// makes logging 'webscale' (ignores them)
 	log.SetOutput(new(mockResponseWriter))
+	nullLogger = log.New(new(mockResponseWriter), "", 0)
 }
 
 func benchRequest(b *testing.B, router http.Handler, r *http.Request) {
@@ -139,6 +144,43 @@ func loadGoji(routes []route) *goji.Mux {
 		}
 	}
 	return router
+}
+
+// go-json-rest/rest
+func goJsonRestHandler(w rest.ResponseWriter, req *rest.Request) {}
+
+func goJsonRestHandlerWrite(w rest.ResponseWriter, req *rest.Request) {
+	io.WriteString(w.(io.Writer), req.PathParam("name"))
+}
+
+func loadGoJsonRest(routes []route) *rest.ResourceHandler {
+	handler := rest.ResourceHandler{
+		EnableRelaxedContentType: true,
+		Logger:            nullLogger,
+		ErrorLogger:       nullLogger,
+		DisableXPoweredBy: true,
+	}
+	restRoutes := make([]*rest.Route, 0, len(routes))
+	for _, route := range routes {
+		restRoutes = append(restRoutes,
+			&rest.Route{route.method, route.path, goJsonRestHandler},
+		)
+	}
+	handler.SetRoutes(restRoutes...)
+	return &handler
+}
+
+func loadGoJsonRestSingle(method, path string, hfunc rest.HandlerFunc) *rest.ResourceHandler {
+	handler := rest.ResourceHandler{
+		EnableRelaxedContentType: true,
+		Logger:            nullLogger,
+		ErrorLogger:       nullLogger,
+		DisableXPoweredBy: true,
+	}
+	handler.SetRoutes(
+		&rest.Route{method, path, hfunc},
+	)
+	return &handler
 }
 
 // gorilla/mux
@@ -299,6 +341,12 @@ func BenchmarkGoji_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkGoJsonRest_Param(b *testing.B) {
+	handler := loadGoJsonRestSingle("GET", "/user/:name", goJsonRestHandler)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, handler, r)
+}
 func BenchmarkGorillaMux_Param(b *testing.B) {
 	router := mux.NewRouter()
 	router.HandleFunc("/user/{name}", httpHandlerFunc).Methods("GET")
@@ -371,6 +419,12 @@ func BenchmarkGoji_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkGoJsonRest_Param20(b *testing.B) {
+	handler := loadGoJsonRestSingle("GET", twentyColon, goJsonRestHandler)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, handler, r)
+}
 func BenchmarkGorillaMux_Param20(b *testing.B) {
 	router := mux.NewRouter()
 	router.HandleFunc(twentyBrace, httpHandlerFunc).Methods("GET")
@@ -438,6 +492,12 @@ func BenchmarkGoji_ParamWrite(b *testing.B) {
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
+}
+func BenchmarkGoJsonRest_ParamWrite(b *testing.B) {
+	handler := loadGoJsonRestSingle("GET", "/user/:name", goJsonRestHandlerWrite)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, handler, r)
 }
 func BenchmarkGorillaMux_ParamWrite(b *testing.B) {
 	router := mux.NewRouter()
