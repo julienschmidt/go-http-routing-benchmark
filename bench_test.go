@@ -335,21 +335,21 @@ func BenchmarkTraffic_Param(b *testing.B) {
 	benchRequest(b, router, r)
 }
 
-var twentyPat = "/:a/:b/:c/:d/:e/:f/:g/:h/:i/:j/:k/:l/:m/:n/:o/:p/:q/:r/:s/:t"
+// Route with 20 Params (no write)
+var twentyColon = "/:a/:b/:c/:d/:e/:f/:g/:h/:i/:j/:k/:l/:m/:n/:o/:p/:q/:r/:s/:t"
 var twentyBrace = "/{a}/{b}/{c}/{d}/{e}/{f}/{g}/{h}/{i}/{j}/{k}/{l}/{m}/{n}/{o}/{p}/{q}/{r}/{s}/{t}"
 var twentyRoute = "/a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p/q/r/s/t"
 
-// Route with 20 Params (no write)
 func BenchmarkGocraftWeb_Param20(b *testing.B) {
 	router := web.New(gocraftWebContext{})
-	router.Get(twentyPat, gocraftWebHandler)
+	router.Get(twentyColon, gocraftWebHandler)
 
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
 func BenchmarkGoji_Param20(b *testing.B) {
 	router := goji.New()
-	router.Get(twentyPat, httpHandlerFunc)
+	router.Get(twentyColon, httpHandlerFunc)
 
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
@@ -363,14 +363,14 @@ func BenchmarkGorillaMux_Param20(b *testing.B) {
 }
 func BenchmarkHttpRouter_Param20(b *testing.B) {
 	router := httprouter.New()
-	router.GET(twentyPat, httpRouterHandle)
+	router.GET(twentyColon, httpRouterHandle)
 
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
 func BenchmarkMartini_Param20(b *testing.B) {
 	router := martini.NewRouter()
-	router.Get(twentyPat, martiniHandler)
+	router.Get(twentyColon, martiniHandler)
 	martini := martini.New()
 	martini.Action(router.Handle)
 
@@ -379,7 +379,7 @@ func BenchmarkMartini_Param20(b *testing.B) {
 }
 func BenchmarkPat_Param20(b *testing.B) {
 	router := pat.New()
-	router.Get(twentyPat, http.HandlerFunc(httpHandlerFunc))
+	router.Get(twentyColon, http.HandlerFunc(httpHandlerFunc))
 
 	w := new(mockResponseWriter)
 	b.ReportAllocs()
@@ -402,7 +402,7 @@ func BenchmarkTigerTonic_Param20(b *testing.B) {
 func BenchmarkTraffic_Param20(b *testing.B) {
 	traffic.SetVar("env", "bench")
 	router := traffic.New()
-	router.Get(twentyPat, trafficHandler)
+	router.Get(twentyColon, trafficHandler)
 
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
