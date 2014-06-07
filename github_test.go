@@ -275,32 +275,36 @@ var githubAPI = []route{
 
 var (
 	githubGocraftWeb http.Handler
+	githubGoji       http.Handler
 	githubGorillaMux http.Handler
 	githubHttpRouter http.Handler
 	githubMartini    http.Handler
 	githubPat        http.Handler
 	githubTigerTonic http.Handler
 	githubTraffic    http.Handler
-	githubGoji       http.Handler
 )
 
 func init() {
 	println("#GithubAPI Routes:", len(githubAPI))
 
 	githubGocraftWeb = loadGocraftWeb(githubAPI)
+	githubGoji = loadGoji(githubAPI)
 	githubGorillaMux = loadGorillaMux(githubAPI)
 	githubHttpRouter = loadHttpRouter(githubAPI)
 	githubMartini = loadMartini(githubAPI)
 	githubPat = loadPat(githubAPI)
 	githubTigerTonic = loadTigerTonic(githubAPI)
 	githubTraffic = loadTraffic(githubAPI)
-	githubGoji = loadGoji(githubAPI)
 }
 
 // Static
 func BenchmarkGocraftWeb_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
 	benchRequest(b, githubGocraftWeb, req)
+}
+func BenchmarkGoji_GithubStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/user/repos", nil)
+	benchRequest(b, githubGoji, req)
 }
 func BenchmarkGorillaMux_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
@@ -326,15 +330,15 @@ func BenchmarkTraffic_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
 	benchRequest(b, githubTraffic, req)
 }
-func BenchmarkGoji_GithubStatic(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/user/repos", nil)
-	benchRequest(b, githubGoji, req)
-}
 
 // Param
 func BenchmarkGocraftWeb_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubGocraftWeb, req)
+}
+func BenchmarkGoji_GithubParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
+	benchRequest(b, githubGoji, req)
 }
 func BenchmarkGorillaMux_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
@@ -360,14 +364,13 @@ func BenchmarkTraffic_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubTraffic, req)
 }
-func BenchmarkGoji_GithubParam(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
-	benchRequest(b, githubGoji, req)
-}
 
 // All routes
 func BenchmarkGocraftWeb_GithubAll(b *testing.B) {
 	benchRoutes(b, githubGocraftWeb, githubAPI)
+}
+func BenchmarkGoji_GithubAll(b *testing.B) {
+	benchRoutes(b, githubGoji, githubAPI)
 }
 func BenchmarkGorillaMux_GithubAll(b *testing.B) {
 	benchRoutes(b, githubGorillaMux, githubAPI)
@@ -386,7 +389,4 @@ func BenchmarkTigerTonic_GithubAll(b *testing.B) {
 }
 func BenchmarkTraffic_GithubAll(b *testing.B) {
 	benchRoutes(b, githubTraffic, githubAPI)
-}
-func BenchmarkGoji_GithubAll(b *testing.B) {
-	benchRoutes(b, githubGoji, githubAPI)
 }
