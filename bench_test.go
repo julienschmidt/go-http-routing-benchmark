@@ -308,16 +308,8 @@ func BenchmarkPat_Param(b *testing.B) {
 	router := pat.New()
 	router.Get("/user/:name", http.HandlerFunc(httpHandlerFunc))
 
-	w := new(mockResponseWriter)
-	b.ReportAllocs()
-	b.ResetTimer()
-
-	for i := 0; i < b.N; i++ {
-		r, _ := http.NewRequest("GET", "/user/gordon", nil)
-		router.ServeHTTP(w, r)
-	}
-
-	//benchRequest(b, router, r)
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
 }
 func BenchmarkTigerTonic_Param(b *testing.B) {
 	router := tigertonic.NewTrieServeMux()
@@ -381,16 +373,8 @@ func BenchmarkPat_Param20(b *testing.B) {
 	router := pat.New()
 	router.Get(twentyColon, http.HandlerFunc(httpHandlerFunc))
 
-	w := new(mockResponseWriter)
-	b.ReportAllocs()
-	b.ResetTimer()
-
-	for i := 0; i < b.N; i++ {
-		r, _ := http.NewRequest("GET", twentyRoute, nil)
-		router.ServeHTTP(w, r)
-	}
-
-	//benchRequest(b, router, r)
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
 }
 func BenchmarkTigerTonic_Param20(b *testing.B) {
 	router := tigertonic.NewTrieServeMux()
