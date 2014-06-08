@@ -18,6 +18,8 @@ import (
 	"github.com/gocraft/web"
 	"github.com/gorilla/mux"
 	"github.com/julienschmidt/httprouter"
+	"github.com/naoina/kocha-urlrouter"
+	_ "github.com/naoina/kocha-urlrouter/doublearray"
 	"github.com/pilu/traffic"
 	"github.com/rcrowley/go-tigertonic"
 	goji "github.com/zenazn/goji/web"
@@ -324,6 +326,67 @@ func loadTraffic(routes []route) *traffic.Router {
 	return router
 }
 
+// Kocha-urlrouter
+type kochaHandler struct {
+	routerMap map[string]urlrouter.URLRouter
+	params    []urlrouter.Param
+}
+
+func (h *kochaHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	meth, params := h.routerMap[r.Method].Lookup(r.URL.Path)
+	h.params = params
+	meth.(http.HandlerFunc).ServeHTTP(w, r)
+}
+
+func (h *kochaHandler) Get(w http.ResponseWriter, r *http.Request)    {}
+func (h *kochaHandler) Post(w http.ResponseWriter, r *http.Request)   {}
+func (h *kochaHandler) Put(w http.ResponseWriter, r *http.Request)    {}
+func (h *kochaHandler) Patch(w http.ResponseWriter, r *http.Request)  {}
+func (h *kochaHandler) Delete(w http.ResponseWriter, r *http.Request) {}
+func (h *kochaHandler) kochaHandlerWrite(w http.ResponseWriter, r *http.Request) {
+	var name string
+	for _, param := range h.params {
+		if param.Name == "name" {
+			name = param.Value
+			break
+		}
+	}
+	io.WriteString(w, name)
+}
+
+func loadKocha(routes []route) *kochaHandler {
+	handler := &kochaHandler{routerMap: map[string]urlrouter.URLRouter{
+		"GET":    urlrouter.NewURLRouter("doublearray"),
+		"POST":   urlrouter.NewURLRouter("doublearray"),
+		"PUT":    urlrouter.NewURLRouter("doublearray"),
+		"PATCH":  urlrouter.NewURLRouter("doublearray"),
+		"DELETE": urlrouter.NewURLRouter("doublearray"),
+	}}
+	recordMap := make(map[string][]urlrouter.Record)
+	for _, route := range routes {
+		var f http.HandlerFunc
+		switch route.method {
+		case "GET":
+			f = handler.Get
+		case "POST":
+			f = handler.Post
+		case "PUT":
+			f = handler.Put
+		case "PATCH":
+			f = handler.Patch
+		case "DELETE":
+			f = handler.Delete
+		}
+		recordMap[route.method] = append(recordMap[route.method], urlrouter.NewRecord(route.path, f))
+	}
+	for method, records := range recordMap {
+		if err := handler.routerMap[method].Build(records); err != nil {
+			panic(err)
+		}
+	}
+	return handler
+}
+
 // Micro Benchmarks
 
 // Route with Param (no write)
@@ -398,6 +461,18 @@ func BenchmarkTraffic_Param(b *testing.B) {
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
+}
+func BenchmarkKocha_Param(b *testing.B) {
+	handler := &kochaHandler{routerMap: map[string]urlrouter.URLRouter{
+		"GET": urlrouter.NewURLRouter("doublearray"),
+	}}
+	if err := handler.routerMap["GET"].Build([]urlrouter.Record{
+		urlrouter.NewRecord("/user/:name", http.HandlerFunc(handler.Get)),
+	}); err != nil {
+		panic(err)
+	}
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, handler, r)
 }
 
 // Route with 20 Params (no write)
@@ -549,4 +624,16 @@ func BenchmarkTraffic_ParamWrite(b *testing.B) {
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
+}
+func BenchmarkKocha_ParamWrite(b *testing.B) {
+	handler := &kochaHandler{routerMap: map[string]urlrouter.URLRouter{
+		"GET": urlrouter.NewURLRouter("doublearray"),
+	}}
+	if err := handler.routerMap["GET"].Build([]urlrouter.Record{
+		urlrouter.NewRecord("/user/:name", http.HandlerFunc(handler.kochaHandlerWrite)),
+	}); err != nil {
+		panic(err)
+	}
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, handler, r)
 }

@@ -46,6 +46,7 @@ var (
 	gplusPat         http.Handler
 	gplusTigerTonic  http.Handler
 	gplusTraffic     http.Handler
+	gplusKocha       http.Handler
 )
 
 func init() {
@@ -61,6 +62,7 @@ func init() {
 	gplusPat = loadPat(gplusAPI)
 	gplusTigerTonic = loadTigerTonic(gplusAPI)
 	gplusTraffic = loadTraffic(gplusAPI)
+	gplusKocha = loadKocha(gplusAPI)
 }
 
 // Static
@@ -104,6 +106,10 @@ func BenchmarkTraffic_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusTraffic, req)
 }
+func BenchmarkKocha_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	benchRequest(b, gplusKocha, req)
+}
 
 // One Param
 func BenchmarkGocraftWeb_GPlusParam(b *testing.B) {
@@ -145,6 +151,10 @@ func BenchmarkTigerTonic_GPlusParam(b *testing.B) {
 func BenchmarkTraffic_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusTraffic, req)
+}
+func BenchmarkKocha_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	benchRequest(b, gplusKocha, req)
 }
 
 // Two Params
@@ -188,6 +198,10 @@ func BenchmarkTraffic_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusTraffic, req)
 }
+func BenchmarkKocha_GPlus2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	benchRequest(b, gplusKocha, req)
+}
 
 // All Routes
 func BenchmarkGocraftWeb_GPlusAll(b *testing.B) {
@@ -219,4 +233,7 @@ func BenchmarkTigerTonic_GPlusAll(b *testing.B) {
 }
 func BenchmarkTraffic_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusTraffic, gplusAPI)
+}
+func BenchmarkKocha_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusKocha, gplusAPI)
 }
