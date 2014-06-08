@@ -62,11 +62,11 @@ var (
 	parseGorillaMux  http.Handler
 	parseHttpRouter  http.Handler
 	parseHttpTreeMux http.Handler
+	parseKocha       http.Handler
 	parseMartini     http.Handler
 	parsePat         http.Handler
 	parseTigerTonic  http.Handler
 	parseTraffic     http.Handler
-	parseKocha       http.Handler
 )
 
 func init() {
@@ -78,11 +78,11 @@ func init() {
 	parseGorillaMux = loadGorillaMux(parseAPI)
 	parseHttpRouter = loadHttpRouter(parseAPI)
 	parseHttpTreeMux = loadHttpTreeMux(parseAPI)
+	parseKocha = loadKocha(parseAPI)
 	parseMartini = loadMartini(parseAPI)
 	parsePat = loadPat(parseAPI)
 	parseTigerTonic = loadTigerTonic(parseAPI)
 	parseTraffic = loadTraffic(parseAPI)
-	parseKocha = loadKocha(parseAPI)
 }
 
 // Static
@@ -110,6 +110,10 @@ func BenchmarkHttpTreeMux_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseHttpTreeMux, req)
 }
+func BenchmarkKocha_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseKocha, req)
+}
 func BenchmarkMartini_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseMartini, req)
@@ -125,10 +129,6 @@ func BenchmarkTigerTonic_ParseStatic(b *testing.B) {
 func BenchmarkTraffic_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseTraffic, req)
-}
-func BenchmarkKocha_ParseStatic(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/1/users", nil)
-	benchRequest(b, parseKocha, req)
 }
 
 // One Param
@@ -156,6 +156,10 @@ func BenchmarkHttpTreeMux_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseHttpTreeMux, req)
 }
+func BenchmarkKocha_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseKocha, req)
+}
 func BenchmarkMartini_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseMartini, req)
@@ -171,10 +175,6 @@ func BenchmarkTigerTonic_ParseParam(b *testing.B) {
 func BenchmarkTraffic_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseTraffic, req)
-}
-func BenchmarkKocha_ParseParam(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
-	benchRequest(b, parseKocha, req)
 }
 
 // Two Params
@@ -202,6 +202,10 @@ func BenchmarkHttpTreeMux_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseHttpTreeMux, req)
 }
+func BenchmarkKocha_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseKocha, req)
+}
 func BenchmarkMartini_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseMartini, req)
@@ -217,10 +221,6 @@ func BenchmarkTigerTonic_Parse2Params(b *testing.B) {
 func BenchmarkTraffic_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseTraffic, req)
-}
-func BenchmarkKocha_Parse2Params(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
-	benchRequest(b, parseKocha, req)
 }
 
 // All Routes
@@ -242,6 +242,9 @@ func BenchmarkHttpRouter_ParseAll(b *testing.B) {
 func BenchmarkHttpTreeMux_ParseAll(b *testing.B) {
 	benchRoutes(b, parseHttpTreeMux, parseAPI)
 }
+func BenchmarkKocha_ParseAll(b *testing.B) {
+	benchRoutes(b, parseKocha, parseAPI)
+}
 func BenchmarkMartini_ParseAll(b *testing.B) {
 	benchRoutes(b, parseMartini, parseAPI)
 }
@@ -253,7 +256,4 @@ func BenchmarkTigerTonic_ParseAll(b *testing.B) {
 }
 func BenchmarkTraffic_ParseAll(b *testing.B) {
 	benchRoutes(b, parseTraffic, parseAPI)
-}
-func BenchmarkKocha_ParseAll(b *testing.B) {
-	benchRoutes(b, parseKocha, parseAPI)
 }

@@ -178,11 +178,11 @@ var (
 	staticGorillaMux  http.Handler
 	staticHttpRouter  http.Handler
 	staticHttpTreeMux http.Handler
+	staticKocha       http.Handler
 	staticMartini     http.Handler
 	staticPat         http.Handler
 	staticTigerTonic  http.Handler
 	staticTraffic     http.Handler
-	staticKocha       http.Handler
 )
 
 func init() {
@@ -200,11 +200,11 @@ func init() {
 	staticGorillaMux = loadGorillaMux(staticRoutes)
 	staticHttpRouter = loadHttpRouter(staticRoutes)
 	staticHttpTreeMux = loadHttpTreeMux(staticRoutes)
+	staticKocha = loadKocha(staticRoutes)
 	staticMartini = loadMartini(staticRoutes)
 	staticPat = loadPat(staticRoutes)
 	staticTigerTonic = loadTigerTonic(staticRoutes)
 	staticTraffic = loadTraffic(staticRoutes)
-	staticKocha = loadKocha(staticRoutes)
 }
 
 // All routes
@@ -229,6 +229,9 @@ func BenchmarkHttpRouter_StaticAll(b *testing.B) {
 func BenchmarkHttpTreeMux_StaticAll(b *testing.B) {
 	benchRoutes(b, staticHttpRouter, staticRoutes)
 }
+func BenchmarkKocha_StaticAll(b *testing.B) {
+	benchRoutes(b, staticKocha, staticRoutes)
+}
 func BenchmarkMartini_StaticAll(b *testing.B) {
 	benchRoutes(b, staticMartini, staticRoutes)
 }
@@ -240,8 +243,4 @@ func BenchmarkTigerTonic_StaticAll(b *testing.B) {
 }
 func BenchmarkTraffic_StaticAll(b *testing.B) {
 	benchRoutes(b, staticTraffic, staticRoutes)
-}
-
-func BenchmarkKocha_StaticAll(b *testing.B) {
-	benchRoutes(b, staticKocha, staticRoutes)
 }
