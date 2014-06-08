@@ -475,6 +475,96 @@ func BenchmarkTraffic_Param(b *testing.B) {
 	benchRequest(b, router, r)
 }
 
+// Route with 5 Params (no write)
+var fiveColon = "/:a/:b/:c/:d/:e"
+var fiveBrace = "/{a}/{b}/{c}/{d}/{e}"
+var fiveRoute = "/test/test/test/test/test"
+
+func BenchmarkGocraftWeb_Param5(b *testing.B) {
+	router := web.New(gocraftWebContext{})
+	router.Get(fiveColon, gocraftWebHandler)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkGoji_Param5(b *testing.B) {
+	router := goji.New()
+	router.Get(fiveColon, httpHandlerFunc)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkGoJsonRest_Param5(b *testing.B) {
+	handler := loadGoJsonRestSingle("GET", fiveColon, goJsonRestHandler)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, handler, r)
+}
+func BenchmarkGorillaMux_Param5(b *testing.B) {
+	router := mux.NewRouter()
+	router.HandleFunc(fiveBrace, httpHandlerFunc).Methods("GET")
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkHttpRouter_Param5(b *testing.B) {
+	router := httprouter.New()
+	router.GET(fiveColon, httpRouterHandle)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkHttpTreeMux_Param5(b *testing.B) {
+	router := httptreemux.New()
+	router.GET(fiveColon, httpTreeMuxHandler)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkKocha_Param5(b *testing.B) {
+	handler := &kochaHandler{routerMap: map[string]urlrouter.URLRouter{
+		"GET": urlrouter.NewURLRouter("doublearray"),
+	}}
+	if err := handler.routerMap["GET"].Build([]urlrouter.Record{
+		urlrouter.NewRecord(fiveColon, http.HandlerFunc(handler.Get)),
+	}); err != nil {
+		panic(err)
+	}
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, handler, r)
+}
+func BenchmarkMartini_Param5(b *testing.B) {
+	router := martini.NewRouter()
+	router.Get(fiveColon, martiniHandler)
+	martini := martini.New()
+	martini.Action(router.Handle)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, martini, r)
+}
+func BenchmarkPat_Param5(b *testing.B) {
+	router := pat.New()
+	router.Get(fiveColon, http.HandlerFunc(httpHandlerFunc))
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkTigerTonic_Param5(b *testing.B) {
+	router := tigertonic.NewTrieServeMux()
+	router.HandleFunc("GET", fiveBrace, httpHandlerFunc)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkTraffic_Param5(b *testing.B) {
+	traffic.SetVar("env", "bench")
+	router := traffic.New()
+	router.Get(fiveColon, trafficHandler)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
+
 // Route with 20 Params (no write)
 var twentyColon = "/:a/:b/:c/:d/:e/:f/:g/:h/:i/:j/:k/:l/:m/:n/:o/:p/:q/:r/:s/:t"
 var twentyBrace = "/{a}/{b}/{c}/{d}/{e}/{f}/{g}/{h}/{i}/{j}/{k}/{l}/{m}/{n}/{o}/{p}/{q}/{r}/{s}/{t}"
