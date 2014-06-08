@@ -28,6 +28,12 @@ Benchmark System:
  * Mac OS X 10.9.3
  
 ```
+#GithubAPI Routes: 203
+#GPlusAPI Routes: 13
+#ParseAPI Routes: 26
+#Static Routes: 157
+
+
 benchmarkgocraftweb_param          1000000     1323     ns/op       672     B/op        9     allocs/op
 benchmarkgoji_param                5000000     682      ns/op       343     B/op        2     allocs/op
 benchmarkgojsonrest_param          500000      4981     ns/op       1793    B/op        30    allocs/op
