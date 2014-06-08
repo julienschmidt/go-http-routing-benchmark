@@ -9,9 +9,12 @@ import (
 	"log"
 	"net/http"
 	"regexp"
+	"runtime"
 	"testing"
 
 	"github.com/ant0ine/go-json-rest/rest"
+	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/context"
 	"github.com/bmizerany/pat"
 	"github.com/dimfeld/httptreemux"
 	"github.com/go-martini/martini"
@@ -49,9 +52,16 @@ func (m *mockResponseWriter) WriteHeader(int) {}
 var nullLogger *log.Logger
 
 func init() {
+	// beego sets it to runtime.NumCPU()
+	// Currently none of the contestors does concurrent routing
+	runtime.GOMAXPROCS(1)
+
 	// makes logging 'webscale' (ignores them)
 	log.SetOutput(new(mockResponseWriter))
 	nullLogger = log.New(new(mockResponseWriter), "", 0)
+
+	beego.RunMode = "prod"
+	martini.Env = martini.Prod
 }
 
 func benchRequest(b *testing.B, router http.Handler, r *http.Request) {
@@ -91,6 +101,37 @@ func benchRoutes(b *testing.B, router http.Handler, routes []route) {
 
 // Common
 func httpHandlerFunc(w http.ResponseWriter, r *http.Request) {}
+
+// beego
+func beegoHandler(ctx *context.Context) {}
+
+func beegoHandlerWrite(ctx *context.Context) {
+	ctx.WriteString(ctx.Input.Param(":name"))
+}
+
+func loadBeego(routes []route) *beego.ControllerRegistor {
+	re := regexp.MustCompile(":([^/]*)")
+	app := beego.NewApp()
+	for _, route := range routes {
+		route.path = re.ReplaceAllString(route.path, ":$1!")
+
+		switch route.method {
+		case "GET":
+			app.Get(route.path, beegoHandler)
+		case "POST":
+			app.Post(route.path, beegoHandler)
+		case "PUT":
+			app.Put(route.path, beegoHandler)
+		case "PATCH":
+			app.Patch(route.path, beegoHandler)
+		case "DELETE":
+			app.Delete(route.path, beegoHandler)
+		default:
+			panic("Unknow HTTP method: " + route.method)
+		}
+	}
+	return app.Handlers
+}
 
 // gocraft/web
 type gocraftWebContext struct{}
@@ -366,7 +407,6 @@ func trafficHandlerWrite(w traffic.ResponseWriter, r *traffic.Request) {
 func trafficHandler(w traffic.ResponseWriter, r *traffic.Request) {}
 
 func loadTraffic(routes []route) *traffic.Router {
-	traffic.SetVar("env", "bench")
 	router := traffic.New()
 	for _, route := range routes {
 		switch route.method {
@@ -390,6 +430,13 @@ func loadTraffic(routes []route) *traffic.Router {
 // Micro Benchmarks
 
 // Route with Param (no write)
+func BenchmarkBeego_Param(b *testing.B) {
+	app := beego.NewApp()
+	app.Get("/user/:name!", beegoHandler)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, app.Handlers, r)
+}
 func BenchmarkGocraftWeb_Param(b *testing.B) {
 	router := web.New(gocraftWebContext{})
 	router.Get("/user/:name", gocraftWebHandler)
@@ -477,9 +524,17 @@ func BenchmarkTraffic_Param(b *testing.B) {
 
 // Route with 5 Params (no write)
 var fiveColon = "/:a/:b/:c/:d/:e"
+var fiveBeego = "/:a!/:b!/:c!/:d!/:e!"
 var fiveBrace = "/{a}/{b}/{c}/{d}/{e}"
 var fiveRoute = "/test/test/test/test/test"
 
+func BenchmarkBeego_Param5(b *testing.B) {
+	app := beego.NewApp()
+	app.Get(fiveBeego, beegoHandler)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, app.Handlers, r)
+}
 func BenchmarkGocraftWeb_Param5(b *testing.B) {
 	router := web.New(gocraftWebContext{})
 	router.Get(fiveColon, gocraftWebHandler)
@@ -567,9 +622,17 @@ func BenchmarkTraffic_Param5(b *testing.B) {
 
 // Route with 20 Params (no write)
 var twentyColon = "/:a/:b/:c/:d/:e/:f/:g/:h/:i/:j/:k/:l/:m/:n/:o/:p/:q/:r/:s/:t"
+var twentyBeego = "/:a!/:b!/:c!/:d!/:e!/:f!/:g!/:h!/:i!/:j!/:k!/:l!/:m!/:n!/:o!/:p!/:q!/:r!/:s!/:t!"
 var twentyBrace = "/{a}/{b}/{c}/{d}/{e}/{f}/{g}/{h}/{i}/{j}/{k}/{l}/{m}/{n}/{o}/{p}/{q}/{r}/{s}/{t}"
 var twentyRoute = "/a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p/q/r/s/t"
 
+func BenchmarkBeego_Param20(b *testing.B) {
+	app := beego.NewApp()
+	app.Get(twentyBeego, beegoHandler)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, app.Handlers, r)
+}
 func BenchmarkGocraftWeb_Param20(b *testing.B) {
 	router := web.New(gocraftWebContext{})
 	router.Get(twentyColon, gocraftWebHandler)
@@ -656,6 +719,13 @@ func BenchmarkTraffic_Param20(b *testing.B) {
 }
 
 // Route with Param and write
+func BenchmarkBeego_ParamWrite(b *testing.B) {
+	app := beego.NewApp()
+	app.Get("/user/:name!", beegoHandlerWrite)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, app.Handlers, r)
+}
 func BenchmarkGocraftWeb_ParamWrite(b *testing.B) {
 	router := web.New(gocraftWebContext{})
 	router.Get("/user/:name", gocraftWebHandlerWrite)

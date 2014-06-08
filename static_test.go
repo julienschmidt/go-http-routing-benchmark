@@ -172,6 +172,7 @@ var staticRoutes = []route{
 var (
 	staticHttpServeMux http.Handler
 
+	staticBeego       http.Handler
 	staticGocraftWeb  http.Handler
 	staticGoji        http.Handler
 	staticGoJsonRest  http.Handler
@@ -194,6 +195,7 @@ func init() {
 	}
 	staticHttpServeMux = serveMux
 
+	staticBeego = loadBeego(staticRoutes)
 	staticGocraftWeb = loadGocraftWeb(staticRoutes)
 	staticGoji = loadGoji(staticRoutes)
 	staticGoJsonRest = loadGoJsonRest(staticRoutes)
@@ -210,6 +212,9 @@ func init() {
 // All routes
 func BenchmarkHttpServeMux_StaticAll(b *testing.B) {
 	benchRoutes(b, staticHttpServeMux, staticRoutes)
+}
+func BenchmarkBeego_StaticAll(b *testing.B) {
+	benchRoutes(b, staticBeego, staticRoutes)
 }
 func BenchmarkGocraftWeb_StaticAll(b *testing.B) {
 	benchRoutes(b, staticGocraftWeb, staticRoutes)

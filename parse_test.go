@@ -56,6 +56,7 @@ var parseAPI = []route{
 }
 
 var (
+	parseBeego       http.Handler
 	parseGocraftWeb  http.Handler
 	parseGoji        http.Handler
 	parseGoJsonRest  http.Handler
@@ -72,6 +73,7 @@ var (
 func init() {
 	println("#ParseAPI Routes:", len(parseAPI))
 
+	parseBeego = loadBeego(parseAPI)
 	parseGocraftWeb = loadGocraftWeb(parseAPI)
 	parseGoji = loadGoji(parseAPI)
 	parseGoJsonRest = loadGoJsonRest(parseAPI)
@@ -86,6 +88,10 @@ func init() {
 }
 
 // Static
+func BenchmarkBeego_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseBeego, req)
+}
 func BenchmarkGocraftWeb_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseGocraftWeb, req)
@@ -132,6 +138,10 @@ func BenchmarkTraffic_ParseStatic(b *testing.B) {
 }
 
 // One Param
+func BenchmarkBeego_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseBeego, req)
+}
 func BenchmarkGocraftWeb_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseGocraftWeb, req)
@@ -178,6 +188,10 @@ func BenchmarkTraffic_ParseParam(b *testing.B) {
 }
 
 // Two Params
+func BenchmarkBeego_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseBeego, req)
+}
 func BenchmarkGocraftWeb_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseGocraftWeb, req)
@@ -224,6 +238,9 @@ func BenchmarkTraffic_Parse2Params(b *testing.B) {
 }
 
 // All Routes
+func BenchmarkBeego_ParseAll(b *testing.B) {
+	benchRoutes(b, parseBeego, parseAPI)
+}
 func BenchmarkGocraftWeb_ParseAll(b *testing.B) {
 	benchRoutes(b, parseGocraftWeb, parseAPI)
 }
