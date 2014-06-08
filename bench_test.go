@@ -199,10 +199,10 @@ func loadGorillaMux(routes []route) *mux.Router {
 }
 
 // HttpRouter
-func httpRouterHandle(w http.ResponseWriter, r *http.Request, _ map[string]string) {}
+func httpRouterHandle(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {}
 
-func httpRouterHandleWrite(w http.ResponseWriter, r *http.Request, vars map[string]string) {
-	io.WriteString(w, vars["name"])
+func httpRouterHandleWrite(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	io.WriteString(w, ps.ByName("name"))
 }
 
 func loadHttpRouter(routes []route) *httprouter.Router {
