@@ -521,6 +521,18 @@ func BenchmarkHttpTreeMux_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkKocha_Param20(b *testing.B) {
+	handler := &kochaHandler{routerMap: map[string]urlrouter.URLRouter{
+		"GET": urlrouter.NewURLRouter("doublearray"),
+	}}
+	if err := handler.routerMap["GET"].Build([]urlrouter.Record{
+		urlrouter.NewRecord(twentyColon, http.HandlerFunc(handler.Get)),
+	}); err != nil {
+		panic(err)
+	}
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, handler, r)
+}
 func BenchmarkMartini_Param20(b *testing.B) {
 	router := martini.NewRouter()
 	router.Get(twentyColon, martiniHandler)
