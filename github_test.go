@@ -291,18 +291,42 @@ var (
 func init() {
 	println("#GithubAPI Routes:", len(githubAPI))
 
-	githubBeego = loadBeego(githubAPI)
-	githubGocraftWeb = loadGocraftWeb(githubAPI)
-	githubGoji = loadGoji(githubAPI)
-	githubGoJsonRest = loadGoJsonRest(githubAPI)
-	githubGorillaMux = loadGorillaMux(githubAPI)
-	githubHttpRouter = loadHttpRouter(githubAPI)
-	githubHttpTreeMux = loadHttpTreeMux(githubAPI)
-	githubKocha = loadKocha(githubAPI)
-	githubMartini = loadMartini(githubAPI)
-	githubPat = loadPat(githubAPI)
-	githubTigerTonic = loadTigerTonic(githubAPI)
-	githubTraffic = loadTraffic(githubAPI)
+	calcMem("Beego", func() {
+		githubBeego = loadBeego(githubAPI)
+	})
+	calcMem("GocraftWeb", func() {
+		githubGocraftWeb = loadGocraftWeb(githubAPI)
+	})
+	calcMem("Goji", func() {
+		githubGoji = loadGoji(githubAPI)
+	})
+	calcMem("GoJsonRest", func() {
+		githubGoJsonRest = loadGoJsonRest(githubAPI)
+	})
+	calcMem("GorillaMux", func() {
+		githubGorillaMux = loadGorillaMux(githubAPI)
+	})
+	calcMem("HttpRouter", func() {
+		githubHttpRouter = loadHttpRouter(githubAPI)
+	})
+	calcMem("HttpTreeMux", func() {
+		githubHttpTreeMux = loadHttpTreeMux(githubAPI)
+	})
+	calcMem("Kocha", func() {
+		githubKocha = loadKocha(githubAPI)
+	})
+	calcMem("Martini", func() {
+		githubMartini = loadMartini(githubAPI)
+	})
+	calcMem("Pat", func() {
+		githubPat = loadPat(githubAPI)
+	})
+	calcMem("TigerTonic", func() {
+		githubTigerTonic = loadTigerTonic(githubAPI)
+	})
+	calcMem("GoJsonRest", func() {
+		githubTraffic = loadTraffic(githubAPI)
+	})
 }
 
 // Static

@@ -189,24 +189,50 @@ var (
 func init() {
 	println("#Static Routes:", len(staticRoutes))
 
-	serveMux := http.NewServeMux()
-	for _, route := range staticRoutes {
-		serveMux.HandleFunc(route.path, httpHandlerFunc)
-	}
-	staticHttpServeMux = serveMux
+	calcMem("HttpServeMux", func() {
+		serveMux := http.NewServeMux()
+		for _, route := range staticRoutes {
+			serveMux.HandleFunc(route.path, httpHandlerFunc)
+		}
+		staticHttpServeMux = serveMux
+	})
 
-	staticBeego = loadBeego(staticRoutes)
-	staticGocraftWeb = loadGocraftWeb(staticRoutes)
-	staticGoji = loadGoji(staticRoutes)
-	staticGoJsonRest = loadGoJsonRest(staticRoutes)
-	staticGorillaMux = loadGorillaMux(staticRoutes)
-	staticHttpRouter = loadHttpRouter(staticRoutes)
-	staticHttpTreeMux = loadHttpTreeMux(staticRoutes)
-	staticKocha = loadKocha(staticRoutes)
-	staticMartini = loadMartini(staticRoutes)
-	staticPat = loadPat(staticRoutes)
-	staticTigerTonic = loadTigerTonic(staticRoutes)
-	staticTraffic = loadTraffic(staticRoutes)
+	calcMem("Beego", func() {
+		staticBeego = loadBeego(staticRoutes)
+	})
+	calcMem("GocraftWeb", func() {
+		staticGocraftWeb = loadGocraftWeb(staticRoutes)
+	})
+	calcMem("Goji", func() {
+		staticGoji = loadGoji(staticRoutes)
+	})
+	calcMem("GoJsonRest", func() {
+		staticGoJsonRest = loadGoJsonRest(staticRoutes)
+	})
+	calcMem("GorillaMux", func() {
+		staticGorillaMux = loadGorillaMux(staticRoutes)
+	})
+	calcMem("HttpRouter", func() {
+		staticHttpRouter = loadHttpRouter(staticRoutes)
+	})
+	calcMem("HttpTreeMux", func() {
+		staticHttpTreeMux = loadHttpTreeMux(staticRoutes)
+	})
+	calcMem("Kocha", func() {
+		staticKocha = loadKocha(staticRoutes)
+	})
+	calcMem("Martini", func() {
+		staticMartini = loadMartini(staticRoutes)
+	})
+	calcMem("Pat", func() {
+		staticPat = loadPat(staticRoutes)
+	})
+	calcMem("TigerTonic", func() {
+		staticTigerTonic = loadTigerTonic(staticRoutes)
+	})
+	calcMem("GoJsonRest", func() {
+		staticTraffic = loadTraffic(staticRoutes)
+	})
 }
 
 // All routes

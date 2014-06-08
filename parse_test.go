@@ -73,18 +73,42 @@ var (
 func init() {
 	println("#ParseAPI Routes:", len(parseAPI))
 
-	parseBeego = loadBeego(parseAPI)
-	parseGocraftWeb = loadGocraftWeb(parseAPI)
-	parseGoji = loadGoji(parseAPI)
-	parseGoJsonRest = loadGoJsonRest(parseAPI)
-	parseGorillaMux = loadGorillaMux(parseAPI)
-	parseHttpRouter = loadHttpRouter(parseAPI)
-	parseHttpTreeMux = loadHttpTreeMux(parseAPI)
-	parseKocha = loadKocha(parseAPI)
-	parseMartini = loadMartini(parseAPI)
-	parsePat = loadPat(parseAPI)
-	parseTigerTonic = loadTigerTonic(parseAPI)
-	parseTraffic = loadTraffic(parseAPI)
+	calcMem("Beego", func() {
+		parseBeego = loadBeego(parseAPI)
+	})
+	calcMem("GocraftWeb", func() {
+		parseGocraftWeb = loadGocraftWeb(parseAPI)
+	})
+	calcMem("Goji", func() {
+		parseGoji = loadGoji(parseAPI)
+	})
+	calcMem("GoJsonRest", func() {
+		parseGoJsonRest = loadGoJsonRest(parseAPI)
+	})
+	calcMem("GorillaMux", func() {
+		parseGorillaMux = loadGorillaMux(parseAPI)
+	})
+	calcMem("HttpRouter", func() {
+		parseHttpRouter = loadHttpRouter(parseAPI)
+	})
+	calcMem("HttpTreeMux", func() {
+		parseHttpTreeMux = loadHttpTreeMux(parseAPI)
+	})
+	calcMem("Kocha", func() {
+		parseKocha = loadKocha(parseAPI)
+	})
+	calcMem("Martini", func() {
+		parseMartini = loadMartini(parseAPI)
+	})
+	calcMem("Pat", func() {
+		parsePat = loadPat(parseAPI)
+	})
+	calcMem("TigerTonic", func() {
+		parseTigerTonic = loadTigerTonic(parseAPI)
+	})
+	calcMem("GoJsonRest", func() {
+		parseTraffic = loadTraffic(parseAPI)
+	})
 }
 
 // Static

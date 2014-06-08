@@ -64,6 +64,23 @@ func init() {
 	martini.Env = martini.Prod
 }
 
+func calcMem(name string, load func()) {
+	m := new(runtime.MemStats)
+
+	// before
+	runtime.GC()
+	runtime.ReadMemStats(m)
+	before := m.HeapAlloc
+
+	load()
+
+	// after
+	runtime.GC()
+	runtime.ReadMemStats(m)
+	after := m.HeapAlloc
+	println("   "+name+":", after-before, "Bytes")
+}
+
 func benchRequest(b *testing.B, router http.Handler, r *http.Request) {
 	w := new(mockResponseWriter)
 	u := r.URL

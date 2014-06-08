@@ -53,18 +53,42 @@ var (
 func init() {
 	println("#GPlusAPI Routes:", len(gplusAPI))
 
-	gplusBeego = loadBeego(gplusAPI)
-	gplusGocraftWeb = loadGocraftWeb(gplusAPI)
-	gplusGoji = loadGoji(gplusAPI)
-	gplusGoJsonRest = loadGoJsonRest(gplusAPI)
-	gplusGorillaMux = loadGorillaMux(gplusAPI)
-	gplusHttpRouter = loadHttpRouter(gplusAPI)
-	gplusHttpTreeMux = loadHttpTreeMux(gplusAPI)
-	gplusKocha = loadKocha(gplusAPI)
-	gplusMartini = loadMartini(gplusAPI)
-	gplusPat = loadPat(gplusAPI)
-	gplusTigerTonic = loadTigerTonic(gplusAPI)
-	gplusTraffic = loadTraffic(gplusAPI)
+	calcMem("Beego", func() {
+		gplusBeego = loadBeego(gplusAPI)
+	})
+	calcMem("GocraftWeb", func() {
+		gplusGocraftWeb = loadGocraftWeb(gplusAPI)
+	})
+	calcMem("Goji", func() {
+		gplusGoji = loadGoji(gplusAPI)
+	})
+	calcMem("GoJsonRest", func() {
+		gplusGoJsonRest = loadGoJsonRest(gplusAPI)
+	})
+	calcMem("GorillaMux", func() {
+		gplusGorillaMux = loadGorillaMux(gplusAPI)
+	})
+	calcMem("HttpRouter", func() {
+		gplusHttpRouter = loadHttpRouter(gplusAPI)
+	})
+	calcMem("HttpTreeMux", func() {
+		gplusHttpTreeMux = loadHttpTreeMux(gplusAPI)
+	})
+	calcMem("Kocha", func() {
+		gplusKocha = loadKocha(gplusAPI)
+	})
+	calcMem("Martini", func() {
+		gplusMartini = loadMartini(gplusAPI)
+	})
+	calcMem("Pat", func() {
+		gplusPat = loadPat(gplusAPI)
+	})
+	calcMem("TigerTonic", func() {
+		gplusTigerTonic = loadTigerTonic(gplusAPI)
+	})
+	calcMem("GoJsonRest", func() {
+		gplusTraffic = loadTraffic(gplusAPI)
+	})
 }
 
 // Static
