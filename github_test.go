@@ -328,7 +328,7 @@ func init() {
 	calcMem("TigerTonic", func() {
 		githubTigerTonic = loadTigerTonic(githubAPI)
 	})
-	calcMem("GoJsonRest", func() {
+	calcMem("Traffic", func() {
 		githubTraffic = loadTraffic(githubAPI)
 	})
 

@@ -110,7 +110,7 @@ func init() {
 	calcMem("TigerTonic", func() {
 		parseTigerTonic = loadTigerTonic(parseAPI)
 	})
-	calcMem("GoJsonRest", func() {
+	calcMem("Traffic", func() {
 		parseTraffic = loadTraffic(parseAPI)
 	})
 

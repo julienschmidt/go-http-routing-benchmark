@@ -90,7 +90,7 @@ func init() {
 	calcMem("TigerTonic", func() {
 		gplusTigerTonic = loadTigerTonic(gplusAPI)
 	})
-	calcMem("GoJsonRest", func() {
+	calcMem("Traffic", func() {
 		gplusTraffic = loadTraffic(gplusAPI)
 	})
 

@@ -234,7 +234,7 @@ func init() {
 	calcMem("TigerTonic", func() {
 		staticTigerTonic = loadTigerTonic(staticRoutes)
 	})
-	calcMem("GoJsonRest", func() {
+	calcMem("Traffic", func() {
 		staticTraffic = loadTraffic(staticRoutes)
 	})
 
