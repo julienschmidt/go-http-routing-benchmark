@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be found
 // in the LICENSE file.
 
-package benchmark
+package main
 
 import (
 	"net/http"
@@ -113,6 +113,8 @@ func init() {
 	calcMem("GoJsonRest", func() {
 		parseTraffic = loadTraffic(parseAPI)
 	})
+
+	println()
 }
 
 // Static
