@@ -173,6 +173,7 @@ var (
 	staticHttpServeMux http.Handler
 
 	staticBeego       http.Handler
+	staticDenco       http.Handler
 	staticGocraftWeb  http.Handler
 	staticGoji        http.Handler
 	staticGoJsonRest  http.Handler
@@ -199,6 +200,9 @@ func init() {
 
 	calcMem("Beego", func() {
 		staticBeego = loadBeego(staticRoutes)
+	})
+	calcMem("Denco", func() {
+		staticDenco = loadDenco(staticRoutes)
 	})
 	calcMem("GocraftWeb", func() {
 		staticGocraftWeb = loadGocraftWeb(staticRoutes)
@@ -241,6 +245,9 @@ func BenchmarkHttpServeMux_StaticAll(b *testing.B) {
 }
 func BenchmarkBeego_StaticAll(b *testing.B) {
 	benchRoutes(b, staticBeego, staticRoutes)
+}
+func BenchmarkDenco_StaticAll(b *testing.B) {
+	benchRoutes(b, staticDenco, staticRoutes)
 }
 func BenchmarkGocraftWeb_StaticAll(b *testing.B) {
 	benchRoutes(b, staticGocraftWeb, staticRoutes)

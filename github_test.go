@@ -275,6 +275,7 @@ var githubAPI = []route{
 
 var (
 	githubBeego       http.Handler
+	githubDenco       http.Handler
 	githubGocraftWeb  http.Handler
 	githubGoji        http.Handler
 	githubGoJsonRest  http.Handler
@@ -293,6 +294,9 @@ func init() {
 
 	calcMem("Beego", func() {
 		githubBeego = loadBeego(githubAPI)
+	})
+	calcMem("Denco", func() {
+		githubDenco = loadDenco(githubAPI)
 	})
 	calcMem("GocraftWeb", func() {
 		githubGocraftWeb = loadGocraftWeb(githubAPI)
@@ -333,6 +337,10 @@ func init() {
 func BenchmarkBeego_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
 	benchRequest(b, githubBeego, req)
+}
+func BenchmarkDenco_GithubStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/user/repos", nil)
+	benchRequest(b, githubDenco, req)
 }
 func BenchmarkGocraftWeb_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
@@ -384,6 +392,10 @@ func BenchmarkBeego_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubBeego, req)
 }
+func BenchmarkDenco_GithubParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
+	benchRequest(b, githubDenco, req)
+}
 func BenchmarkGocraftWeb_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubGocraftWeb, req)
@@ -432,6 +444,9 @@ func BenchmarkTraffic_GithubParam(b *testing.B) {
 // All routes
 func BenchmarkBeego_GithubAll(b *testing.B) {
 	benchRoutes(b, githubBeego, githubAPI)
+}
+func BenchmarkDenco_GithubAll(b *testing.B) {
+	benchRoutes(b, githubDenco, githubAPI)
 }
 func BenchmarkGocraftWeb_GithubAll(b *testing.B) {
 	benchRoutes(b, githubGocraftWeb, githubAPI)

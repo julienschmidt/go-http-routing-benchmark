@@ -37,6 +37,7 @@ var gplusAPI = []route{
 
 var (
 	gplusBeego       http.Handler
+	gplusDenco       http.Handler
 	gplusGocraftWeb  http.Handler
 	gplusGoji        http.Handler
 	gplusGoJsonRest  http.Handler
@@ -55,6 +56,9 @@ func init() {
 
 	calcMem("Beego", func() {
 		gplusBeego = loadBeego(gplusAPI)
+	})
+	calcMem("Denco", func() {
+		gplusDenco = loadDenco(gplusAPI)
 	})
 	calcMem("GocraftWeb", func() {
 		gplusGocraftWeb = loadGocraftWeb(gplusAPI)
@@ -95,6 +99,10 @@ func init() {
 func BenchmarkBeego_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusBeego, req)
+}
+func BenchmarkDenco_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	benchRequest(b, gplusDenco, req)
 }
 func BenchmarkGocraftWeb_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
@@ -146,6 +154,10 @@ func BenchmarkBeego_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusBeego, req)
 }
+func BenchmarkDenco_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	benchRequest(b, gplusDenco, req)
+}
 func BenchmarkGocraftWeb_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusGocraftWeb, req)
@@ -196,6 +208,10 @@ func BenchmarkBeego_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusBeego, req)
 }
+func BenchmarkDenco_GPlus2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	benchRequest(b, gplusDenco, req)
+}
 func BenchmarkGocraftWeb_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusGocraftWeb, req)
@@ -244,6 +260,9 @@ func BenchmarkTraffic_GPlus2Params(b *testing.B) {
 // All Routes
 func BenchmarkBeego_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusBeego, gplusAPI)
+}
+func BenchmarkDenco_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusDenco, gplusAPI)
 }
 func BenchmarkGocraftWeb_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusGocraftWeb, gplusAPI)

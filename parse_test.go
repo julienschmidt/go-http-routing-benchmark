@@ -57,6 +57,7 @@ var parseAPI = []route{
 
 var (
 	parseBeego       http.Handler
+	parseDenco       http.Handler
 	parseGocraftWeb  http.Handler
 	parseGoji        http.Handler
 	parseGoJsonRest  http.Handler
@@ -75,6 +76,9 @@ func init() {
 
 	calcMem("Beego", func() {
 		parseBeego = loadBeego(parseAPI)
+	})
+	calcMem("Denco", func() {
+		parseDenco = loadDenco(parseAPI)
 	})
 	calcMem("GocraftWeb", func() {
 		parseGocraftWeb = loadGocraftWeb(parseAPI)
@@ -115,6 +119,10 @@ func init() {
 func BenchmarkBeego_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseBeego, req)
+}
+func BenchmarkDenco_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseDenco, req)
 }
 func BenchmarkGocraftWeb_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
@@ -166,6 +174,10 @@ func BenchmarkBeego_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseBeego, req)
 }
+func BenchmarkDenco_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseDenco, req)
+}
 func BenchmarkGocraftWeb_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseGocraftWeb, req)
@@ -216,6 +228,10 @@ func BenchmarkBeego_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseBeego, req)
 }
+func BenchmarkDenco_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseDenco, req)
+}
 func BenchmarkGocraftWeb_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseGocraftWeb, req)
@@ -264,6 +280,9 @@ func BenchmarkTraffic_Parse2Params(b *testing.B) {
 // All Routes
 func BenchmarkBeego_ParseAll(b *testing.B) {
 	benchRoutes(b, parseBeego, parseAPI)
+}
+func BenchmarkDenco_ParseAll(b *testing.B) {
+	benchRoutes(b, parseDenco, parseAPI)
 }
 func BenchmarkGocraftWeb_ParseAll(b *testing.B) {
 	benchRoutes(b, parseGocraftWeb, parseAPI)
