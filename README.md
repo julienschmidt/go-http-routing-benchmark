@@ -18,7 +18,7 @@ Of course the tested routers can be used for any kind of HTTP request → handle
  * [http.ServeMux](http://golang.org/pkg/net/http/#ServeMux)
  * [HttpRouter](https://github.com/julienschmidt/httprouter)
  * [HttpTreeMux](https://github.com/dimfeld/httptreemux)
- * [Kocha-urlrouter](github.com/naoina/kocha-urlrouter)
+ * [Kocha-urlrouter](https://github.com/naoina/kocha-urlrouter)
  * [Martini](https://github.com/go-martini/martini)
  * [Pat](https://github.com/bmizerany/pat)
  * [TigerTonic](https://github.com/rcrowley/go-tigertonic)
