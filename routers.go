@@ -79,10 +79,9 @@ func beegoHandlerWrite(ctx *context.Context) {
 
 func loadBeego(routes []route) http.Handler {
 	re := regexp.MustCompile(":([^/]*)")
-	app := beego.NewApp()
+	app := beego.NewControllerRegister()
 	for _, route := range routes {
-		route.path = re.ReplaceAllString(route.path, ":$1!")
-
+		route.path = re.ReplaceAllString(route.path, ":$1")
 		switch route.method {
 		case "GET":
 			app.Get(route.path, beegoHandler)
@@ -98,11 +97,11 @@ func loadBeego(routes []route) http.Handler {
 			panic("Unknow HTTP method: " + route.method)
 		}
 	}
-	return app.Handlers
+	return app
 }
 
 func loadBeegoSingle(method, path string, handler beego.FilterFunc) http.Handler {
-	app := beego.NewApp()
+	app := beego.NewControllerRegister()
 	switch method {
 	case "GET":
 		app.Get(path, handler)
@@ -117,7 +116,7 @@ func loadBeegoSingle(method, path string, handler beego.FilterFunc) http.Handler
 	default:
 		panic("Unknow HTTP method: " + method)
 	}
-	return app.Handlers
+	return app
 }
 
 // Denco
