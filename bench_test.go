@@ -154,12 +154,11 @@ func BenchmarkTraffic_Param(b *testing.B) {
 
 // Route with 5 Params (no write)
 const fiveColon = "/:a/:b/:c/:d/:e"
-const fiveBeego = "/:a/:b/:c/:d/:e"
 const fiveBrace = "/{a}/{b}/{c}/{d}/{e}"
 const fiveRoute = "/test/test/test/test/test"
 
 func BenchmarkBeego_Param5(b *testing.B) {
-	router := loadBeegoSingle("GET", fiveBeego, beegoHandler)
+	router := loadBeegoSingle("GET", fiveColon, beegoHandler)
 
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
@@ -247,12 +246,11 @@ func BenchmarkTraffic_Param5(b *testing.B) {
 
 // Route with 20 Params (no write)
 const twentyColon = "/:a/:b/:c/:d/:e/:f/:g/:h/:i/:j/:k/:l/:m/:n/:o/:p/:q/:r/:s/:t"
-const twentyBeego = "/:a/:b/:c/:d/:e/:f/:g/:h/:i/:j/:k/:l/:m/:n/:o/:p/:q/:r/:s/:t"
 const twentyBrace = "/{a}/{b}/{c}/{d}/{e}/{f}/{g}/{h}/{i}/{j}/{k}/{l}/{m}/{n}/{o}/{p}/{q}/{r}/{s}/{t}"
 const twentyRoute = "/a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p/q/r/s/t"
 
 func BenchmarkBeego_Param20(b *testing.B) {
-	router := loadBeegoSingle("GET", twentyBeego, beegoHandler)
+	router := loadBeegoSingle("GET", twentyColon, beegoHandler)
 
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
