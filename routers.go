@@ -18,6 +18,7 @@ import (
 	"github.com/astaxie/beego/context"
 	"github.com/bmizerany/pat"
 	"github.com/dimfeld/httptreemux"
+	"github.com/gin-gonic/gin"
 	"github.com/go-martini/martini"
 	"github.com/gocraft/web"
 	"github.com/gorilla/mux"
@@ -373,6 +374,27 @@ func loadHttpRouter(routes []route) http.Handler {
 func loadHttpRouterSingle(method, path string, handle httprouter.Handle) http.Handler {
 	router := httprouter.New()
 	router.Handle(method, path, handle)
+	return router
+}
+
+// HttpRouter
+func ginHandle(_ *gin.Context) {}
+
+func ginHandleWrite(c *gin.Context) {
+	io.WriteString(c.Writer, c.Params.ByName("name"))
+}
+
+func loadGin(routes []route) http.Handler {
+	router := gin.New()
+	for _, route := range routes {
+		router.Handle(route.method, route.path, []gin.HandlerFunc{ginHandle})
+	}
+	return router
+}
+
+func loadGinSingle(method, path string, handle gin.HandlerFunc) http.Handler {
+	router := gin.New()
+	router.Handle(method, path, []gin.HandlerFunc{handle})
 	return router
 }
 
