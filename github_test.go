@@ -288,6 +288,7 @@ var (
 	githubPat         http.Handler
 	githubTigerTonic  http.Handler
 	githubTraffic     http.Handler
+	githubRivet       http.Handler
 )
 
 func init() {
@@ -334,6 +335,9 @@ func init() {
 	})
 	calcMem("Traffic", func() {
 		githubTraffic = loadTraffic(githubAPI)
+	})
+	calcMem("Rivet", func() {
+		githubRivet = loadRivet(githubAPI)
 	})
 
 	println()
@@ -383,6 +387,10 @@ func BenchmarkKocha_GithubStatic(b *testing.B) {
 func BenchmarkMartini_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
 	benchRequest(b, githubMartini, req)
+}
+func BenchmarkRivet_GithubStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/user/repos", nil)
+	benchRequest(b, githubRivet, req)
 }
 func BenchmarkPat_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
@@ -442,6 +450,10 @@ func BenchmarkMartini_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubMartini, req)
 }
+func BenchmarkRivet_GithubParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
+	benchRequest(b, githubRivet, req)
+}
 func BenchmarkPat_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubPat, req)
@@ -488,6 +500,9 @@ func BenchmarkKocha_GithubAll(b *testing.B) {
 }
 func BenchmarkMartini_GithubAll(b *testing.B) {
 	benchRoutes(b, githubMartini, githubAPI)
+}
+func BenchmarkRivet_GithubAll(b *testing.B) {
+	benchRoutes(b, githubRivet, githubAPI)
 }
 func BenchmarkPat_GithubAll(b *testing.B) {
 	benchRoutes(b, githubPat, githubAPI)

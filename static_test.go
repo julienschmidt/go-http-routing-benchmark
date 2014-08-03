@@ -186,6 +186,7 @@ var (
 	staticPat         http.Handler
 	staticTigerTonic  http.Handler
 	staticTraffic     http.Handler
+	staticRivet       http.Handler
 )
 
 func init() {
@@ -241,6 +242,9 @@ func init() {
 	calcMem("Traffic", func() {
 		staticTraffic = loadTraffic(staticRoutes)
 	})
+	calcMem("Rivet", func() {
+		staticRivet = loadRivet(staticRoutes)
+	})
 
 	println()
 }
@@ -281,6 +285,9 @@ func BenchmarkKocha_StaticAll(b *testing.B) {
 }
 func BenchmarkMartini_StaticAll(b *testing.B) {
 	benchRoutes(b, staticMartini, staticRoutes)
+}
+func BenchmarkRivet_StaticAll(b *testing.B) {
+	benchRoutes(b, staticRivet, staticRoutes)
 }
 func BenchmarkPat_StaticAll(b *testing.B) {
 	benchRoutes(b, staticPat, staticRoutes)
