@@ -48,9 +48,9 @@ var (
 	gplusKocha       http.Handler
 	gplusMartini     http.Handler
 	gplusPat         http.Handler
+	gplusRivet       http.Handler
 	gplusTigerTonic  http.Handler
 	gplusTraffic     http.Handler
-	gplusRivet       http.Handler
 )
 
 func init() {
@@ -92,14 +92,14 @@ func init() {
 	calcMem("Pat", func() {
 		gplusPat = loadPat(gplusAPI)
 	})
+	calcMem("Rivet", func() {
+		gplusRivet = loadRivet(gplusAPI)
+	})
 	calcMem("TigerTonic", func() {
 		gplusTigerTonic = loadTigerTonic(gplusAPI)
 	})
 	calcMem("Traffic", func() {
 		gplusTraffic = loadTraffic(gplusAPI)
-	})
-	calcMem("Rivet", func() {
-		gplusRivet = loadRivet(gplusAPI)
 	})
 
 	println()
@@ -150,13 +150,13 @@ func BenchmarkMartini_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusMartini, req)
 }
-func BenchmarkRivet_GPlusStatic(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/people", nil)
-	benchRequest(b, gplusRivet, req)
-}
 func BenchmarkPat_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusPat, req)
+}
+func BenchmarkRivet_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	benchRequest(b, gplusRivet, req)
 }
 func BenchmarkTigerTonic_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
@@ -212,13 +212,13 @@ func BenchmarkMartini_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusMartini, req)
 }
-func BenchmarkRivet_GPlusParam(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
-	benchRequest(b, gplusRivet, req)
-}
 func BenchmarkPat_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusPat, req)
+}
+func BenchmarkRivet_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	benchRequest(b, gplusRivet, req)
 }
 func BenchmarkTigerTonic_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
@@ -274,13 +274,13 @@ func BenchmarkMartini_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusMartini, req)
 }
-func BenchmarkRivet_GPlus2Params(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
-	benchRequest(b, gplusRivet, req)
-}
 func BenchmarkPat_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusPat, req)
+}
+func BenchmarkRivet_GPlus2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	benchRequest(b, gplusRivet, req)
 }
 func BenchmarkTigerTonic_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
@@ -325,11 +325,11 @@ func BenchmarkKocha_GPlusAll(b *testing.B) {
 func BenchmarkMartini_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusMartini, gplusAPI)
 }
-func BenchmarkRivet_GPlusAll(b *testing.B) {
-	benchRoutes(b, gplusRivet, gplusAPI)
-}
 func BenchmarkPat_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusPat, gplusAPI)
+}
+func BenchmarkRivet_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusRivet, gplusAPI)
 }
 func BenchmarkTigerTonic_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusTigerTonic, gplusAPI)

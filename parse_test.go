@@ -68,9 +68,9 @@ var (
 	parseKocha       http.Handler
 	parseMartini     http.Handler
 	parsePat         http.Handler
+	parseRivet       http.Handler
 	parseTigerTonic  http.Handler
 	parseTraffic     http.Handler
-	parseRivet       http.Handler
 )
 
 func init() {
@@ -112,14 +112,14 @@ func init() {
 	calcMem("Pat", func() {
 		parsePat = loadPat(parseAPI)
 	})
+	calcMem("Rivet", func() {
+		parseRivet = loadRivet(parseAPI)
+	})
 	calcMem("TigerTonic", func() {
 		parseTigerTonic = loadTigerTonic(parseAPI)
 	})
 	calcMem("Traffic", func() {
 		parseTraffic = loadTraffic(parseAPI)
-	})
-	calcMem("Rivet", func() {
-		parseRivet = loadRivet(parseAPI)
 	})
 
 	println()
@@ -170,13 +170,13 @@ func BenchmarkMartini_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseMartini, req)
 }
-func BenchmarkRivet_ParseStatic(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/1/users", nil)
-	benchRequest(b, parseRivet, req)
-}
 func BenchmarkPat_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parsePat, req)
+}
+func BenchmarkRivet_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseRivet, req)
 }
 func BenchmarkTigerTonic_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)

@@ -590,6 +590,28 @@ func loadPatSingle(method, path string, handler http.Handler) http.Handler {
 	return m
 }
 
+// Rivet
+func rivetHandler() {}
+func rivetHandlerWrite(rw http.ResponseWriter, params rivet.Params) {
+	io.WriteString(rw, params["name"].(string))
+}
+
+func loadRivet(routes []route) http.Handler {
+	router := rivet.NewRouter(nil)
+	for _, route := range routes {
+		router.Add(route.method, route.path, rivetHandler)
+	}
+	return router
+}
+
+func loadRivetSingle(method, path string, handler interface{}) http.Handler {
+	router := rivet.NewRouter(nil)
+
+	router.Add(method, path, handler)
+
+	return router
+}
+
 // Tiger Tonic
 func tigerTonicHandlerWrite(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, r.URL.Query().Get("name"))
@@ -653,28 +675,6 @@ func loadTrafficSingle(method, path string, handler traffic.HttpHandleFunc) http
 	default:
 		panic("Unknow HTTP method: " + method)
 	}
-	return router
-}
-
-// Rivet
-func rivetHandler() {}
-func rivetHandlerWrite(rw http.ResponseWriter, params rivet.Params) {
-	io.WriteString(rw, params["name"].(string))
-}
-
-func loadRivet(routes []route) http.Handler {
-	router := rivet.NewRouter(nil)
-	for _, route := range routes {
-		router.Add(route.method, route.path, rivetHandler)
-	}
-	return router
-}
-
-func loadRivetSingle(method, path string, handler interface{}) http.Handler {
-	router := rivet.NewRouter(nil)
-
-	router.Add(method, path, handler)
-
 	return router
 }
 
