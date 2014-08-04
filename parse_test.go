@@ -68,6 +68,7 @@ var (
 	parseKocha       http.Handler
 	parseMartini     http.Handler
 	parsePat         http.Handler
+	parseRivet       http.Handler
 	parseTigerTonic  http.Handler
 	parseTraffic     http.Handler
 )
@@ -110,6 +111,9 @@ func init() {
 	})
 	calcMem("Pat", func() {
 		parsePat = loadPat(parseAPI)
+	})
+	calcMem("Rivet", func() {
+		parseRivet = loadRivet(parseAPI)
 	})
 	calcMem("TigerTonic", func() {
 		parseTigerTonic = loadTigerTonic(parseAPI)
@@ -170,6 +174,10 @@ func BenchmarkPat_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parsePat, req)
 }
+func BenchmarkRivet_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseRivet, req)
+}
 func BenchmarkTigerTonic_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseTigerTonic, req)
@@ -223,6 +231,10 @@ func BenchmarkKocha_ParseParam(b *testing.B) {
 func BenchmarkMartini_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseMartini, req)
+}
+func BenchmarkRivet_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseRivet, req)
 }
 func BenchmarkPat_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
@@ -282,6 +294,10 @@ func BenchmarkMartini_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseMartini, req)
 }
+func BenchmarkRivet_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseRivet, req)
+}
 func BenchmarkPat_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parsePat, req)
@@ -328,6 +344,9 @@ func BenchmarkKocha_ParseAll(b *testing.B) {
 }
 func BenchmarkMartini_ParseAll(b *testing.B) {
 	benchRoutes(b, parseMartini, parseAPI)
+}
+func BenchmarkRivet_ParseAll(b *testing.B) {
+	benchRoutes(b, parseRivet, parseAPI)
 }
 func BenchmarkPat_ParseAll(b *testing.B) {
 	benchRoutes(b, parsePat, parseAPI)

@@ -145,6 +145,12 @@ func BenchmarkPat_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkRivet_Param(b *testing.B) {
+	router := loadRivetSingle("GET", "/user/:name", rivetHandler)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkTigerTonic_Param(b *testing.B) {
 	router := loadTigerTonicSingle("GET", "/user/{name}", httpHandlerFunc)
 
@@ -241,6 +247,12 @@ func BenchmarkPat_Param5(b *testing.B) {
 	router := loadPatSingle("GET", fiveColon, http.HandlerFunc(httpHandlerFunc))
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkRivet_Param5(b *testing.B) {
+	router := loadRivetSingle("GET", fiveColon, rivetHandler)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
 }
 func BenchmarkTigerTonic_Param5(b *testing.B) {
@@ -341,6 +353,12 @@ func BenchmarkPat_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkRivet_Param20(b *testing.B) {
+	router := loadRivetSingle("GET", twentyColon, rivetHandler)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkTigerTonic_Param20(b *testing.B) {
 	router := loadTigerTonicSingle("GET", twentyBrace, httpHandlerFunc)
 
@@ -431,6 +449,12 @@ func BenchmarkMartini_ParamWrite(b *testing.B) {
 }
 func BenchmarkPat_ParamWrite(b *testing.B) {
 	router := loadPatSingle("GET", "/user/:name", http.HandlerFunc(patHandlerWrite))
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkRivet_ParamWrite(b *testing.B) {
+	router := loadRivetSingle("GET", "/user/:name", rivetHandlerWrite)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)

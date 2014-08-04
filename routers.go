@@ -28,6 +28,7 @@ import (
 	_ "github.com/naoina/kocha-urlrouter/doublearray"
 	"github.com/pilu/traffic"
 	"github.com/rcrowley/go-tigertonic"
+	"github.com/typepress/rivet"
 	goji "github.com/zenazn/goji/web"
 )
 
@@ -587,6 +588,28 @@ func loadPatSingle(method, path string, handler http.Handler) http.Handler {
 		panic("Unknow HTTP method: " + method)
 	}
 	return m
+}
+
+// Rivet
+func rivetHandler() {}
+func rivetHandlerWrite(rw http.ResponseWriter, params rivet.Params) {
+	io.WriteString(rw, params["name"].(string))
+}
+
+func loadRivet(routes []route) http.Handler {
+	router := rivet.NewRouter(nil)
+	for _, route := range routes {
+		router.Add(route.method, route.path, rivetHandler)
+	}
+	return router
+}
+
+func loadRivetSingle(method, path string, handler interface{}) http.Handler {
+	router := rivet.NewRouter(nil)
+
+	router.Add(method, path, handler)
+
+	return router
 }
 
 // Tiger Tonic
