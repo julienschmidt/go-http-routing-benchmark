@@ -593,7 +593,7 @@ func loadPatSingle(method, path string, handler http.Handler) http.Handler {
 // Rivet
 func rivetHandler() {}
 func rivetHandlerWrite(c rivet.Context) {
-	c.WriteString(c.Params().Get("name"))
+	c.WriteString(c.GetParams().Get("name"))
 }
 
 func loadRivet(routes []route) http.Handler {
