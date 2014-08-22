@@ -177,6 +177,7 @@ var (
 	staticGocraftWeb  http.Handler
 	staticGoji        http.Handler
 	staticGoJsonRest  http.Handler
+	staticGoRestful   http.Handler
 	staticGorillaMux  http.Handler
 	staticGin         http.Handler
 	staticHttpRouter  http.Handler
@@ -214,6 +215,9 @@ func init() {
 	})
 	calcMem("GoJsonRest", func() {
 		staticGoJsonRest = loadGoJsonRest(staticRoutes)
+	})
+	calcMem("GoRestful", func() {
+		staticGoRestful = loadGoRestful(staticRoutes)
 	})
 	calcMem("GorillaMux", func() {
 		staticGorillaMux = loadGorillaMux(staticRoutes)
@@ -267,6 +271,9 @@ func BenchmarkGoji_StaticAll(b *testing.B) {
 }
 func BenchmarkGoJsonRest_StaticAll(b *testing.B) {
 	benchRoutes(b, staticGoJsonRest, staticRoutes)
+}
+func BenchmarkGoRestful_StaticAll(b *testing.B) {
+	benchRoutes(b, staticGoRestful, staticRoutes)
 }
 func BenchmarkGorillaMux_StaticAll(b *testing.B) {
 	benchRoutes(b, staticGorillaMux, staticRoutes)
