@@ -41,7 +41,7 @@ var (
 	gplusGocraftWeb  http.Handler
 	gplusGoji        http.Handler
 	gplusGoJsonRest  http.Handler
-	gplusGoRestful  http.Handler
+	gplusGoRestful   http.Handler
 	gplusGorillaMux  http.Handler
 	gplusGin         http.Handler
 	gplusHttpRouter  http.Handler
