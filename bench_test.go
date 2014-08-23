@@ -99,6 +99,12 @@ func BenchmarkGoJsonRest_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkGoRestful_Param(b *testing.B) {
+	router := loadGoRestfulSingle("GET", "/user/:name", goRestfulHandler)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkGorillaMux_Param(b *testing.B) {
 	router := loadGorillaMuxSingle("GET", "/user/{name}", httpHandlerFunc)
 
@@ -202,6 +208,12 @@ func BenchmarkGoJsonRest_Param5(b *testing.B) {
 
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, handler, r)
+}
+func BenchmarkGoRestful_Param5(b *testing.B) {
+	router := loadGoRestfulSingle("GET", fiveColon, goRestfulHandler)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
 }
 func BenchmarkGorillaMux_Param5(b *testing.B) {
 	router := loadGorillaMuxSingle("GET", fiveBrace, httpHandlerFunc)
@@ -307,6 +319,12 @@ func BenchmarkGoJsonRest_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, handler, r)
 }
+func BenchmarkGoRestful_Param20(b *testing.B) {
+	handler := loadGoRestfulSingle("GET", twentyColon, goRestfulHandler)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, handler, r)
+}
 func BenchmarkGorillaMux_Param20(b *testing.B) {
 	router := loadGorillaMuxSingle("GET", twentyBrace, httpHandlerFunc)
 
@@ -403,6 +421,12 @@ func BenchmarkGoji_ParamWrite(b *testing.B) {
 }
 func BenchmarkGoJsonRest_ParamWrite(b *testing.B) {
 	handler := loadGoJsonRestSingle("GET", "/user/:name", goJsonRestHandlerWrite)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, handler, r)
+}
+func BenchmarkGoRestful_ParamWrite(b *testing.B) {
+	handler := loadGoRestfulSingle("GET", "/user/:name", goRestfulHandlerWrite)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, handler, r)

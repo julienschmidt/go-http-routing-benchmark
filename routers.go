@@ -18,6 +18,7 @@ import (
 	"github.com/astaxie/beego/context"
 	"github.com/bmizerany/pat"
 	"github.com/dimfeld/httptreemux"
+	"github.com/emicklei/go-restful"
 	"github.com/gin-gonic/gin"
 	"github.com/go-martini/martini"
 	"github.com/gocraft/web"
@@ -331,6 +332,58 @@ func loadGoJsonRestSingle(method, path string, hfunc rest.HandlerFunc) http.Hand
 		&rest.Route{method, path, hfunc},
 	)
 	return handler
+}
+
+// go-restful
+func goRestfulHandlerWrite(r *restful.Request, w *restful.Response) {
+	io.WriteString(w, r.Request.URL.Query().Get("name"))
+}
+
+func goRestfulHandler(r *restful.Request, w *restful.Response) {}
+
+func loadGoRestful(routes []route) http.Handler {
+	wsContainer := restful.NewContainer()
+	ws := new(restful.WebService)
+
+	for _, route := range routes {
+		switch route.method {
+		case "GET":
+			ws.Route(ws.GET(route.path).To(goRestfulHandler))
+		case "POST":
+			ws.Route(ws.POST(route.path).To(goRestfulHandler))
+		case "PUT":
+			ws.Route(ws.PUT(route.path).To(goRestfulHandler))
+		case "PATCH":
+			ws.Route(ws.PATCH(route.path).To(goRestfulHandler))
+		case "DELETE":
+			ws.Route(ws.DELETE(route.path).To(goRestfulHandler))
+		default:
+			panic("Unknow HTTP method: " + route.method)
+		}
+	}
+	wsContainer.Add(ws)
+	return wsContainer
+}
+
+func loadGoRestfulSingle(method, path string, handler restful.RouteFunction) http.Handler {
+	wsContainer := restful.NewContainer()
+	ws := new(restful.WebService)
+	switch method {
+	case "GET":
+		ws.Route(ws.GET(path).To(handler))
+	case "POST":
+		ws.Route(ws.POST(path).To(handler))
+	case "PUT":
+		ws.Route(ws.PUT(path).To(handler))
+	case "PATCH":
+		ws.Route(ws.PATCH(path).To(handler))
+	case "DELETE":
+		ws.Route(ws.DELETE(path).To(handler))
+	default:
+		panic("Unknow HTTP method: " + method)
+	}
+	wsContainer.Add(ws)
+	return wsContainer
 }
 
 // gorilla/mux

@@ -279,6 +279,7 @@ var (
 	githubGocraftWeb  http.Handler
 	githubGoji        http.Handler
 	githubGoJsonRest  http.Handler
+	githubGoRestful   http.Handler
 	githubGorillaMux  http.Handler
 	githubGin         http.Handler
 	githubHttpRouter  http.Handler
@@ -308,6 +309,9 @@ func init() {
 	})
 	calcMem("GoJsonRest", func() {
 		githubGoJsonRest = loadGoJsonRest(githubAPI)
+	})
+	calcMem("GoRestful", func() {
+		githubGoRestful = loadGoRestful(githubAPI)
 	})
 	calcMem("GorillaMux", func() {
 		githubGorillaMux = loadGorillaMux(githubAPI)
@@ -359,6 +363,10 @@ func BenchmarkGocraftWeb_GithubStatic(b *testing.B) {
 func BenchmarkGoji_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
 	benchRequest(b, githubGoji, req)
+}
+func BenchmarkGoRestful_GithubStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/user/repos", nil)
+	benchRequest(b, githubGoRestful, req)
 }
 func BenchmarkGoJsonRest_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
@@ -426,6 +434,10 @@ func BenchmarkGoJsonRest_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubGoJsonRest, req)
 }
+func BenchmarkGoRestful_GithubParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
+	benchRequest(b, githubGoRestful, req)
+}
 func BenchmarkGorillaMux_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubGorillaMux, req)
@@ -482,6 +494,9 @@ func BenchmarkGoji_GithubAll(b *testing.B) {
 }
 func BenchmarkGoJsonRest_GithubAll(b *testing.B) {
 	benchRoutes(b, githubGoJsonRest, githubAPI)
+}
+func BenchmarkGoRestful_GithubAll(b *testing.B) {
+	benchRoutes(b, githubGoRestful, githubAPI)
 }
 func BenchmarkGorillaMux_GithubAll(b *testing.B) {
 	benchRoutes(b, githubGorillaMux, githubAPI)

@@ -61,6 +61,7 @@ var (
 	parseGocraftWeb  http.Handler
 	parseGoji        http.Handler
 	parseGoJsonRest  http.Handler
+	parseGoRestful   http.Handler
 	parseGorillaMux  http.Handler
 	parseGin         http.Handler
 	parseHttpRouter  http.Handler
@@ -90,6 +91,9 @@ func init() {
 	})
 	calcMem("GoJsonRest", func() {
 		parseGoJsonRest = loadGoJsonRest(parseAPI)
+	})
+	calcMem("GoRestful", func() {
+		parseGoRestful = loadGoRestful(parseAPI)
 	})
 	calcMem("GorillaMux", func() {
 		parseGorillaMux = loadGorillaMux(parseAPI)
@@ -145,6 +149,10 @@ func BenchmarkGoji_ParseStatic(b *testing.B) {
 func BenchmarkGoJsonRest_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseGoJsonRest, req)
+}
+func BenchmarkGoRestful_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseGoRestful, req)
 }
 func BenchmarkGorillaMux_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
@@ -208,6 +216,10 @@ func BenchmarkGoJsonRest_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseGoJsonRest, req)
 }
+func BenchmarkGoRestful_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseGoRestful, req)
+}
 func BenchmarkGorillaMux_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseGorillaMux, req)
@@ -270,6 +282,10 @@ func BenchmarkGoJsonRest_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseGoJsonRest, req)
 }
+func BenchmarkGoRestful_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseGoRestful, req)
+}
 func BenchmarkGorillaMux_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseGorillaMux, req)
@@ -326,6 +342,9 @@ func BenchmarkGoji_ParseAll(b *testing.B) {
 }
 func BenchmarkGoJsonRest_ParseAll(b *testing.B) {
 	benchRoutes(b, parseGoJsonRest, parseAPI)
+}
+func BenchmarkGoRestful_ParseAll(b *testing.B) {
+	benchRoutes(b, parseGoRestful, parseAPI)
 }
 func BenchmarkGorillaMux_ParseAll(b *testing.B) {
 	benchRoutes(b, parseGorillaMux, parseAPI)
