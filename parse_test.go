@@ -69,6 +69,7 @@ var (
 	parseKocha       http.Handler
 	parseMartini     http.Handler
 	parsePat         http.Handler
+	parseRevel       http.Handler
 	parseRivet       http.Handler
 	parseTigerTonic  http.Handler
 	parseTraffic     http.Handler
@@ -115,6 +116,9 @@ func init() {
 	})
 	calcMem("Pat", func() {
 		parsePat = loadPat(parseAPI)
+	})
+	calcMem("Revel", func() {
+		parseRevel = loadRevel(parseAPI)
 	})
 	calcMem("Rivet", func() {
 		parseRivet = loadRivet(parseAPI)
@@ -182,6 +186,10 @@ func BenchmarkPat_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parsePat, req)
 }
+func BenchmarkRevel_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseRevel, req)
+}
 func BenchmarkRivet_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseRivet, req)
@@ -243,6 +251,10 @@ func BenchmarkKocha_ParseParam(b *testing.B) {
 func BenchmarkMartini_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseMartini, req)
+}
+func BenchmarkRevel_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseRevel, req)
 }
 func BenchmarkRivet_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
@@ -310,6 +322,10 @@ func BenchmarkMartini_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseMartini, req)
 }
+func BenchmarkRevel_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseRevel, req)
+}
 func BenchmarkRivet_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseRivet, req)
@@ -363,6 +379,9 @@ func BenchmarkKocha_ParseAll(b *testing.B) {
 }
 func BenchmarkMartini_ParseAll(b *testing.B) {
 	benchRoutes(b, parseMartini, parseAPI)
+}
+func BenchmarkRevel_ParseAll(b *testing.B) {
+	benchRoutes(b, parseRevel, parseAPI)
 }
 func BenchmarkRivet_ParseAll(b *testing.B) {
 	benchRoutes(b, parseRivet, parseAPI)

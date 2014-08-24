@@ -29,6 +29,8 @@ import (
 	_ "github.com/naoina/kocha-urlrouter/doublearray"
 	"github.com/pilu/traffic"
 	"github.com/rcrowley/go-tigertonic"
+	"github.com/revel/revel"
+	"github.com/robfig/pathtree"
 	"github.com/typepress/rivet"
 	goji "github.com/zenazn/goji/web"
 )
@@ -68,6 +70,8 @@ func init() {
 	beego.RunMode = "prod"
 	martini.Env = martini.Prod
 	traffic.SetVar("env", "bench")
+
+	initRevel()
 }
 
 // Common
@@ -431,7 +435,7 @@ func loadHttpRouterSingle(method, path string, handle httprouter.Handle) http.Ha
 	return router
 }
 
-// HttpRouter
+// Gin
 func ginHandle(_ *gin.Context) {}
 
 func ginHandleWrite(c *gin.Context) {
@@ -641,6 +645,115 @@ func loadPatSingle(method, path string, handler http.Handler) http.Handler {
 		panic("Unknow HTTP method: " + method)
 	}
 	return m
+}
+
+// Revel (Router only)
+// In the following code some Revel internals are modelled.
+// The original revel code is copyrighted by Rob Figueiredo.
+// See https://github.com/revel/revel/blob/master/LICENSE
+type RevelController struct {
+	*revel.Controller
+	router *revel.Router
+}
+
+func (rc *RevelController) Handle() revel.Result {
+	return revelResult{}
+}
+
+func (rc *RevelController) HandleWrite() revel.Result {
+	return rc.RenderText(rc.Params.Get("name"))
+}
+
+type revelResult struct{}
+
+func (rr revelResult) Apply(req *revel.Request, resp *revel.Response) {}
+
+func (rc *RevelController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	// Dirty hacks, do NOT copy!
+	revel.MainRouter = rc.router
+
+	upgrade := r.Header.Get("Upgrade")
+	if upgrade == "websocket" || upgrade == "Websocket" {
+		panic("Not implemented")
+	} else {
+		var (
+			req  = revel.NewRequest(r)
+			resp = revel.NewResponse(w)
+			c    = revel.NewController(req, resp)
+		)
+		req.Websocket = nil
+		revel.Filters[0](c, revel.Filters[1:])
+		if c.Result != nil {
+			c.Result.Apply(req, resp)
+		} else if c.Response.Status != 0 {
+			panic("Not implemented")
+		}
+		// Close the Writer if we can
+		if w, ok := resp.Out.(io.Closer); ok {
+			w.Close()
+		}
+	}
+}
+
+func initRevel() {
+	// Only use the Revel filters required for this benchmark
+	revel.Filters = []revel.Filter{
+		revel.RouterFilter,
+		revel.ParamsFilter,
+		revel.ActionInvoker,
+	}
+
+	revel.RegisterController((*RevelController)(nil),
+		[]*revel.MethodType{
+			&revel.MethodType{
+				Name: "Handle",
+			},
+			&revel.MethodType{
+				Name: "HandleWrite",
+			},
+		})
+}
+
+func loadRevel(routes []route) http.Handler {
+	router := revel.NewRouter("")
+
+	// parseRoutes
+	var rs []*revel.Route
+	for _, r := range routes {
+		rs = append(rs, revel.NewRoute(r.method, r.path, "RevelController.Handle", "", "", 0))
+	}
+	router.Routes = rs
+
+	// updateTree
+	router.Tree = pathtree.New()
+	for _, r := range router.Routes {
+		err := router.Tree.Add(r.TreePath, r)
+		// Allow GETs to respond to HEAD requests.
+		if err == nil && r.Method == "GET" {
+			err = router.Tree.Add("/HEAD"+r.Path, r)
+		}
+		// Error adding a route to the pathtree.
+		if err != nil {
+			panic(err)
+		}
+	}
+
+	rc := new(RevelController)
+	rc.router = router
+	return rc
+}
+
+func loadRevelSingle(method, path, action string) http.Handler {
+	router := revel.NewRouter("")
+
+	route := revel.NewRoute(method, path, action, "", "", 0)
+	if err := router.Tree.Add(route.TreePath, route); err != nil {
+		panic(err)
+	}
+
+	rc := new(RevelController)
+	rc.router = router
+	return rc
 }
 
 // Rivet

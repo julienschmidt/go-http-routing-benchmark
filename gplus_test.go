@@ -49,6 +49,7 @@ var (
 	gplusKocha       http.Handler
 	gplusMartini     http.Handler
 	gplusPat         http.Handler
+	gplusRevel       http.Handler
 	gplusRivet       http.Handler
 	gplusTigerTonic  http.Handler
 	gplusTraffic     http.Handler
@@ -95,6 +96,9 @@ func init() {
 	})
 	calcMem("Pat", func() {
 		gplusPat = loadPat(gplusAPI)
+	})
+	calcMem("Revel", func() {
+		gplusRevel = loadRevel(gplusAPI)
 	})
 	calcMem("Rivet", func() {
 		gplusRivet = loadRivet(gplusAPI)
@@ -162,6 +166,10 @@ func BenchmarkPat_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusPat, req)
 }
+func BenchmarkRevel_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	benchRequest(b, gplusRevel, req)
+}
 func BenchmarkRivet_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusRivet, req)
@@ -227,6 +235,10 @@ func BenchmarkMartini_GPlusParam(b *testing.B) {
 func BenchmarkPat_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusPat, req)
+}
+func BenchmarkRevel_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	benchRequest(b, gplusRevel, req)
 }
 func BenchmarkRivet_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
@@ -294,6 +306,10 @@ func BenchmarkPat_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusPat, req)
 }
+func BenchmarkRevel_GPlus2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	benchRequest(b, gplusRevel, req)
+}
 func BenchmarkRivet_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusRivet, req)
@@ -346,6 +362,9 @@ func BenchmarkMartini_GPlusAll(b *testing.B) {
 }
 func BenchmarkPat_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusPat, gplusAPI)
+}
+func BenchmarkRevel_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusRevel, gplusAPI)
 }
 func BenchmarkRivet_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusRivet, gplusAPI)
