@@ -81,6 +81,12 @@ func BenchmarkDenco_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkGin_Param(b *testing.B) {
+	router := loadGinSingle("GET", "/user/:name", ginHandle)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkGocraftWeb_Param(b *testing.B) {
 	router := loadGocraftWebSingle("GET", "/user/:name", gocraftWebHandler)
 
@@ -107,12 +113,6 @@ func BenchmarkGoRestful_Param(b *testing.B) {
 }
 func BenchmarkGorillaMux_Param(b *testing.B) {
 	router := loadGorillaMuxSingle("GET", "/user/{name}", httpHandlerFunc)
-
-	r, _ := http.NewRequest("GET", "/user/gordon", nil)
-	benchRequest(b, router, r)
-}
-func BenchmarkGin_Param(b *testing.B) {
-	router := loadGinSingle("GET", "/user/:name", ginHandle)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
@@ -197,6 +197,12 @@ func BenchmarkDenco_Param5(b *testing.B) {
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkGin_Param5(b *testing.B) {
+	router := loadGinSingle("GET", fiveColon, ginHandle)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkGocraftWeb_Param5(b *testing.B) {
 	router := loadGocraftWebSingle("GET", fiveColon, gocraftWebHandler)
 
@@ -223,12 +229,6 @@ func BenchmarkGoRestful_Param5(b *testing.B) {
 }
 func BenchmarkGorillaMux_Param5(b *testing.B) {
 	router := loadGorillaMuxSingle("GET", fiveBrace, httpHandlerFunc)
-
-	r, _ := http.NewRequest("GET", fiveRoute, nil)
-	benchRequest(b, router, r)
-}
-func BenchmarkGin_Param5(b *testing.B) {
-	router := loadGinSingle("GET", fiveColon, ginHandle)
 
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
@@ -313,6 +313,12 @@ func BenchmarkDenco_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkGin_Param20(b *testing.B) {
+	router := loadGinSingle("GET", twentyColon, ginHandle)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkGocraftWeb_Param20(b *testing.B) {
 	router := loadGocraftWebSingle("GET", twentyColon, gocraftWebHandler)
 
@@ -339,12 +345,6 @@ func BenchmarkGoRestful_Param20(b *testing.B) {
 }
 func BenchmarkGorillaMux_Param20(b *testing.B) {
 	router := loadGorillaMuxSingle("GET", twentyBrace, httpHandlerFunc)
-
-	r, _ := http.NewRequest("GET", twentyRoute, nil)
-	benchRequest(b, router, r)
-}
-func BenchmarkGin_Param20(b *testing.B) {
-	router := loadGinSingle("GET", twentyColon, ginHandle)
 
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
@@ -425,6 +425,12 @@ func BenchmarkDenco_ParamWrite(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkGin_ParamWrite(b *testing.B) {
+	router := loadGinSingle("GET", "/user/:name", ginHandleWrite)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkGocraftWeb_ParamWrite(b *testing.B) {
 	router := loadGocraftWebSingle("GET", "/user/:name", gocraftWebHandlerWrite)
 
@@ -451,12 +457,6 @@ func BenchmarkGoRestful_ParamWrite(b *testing.B) {
 }
 func BenchmarkGorillaMux_ParamWrite(b *testing.B) {
 	router := loadGorillaMuxSingle("GET", "/user/{name}", gorillaHandlerWrite)
-
-	r, _ := http.NewRequest("GET", "/user/gordon", nil)
-	benchRequest(b, router, r)
-}
-func BenchmarkGin_ParamWrite(b *testing.B) {
-	router := loadGinSingle("GET", "/user/:name", ginHandleWrite)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)

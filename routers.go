@@ -212,6 +212,31 @@ func loadDencoSingle(method, path string, handler *dencoHandler, hfunc http.Hand
 	return handler
 }
 
+// Gin
+func ginHandle(_ *gin.Context) {}
+
+func ginHandleWrite(c *gin.Context) {
+	io.WriteString(c.Writer, c.Params.ByName("name"))
+}
+
+func initGin() {
+	gin.SetMode("release")
+}
+
+func loadGin(routes []route) http.Handler {
+	router := gin.New()
+	for _, route := range routes {
+		router.Handle(route.method, route.path, []gin.HandlerFunc{ginHandle})
+	}
+	return router
+}
+
+func loadGinSingle(method, path string, handle gin.HandlerFunc) http.Handler {
+	router := gin.New()
+	router.Handle(method, path, []gin.HandlerFunc{handle})
+	return router
+}
+
 // gocraft/web
 type gocraftWebContext struct{}
 
@@ -437,31 +462,6 @@ func loadHttpRouter(routes []route) http.Handler {
 func loadHttpRouterSingle(method, path string, handle httprouter.Handle) http.Handler {
 	router := httprouter.New()
 	router.Handle(method, path, handle)
-	return router
-}
-
-// Gin
-func ginHandle(_ *gin.Context) {}
-
-func ginHandleWrite(c *gin.Context) {
-	io.WriteString(c.Writer, c.Params.ByName("name"))
-}
-
-func initGin() {
-	gin.SetMode("release")
-}
-
-func loadGin(routes []route) http.Handler {
-	router := gin.New()
-	for _, route := range routes {
-		router.Handle(route.method, route.path, []gin.HandlerFunc{ginHandle})
-	}
-	return router
-}
-
-func loadGinSingle(method, path string, handle gin.HandlerFunc) http.Handler {
-	router := gin.New()
-	router.Handle(method, path, []gin.HandlerFunc{handle})
 	return router
 }
 

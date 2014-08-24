@@ -38,12 +38,12 @@ var gplusAPI = []route{
 var (
 	gplusBeego       http.Handler
 	gplusDenco       http.Handler
+	gplusGin         http.Handler
 	gplusGocraftWeb  http.Handler
 	gplusGoji        http.Handler
 	gplusGoJsonRest  http.Handler
 	gplusGoRestful   http.Handler
 	gplusGorillaMux  http.Handler
-	gplusGin         http.Handler
 	gplusHttpRouter  http.Handler
 	gplusHttpTreeMux http.Handler
 	gplusKocha       http.Handler
@@ -64,6 +64,9 @@ func init() {
 	calcMem("Denco", func() {
 		gplusDenco = loadDenco(gplusAPI)
 	})
+	calcMem("Gin", func() {
+		gplusGin = loadGin(gplusAPI)
+	})
 	calcMem("GocraftWeb", func() {
 		gplusGocraftWeb = loadGocraftWeb(gplusAPI)
 	})
@@ -78,9 +81,6 @@ func init() {
 	})
 	calcMem("GorillaMux", func() {
 		gplusGorillaMux = loadGorillaMux(gplusAPI)
-	})
-	calcMem("Gin", func() {
-		gplusGin = loadGin(gplusAPI)
 	})
 	calcMem("HttpRouter", func() {
 		gplusHttpRouter = loadHttpRouter(gplusAPI)
@@ -122,6 +122,10 @@ func BenchmarkDenco_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusDenco, req)
 }
+func BenchmarkGin_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	benchRequest(b, gplusGin, req)
+}
 func BenchmarkGocraftWeb_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusGocraftWeb, req)
@@ -141,10 +145,6 @@ func BenchmarkGoRestful_GPlusStatic(b *testing.B) {
 func BenchmarkGorillaMux_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusGorillaMux, req)
-}
-func BenchmarkGin_GPlusStatic(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/people", nil)
-	benchRequest(b, gplusGin, req)
 }
 func BenchmarkHttpRouter_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
@@ -192,6 +192,10 @@ func BenchmarkDenco_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusDenco, req)
 }
+func BenchmarkGin_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	benchRequest(b, gplusGin, req)
+}
 func BenchmarkGocraftWeb_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusGocraftWeb, req)
@@ -211,10 +215,6 @@ func BenchmarkGoRestful_GPlusParam(b *testing.B) {
 func BenchmarkGorillaMux_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusGorillaMux, req)
-}
-func BenchmarkGin_GPlusParam(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
-	benchRequest(b, gplusGin, req)
 }
 func BenchmarkHttpRouter_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
@@ -262,6 +262,10 @@ func BenchmarkDenco_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusDenco, req)
 }
+func BenchmarkGin_GPlus2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	benchRequest(b, gplusGin, req)
+}
 func BenchmarkGocraftWeb_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusGocraftWeb, req)
@@ -281,10 +285,6 @@ func BenchmarkGoRestful_GPlus2Params(b *testing.B) {
 func BenchmarkGorillaMux_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusGorillaMux, req)
-}
-func BenchmarkGin_GPlus2Params(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
-	benchRequest(b, gplusGin, req)
 }
 func BenchmarkHttpRouter_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
@@ -330,6 +330,9 @@ func BenchmarkBeego_GPlusAll(b *testing.B) {
 func BenchmarkDenco_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusDenco, gplusAPI)
 }
+func BenchmarkGin_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusGin, gplusAPI)
+}
 func BenchmarkGocraftWeb_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusGocraftWeb, gplusAPI)
 }
@@ -344,9 +347,6 @@ func BenchmarkGoRestful_GPlusAll(b *testing.B) {
 }
 func BenchmarkGorillaMux_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusGorillaMux, gplusAPI)
-}
-func BenchmarkGin_GPlusAll(b *testing.B) {
-	benchRoutes(b, gplusGin, gplusAPI)
 }
 func BenchmarkHttpRouter_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusHttpRouter, gplusAPI)
