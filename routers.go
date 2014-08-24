@@ -863,6 +863,6 @@ func loadTrafficSingle(method, path string, handler traffic.HttpHandleFunc) http
 
 // Usage notice
 func main() {
-	fmt.Println("Usage: go test -bench=.")
+	fmt.Println("Usage: go test -bench=. -timeout=20m")
 	os.Exit(1)
 }
