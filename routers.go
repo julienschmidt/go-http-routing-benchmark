@@ -67,11 +67,11 @@ func init() {
 	log.SetOutput(new(mockResponseWriter))
 	nullLogger = log.New(new(mockResponseWriter), "", 0)
 
-	beego.RunMode = "prod"
-	martini.Env = martini.Prod
-	traffic.SetVar("env", "bench")
-
+	initBeego()
+	initGin()
+	initMartini()
 	initRevel()
+	initTraffic()
 }
 
 // Common
@@ -82,6 +82,11 @@ func beegoHandler(ctx *context.Context) {}
 
 func beegoHandlerWrite(ctx *context.Context) {
 	ctx.WriteString(ctx.Input.Param(":name"))
+}
+
+func initBeego() {
+	beego.RunMode = "prod"
+	beego.BeeLogger.Close()
 }
 
 func loadBeego(routes []route) http.Handler {
@@ -442,6 +447,10 @@ func ginHandleWrite(c *gin.Context) {
 	io.WriteString(c.Writer, c.Params.ByName("name"))
 }
 
+func initGin() {
+	gin.SetMode("release")
+}
+
 func loadGin(routes []route) http.Handler {
 	router := gin.New()
 	for _, route := range routes {
@@ -559,6 +568,10 @@ func martiniHandler() {}
 
 func martiniHandlerWrite(params martini.Params) string {
 	return params["name"]
+}
+
+func initMartini() {
+	martini.Env = martini.Prod
 }
 
 func loadMartini(routes []route) http.Handler {
@@ -803,6 +816,10 @@ func trafficHandlerWrite(w traffic.ResponseWriter, r *traffic.Request) {
 	io.WriteString(w, r.URL.Query().Get("name"))
 }
 func trafficHandler(w traffic.ResponseWriter, r *traffic.Request) {}
+
+func initTraffic() {
+	traffic.SetVar("env", "bench")
+}
 
 func loadTraffic(routes []route) http.Handler {
 	router := traffic.New()
