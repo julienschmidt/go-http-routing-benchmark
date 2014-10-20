@@ -13,6 +13,7 @@ import (
 	"regexp"
 	"runtime"
 
+	"github.com/Unknwon/macaron"
 	"github.com/ant0ine/go-json-rest/rest"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
@@ -463,6 +464,53 @@ func loadHttpRouterSingle(method, path string, handle httprouter.Handle) http.Ha
 	router := httprouter.New()
 	router.Handle(method, path, handle)
 	return router
+}
+
+// Macaron
+func macaronHandler(_ *macaron.Context) {}
+
+func macaronHandlerWrite(c *macaron.Context) string {
+	return c.Params("name")
+}
+
+func loadMacaron(routes []route) http.Handler {
+	m := macaron.New()
+	for _, route := range routes {
+		switch route.method {
+		case "GET":
+			m.Get(route.path, martiniHandler)
+		case "POST":
+			m.Post(route.path, martiniHandler)
+		case "PUT":
+			m.Put(route.path, martiniHandler)
+		case "PATCH":
+			m.Patch(route.path, martiniHandler)
+		case "DELETE":
+			m.Delete(route.path, martiniHandler)
+		default:
+			panic("Unknow HTTP method: " + route.method)
+		}
+	}
+	return m
+}
+
+func loadMacaronSingle(method, path string, handler interface{}) http.Handler {
+	m := macaron.New()
+	switch method {
+	case "GET":
+		m.Get(path, handler)
+	case "POST":
+		m.Post(path, handler)
+	case "PUT":
+		m.Put(path, handler)
+	case "PATCH":
+		m.Patch(path, handler)
+	case "DELETE":
+		m.Delete(path, handler)
+	default:
+		panic("Unknow HTTP method: " + method)
+	}
+	return m
 }
 
 // httpTreeMux

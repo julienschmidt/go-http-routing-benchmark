@@ -145,6 +145,12 @@ func BenchmarkMartini_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkMacaron_Param(b *testing.B) {
+	router := loadMacaronSingle("GET", "/user/:name", macaronHandler)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkPat_Param(b *testing.B) {
 	router := loadPatSingle("GET", "/user/:name", http.HandlerFunc(httpHandlerFunc))
 
@@ -257,6 +263,12 @@ func BenchmarkKocha_Param5(b *testing.B) {
 }
 func BenchmarkMartini_Param5(b *testing.B) {
 	router := loadMartiniSingle("GET", fiveColon, martiniHandler)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkMacaron_Param5(b *testing.B) {
+	router := loadMacaronSingle("GET", fiveColon, macaronHandler)
 
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
@@ -377,6 +389,12 @@ func BenchmarkMartini_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkMacaron_Param20(b *testing.B) {
+	router := loadMacaronSingle("GET", twentyColon, macaronHandler)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkPat_Param20(b *testing.B) {
 	router := loadPatSingle("GET", twentyColon, http.HandlerFunc(httpHandlerFunc))
 
@@ -485,6 +503,12 @@ func BenchmarkKocha_ParamWrite(b *testing.B) {
 }
 func BenchmarkMartini_ParamWrite(b *testing.B) {
 	router := loadMartiniSingle("GET", "/user/:name", martiniHandlerWrite)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkMacaron_ParamWrite(b *testing.B) {
+	router := loadMacaronSingle("GET", "/user/:name", macaronHandlerWrite)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)

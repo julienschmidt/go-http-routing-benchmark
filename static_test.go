@@ -184,6 +184,7 @@ var (
 	staticHttpTreeMux http.Handler
 	staticKocha       http.Handler
 	staticMartini     http.Handler
+	staticMacaron     http.Handler
 	staticPat         http.Handler
 	staticRevel       http.Handler
 	staticRivet       http.Handler
@@ -237,6 +238,9 @@ func init() {
 	})
 	calcMem("Martini", func() {
 		staticMartini = loadMartini(staticRoutes)
+	})
+	calcMem("Macaron", func() {
+		staticMacaron = loadMacaron(staticRoutes)
 	})
 	calcMem("Pat", func() {
 		staticPat = loadPat(staticRoutes)
@@ -296,6 +300,9 @@ func BenchmarkKocha_StaticAll(b *testing.B) {
 }
 func BenchmarkMartini_StaticAll(b *testing.B) {
 	benchRoutes(b, staticMartini, staticRoutes)
+}
+func BenchmarkMacaron_StaticAll(b *testing.B) {
+	benchRoutes(b, staticMacaron, staticRoutes)
 }
 func BenchmarkPat_StaticAll(b *testing.B) {
 	benchRoutes(b, staticPat, staticRoutes)

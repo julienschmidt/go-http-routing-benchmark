@@ -20,6 +20,7 @@ Of course the tested routers can be used for any kind of HTTP request → handle
  * [HttpTreeMux](https://github.com/dimfeld/httptreemux)
  * [Kocha-urlrouter](https://github.com/naoina/kocha-urlrouter)
  * [Martini](https://github.com/go-martini/martini)
+ * [Macaron](https://github.com/Unknwon/macaron)
  * [Pat](https://github.com/bmizerany/pat)
  * [TigerTonic](https://github.com/rcrowley/go-tigertonic)
  * [Traffic](https://github.com/pilu/traffic)

@@ -48,6 +48,7 @@ var (
 	gplusHttpTreeMux http.Handler
 	gplusKocha       http.Handler
 	gplusMartini     http.Handler
+	gplusMacaron     http.Handler
 	gplusPat         http.Handler
 	gplusRevel       http.Handler
 	gplusRivet       http.Handler
@@ -93,6 +94,9 @@ func init() {
 	})
 	calcMem("Martini", func() {
 		gplusMartini = loadMartini(gplusAPI)
+	})
+	calcMem("Macaron", func() {
+		gplusMacaron = loadMacaron(gplusAPI)
 	})
 	calcMem("Pat", func() {
 		gplusPat = loadPat(gplusAPI)
@@ -161,6 +165,10 @@ func BenchmarkKocha_GPlusStatic(b *testing.B) {
 func BenchmarkMartini_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusMartini, req)
+}
+func BenchmarkMacaron_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	benchRequest(b, gplusMacaron, req)
 }
 func BenchmarkPat_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
@@ -232,6 +240,10 @@ func BenchmarkMartini_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusMartini, req)
 }
+func BenchmarkMacaron_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	benchRequest(b, gplusMacaron, req)
+}
 func BenchmarkPat_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusPat, req)
@@ -298,9 +310,13 @@ func BenchmarkKocha_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusKocha, req)
 }
-func BenchmarkMartini_GPlus2Params(b *testing.B) {
+func BenchmarkMartini_GPlusParam2(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusMartini, req)
+}
+func BenchmarkMacaron_GPlusParam2(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	benchRequest(b, gplusMacaron, req)
 }
 func BenchmarkPat_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
@@ -359,6 +375,9 @@ func BenchmarkKocha_GPlusAll(b *testing.B) {
 }
 func BenchmarkMartini_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusMartini, gplusAPI)
+}
+func BenchmarkMacaron_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusMacaron, gplusAPI)
 }
 func BenchmarkPat_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusPat, gplusAPI)

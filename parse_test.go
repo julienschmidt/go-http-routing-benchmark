@@ -68,6 +68,7 @@ var (
 	parseHttpTreeMux http.Handler
 	parseKocha       http.Handler
 	parseMartini     http.Handler
+	parseMacaron     http.Handler
 	parsePat         http.Handler
 	parseRevel       http.Handler
 	parseRivet       http.Handler
@@ -113,6 +114,9 @@ func init() {
 	})
 	calcMem("Martini", func() {
 		parseMartini = loadMartini(parseAPI)
+	})
+	calcMem("Macaron", func() {
+		parseMacaron = loadMacaron(parseAPI)
 	})
 	calcMem("Pat", func() {
 		parsePat = loadPat(parseAPI)
@@ -181,6 +185,10 @@ func BenchmarkKocha_ParseStatic(b *testing.B) {
 func BenchmarkMartini_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseMartini, req)
+}
+func BenchmarkMacaron_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseMacaron, req)
 }
 func BenchmarkPat_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
@@ -252,6 +260,11 @@ func BenchmarkMartini_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseMartini, req)
 }
+func BenchmarkMacaron_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseMacaron, req)
+}
+
 func BenchmarkRevel_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseRevel, req)
@@ -322,6 +335,10 @@ func BenchmarkMartini_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseMartini, req)
 }
+func BenchmarkMacaron_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseMacaron, req)
+}
 func BenchmarkRevel_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseRevel, req)
@@ -379,6 +396,9 @@ func BenchmarkKocha_ParseAll(b *testing.B) {
 }
 func BenchmarkMartini_ParseAll(b *testing.B) {
 	benchRoutes(b, parseMartini, parseAPI)
+}
+func BenchmarkMacaron_ParseAll(b *testing.B) {
+	benchRoutes(b, parseMacaron, parseAPI)
 }
 func BenchmarkRevel_ParseAll(b *testing.B) {
 	benchRoutes(b, parseRevel, parseAPI)
