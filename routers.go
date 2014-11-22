@@ -24,6 +24,7 @@ import (
 	"github.com/gocraft/web"
 	"github.com/gorilla/mux"
 	"github.com/julienschmidt/httprouter"
+	vulcan "github.com/mailgun/route"
 	"github.com/naoina/denco"
 	"github.com/naoina/kocha-urlrouter"
 	_ "github.com/naoina/kocha-urlrouter/doublearray"
@@ -819,6 +820,35 @@ func trafficHandler(w traffic.ResponseWriter, r *traffic.Request) {}
 
 func initTraffic() {
 	traffic.SetVar("env", "bench")
+}
+
+// Mailgun Vulcan
+func vulcanHandler(w http.ResponseWriter, r *http.Request) {}
+
+func vulcanHandlerWrite(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, r.URL.Query().Get("name"))
+}
+
+func loadVulcan(routes []route) http.Handler {
+	re := regexp.MustCompile(":([^/]*)")
+	mux := vulcan.NewMux()
+	for _, route := range routes {
+		path := re.ReplaceAllString(route.path, "<{$1}>")
+		if err := mux.HandleFunc(fmt.Sprintf(`Method("%s") && Path("%s")`, route.method, path), httpHandlerFunc); err != nil {
+			panic(err)
+		}
+	}
+	return mux
+}
+
+func loadVulcanSingle(method, path string, handler http.HandlerFunc) http.Handler {
+	re := regexp.MustCompile(":([^/]*)")
+	mux := vulcan.NewMux()
+	path = re.ReplaceAllString(path, "<{$1}>")
+	if err := mux.HandleFunc(fmt.Sprintf(`Method("%s") && Path("%s")`, method, path), httpHandlerFunc); err != nil {
+		panic(err)
+	}
+	return mux
 }
 
 func loadTraffic(routes []route) http.Handler {
