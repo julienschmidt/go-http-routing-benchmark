@@ -833,8 +833,9 @@ func loadVulcan(routes []route) http.Handler {
 	re := regexp.MustCompile(":([^/]*)")
 	mux := vulcan.NewMux()
 	for _, route := range routes {
-		path := re.ReplaceAllString(route.path, "<{$1}>")
-		if err := mux.HandleFunc(fmt.Sprintf(`Method("%s") && Path("%s")`, route.method, path), httpHandlerFunc); err != nil {
+		path := re.ReplaceAllString(route.path, "<$1>")
+		expr := fmt.Sprintf(`Method("%s") && Path("%s")`, route.method, path)
+		if err := mux.HandleFunc(expr, httpHandlerFunc); err != nil {
 			panic(err)
 		}
 	}
@@ -844,8 +845,9 @@ func loadVulcan(routes []route) http.Handler {
 func loadVulcanSingle(method, path string, handler http.HandlerFunc) http.Handler {
 	re := regexp.MustCompile(":([^/]*)")
 	mux := vulcan.NewMux()
-	path = re.ReplaceAllString(path, "<{$1}>")
-	if err := mux.HandleFunc(fmt.Sprintf(`Method("%s") && Path("%s")`, method, path), httpHandlerFunc); err != nil {
+	path = re.ReplaceAllString(path, "<$1>")
+	expr := fmt.Sprintf(`Method("%s") && Path("%s")`, method, path)
+	if err := mux.HandleFunc(expr, httpHandlerFunc); err != nil {
 		panic(err)
 	}
 	return mux

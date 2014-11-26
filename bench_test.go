@@ -65,12 +65,6 @@ func benchRoutes(b *testing.B, router http.Handler, routes []route) {
 // Micro Benchmarks
 
 //Route with Param (no write)
-func BenchmarkVulcan_Param(b *testing.B) {
-	router := loadVulcanSingle("GET", "/user/:name", vulcanHandler)
-
-	r, _ := http.NewRequest("GET", "/user/gordon", nil)
-	benchRequest(b, router, r)
-}
 func BenchmarkBeego_Param(b *testing.B) {
 	router := loadBeegoSingle("GET", "/user/:name", beegoHandler)
 
@@ -181,18 +175,18 @@ func BenchmarkTraffic_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkVulcan_Param(b *testing.B) {
+	router := loadVulcanSingle("GET", "/user/:name", vulcanHandler)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
 
 // Route with 5 Params (no write)
 const fiveColon = "/:a/:b/:c/:d/:e"
 const fiveBrace = "/{a}/{b}/{c}/{d}/{e}"
 const fiveRoute = "/test/test/test/test/test"
 
-func BenchmarkVulcan_Param5(b *testing.B) {
-	router := loadVulcanSingle("GET", fiveColon, vulcanHandler)
-
-	r, _ := http.NewRequest("GET", fiveRoute, nil)
-	benchRequest(b, router, r)
-}
 func BenchmarkBeego_Param5(b *testing.B) {
 	router := loadBeegoSingle("GET", fiveColon, beegoHandler)
 
@@ -303,18 +297,18 @@ func BenchmarkTraffic_Param5(b *testing.B) {
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkVulcan_Param5(b *testing.B) {
+	router := loadVulcanSingle("GET", fiveColon, vulcanHandler)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
 
 // Route with 20 Params (no write)
 const twentyColon = "/:a/:b/:c/:d/:e/:f/:g/:h/:i/:j/:k/:l/:m/:n/:o/:p/:q/:r/:s/:t"
 const twentyBrace = "/{a}/{b}/{c}/{d}/{e}/{f}/{g}/{h}/{i}/{j}/{k}/{l}/{m}/{n}/{o}/{p}/{q}/{r}/{s}/{t}"
 const twentyRoute = "/a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p/q/r/s/t"
 
-func BenchmarkVulcan_Param20(b *testing.B) {
-	router := loadVulcanSingle("GET", twentyColon, vulcanHandler)
-
-	r, _ := http.NewRequest("GET", twentyRoute, nil)
-	benchRequest(b, router, r)
-}
 func BenchmarkBeego_Param20(b *testing.B) {
 	router := loadBeegoSingle("GET", twentyColon, beegoHandler)
 
@@ -425,14 +419,14 @@ func BenchmarkTraffic_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkVulcan_Param20(b *testing.B) {
+	router := loadVulcanSingle("GET", twentyColon, vulcanHandler)
 
-// Route with Param and write
-func BenchmarkVulcan_ParamWrite(b *testing.B) {
-	router := loadVulcanSingle("GET", "/user/:name", vulcanHandlerWrite)
-
-	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
+
+// Route with Param and write
 func BenchmarkBeego_ParamWrite(b *testing.B) {
 	router := loadBeegoSingle("GET", "/user/:name", beegoHandlerWrite)
 
@@ -542,6 +536,12 @@ func BenchmarkTigerTonic_ParamWrite(b *testing.B) {
 }
 func BenchmarkTraffic_ParamWrite(b *testing.B) {
 	router := loadTrafficSingle("GET", "/user/:name", trafficHandlerWrite)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkVulcan_ParamWrite(b *testing.B) {
+	router := loadVulcanSingle("GET", "/user/:name", vulcanHandlerWrite)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
