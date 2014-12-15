@@ -57,6 +57,7 @@ var parseAPI = []route{
 
 var (
 	parseBeego       http.Handler
+	parseBone        http.Handler
 	parseDenco       http.Handler
 	parseGin         http.Handler
 	parseGocraftWeb  http.Handler
@@ -80,6 +81,9 @@ func init() {
 
 	calcMem("Beego", func() {
 		parseBeego = loadBeego(parseAPI)
+	})
+	calcMem("Bone", func() {
+		parseBone = loadBone(parseAPI)
 	})
 	calcMem("Denco", func() {
 		parseDenco = loadDenco(parseAPI)
@@ -137,6 +141,10 @@ func init() {
 func BenchmarkBeego_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseBeego, req)
+}
+func BenchmarkBone_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseBone, req)
 }
 func BenchmarkDenco_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
@@ -208,6 +216,10 @@ func BenchmarkBeego_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseBeego, req)
 }
+func BenchmarkBone_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseBone, req)
+}
 func BenchmarkDenco_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseDenco, req)
@@ -278,6 +290,10 @@ func BenchmarkBeego_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseBeego, req)
 }
+func BenchmarkBone_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseBone, req)
+}
 func BenchmarkDenco_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseDenco, req)
@@ -346,6 +362,9 @@ func BenchmarkTraffic_Parse2Params(b *testing.B) {
 // All Routes
 func BenchmarkBeego_ParseAll(b *testing.B) {
 	benchRoutes(b, parseBeego, parseAPI)
+}
+func BenchmarkBone_ParseAll(b *testing.B) {
+	benchRoutes(b, parseBone, parseAPI)
 }
 func BenchmarkDenco_ParseAll(b *testing.B) {
 	benchRoutes(b, parseDenco, parseAPI)

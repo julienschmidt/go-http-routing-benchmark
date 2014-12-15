@@ -173,6 +173,7 @@ var (
 	staticHttpServeMux http.Handler
 
 	staticBeego       http.Handler
+	staticBone        http.Handler
 	staticDenco       http.Handler
 	staticGin         http.Handler
 	staticGocraftWeb  http.Handler
@@ -204,6 +205,9 @@ func init() {
 
 	calcMem("Beego", func() {
 		staticBeego = loadBeego(staticRoutes)
+	})
+	calcMem("Bone", func() {
+		staticBone = loadBone(staticRoutes)
 	})
 	calcMem("Denco", func() {
 		staticDenco = loadDenco(staticRoutes)
@@ -263,6 +267,9 @@ func BenchmarkHttpServeMux_StaticAll(b *testing.B) {
 }
 func BenchmarkBeego_StaticAll(b *testing.B) {
 	benchRoutes(b, staticBeego, staticRoutes)
+}
+func BenchmarkBone_StaticAll(b *testing.B) {
+	benchRoutes(b, staticBone, staticRoutes)
 }
 func BenchmarkDenco_StaticAll(b *testing.B) {
 	benchRoutes(b, staticDenco, staticRoutes)

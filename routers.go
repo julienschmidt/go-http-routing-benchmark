@@ -31,6 +31,7 @@ import (
 	"github.com/rcrowley/go-tigertonic"
 	"github.com/revel/revel"
 	"github.com/robfig/pathtree"
+	"github.com/squiidz/bone"
 	"github.com/typepress/rivet"
 	goji "github.com/zenazn/goji/web"
 )
@@ -129,6 +130,47 @@ func loadBeegoSingle(method, path string, handler beego.FilterFunc) http.Handler
 		panic("Unknow HTTP method: " + method)
 	}
 	return app
+}
+
+// bone
+func loadBone(routes []route) http.Handler {
+	router := bone.New()
+	for _, route := range routes {
+		switch route.method {
+		case "GET":
+			router.Get(route.path, http.HandlerFunc(httpHandlerFunc))
+		case "POST":
+			router.Post(route.path, http.HandlerFunc(httpHandlerFunc))
+		case "PUT":
+			router.Put(route.path, http.HandlerFunc(httpHandlerFunc))
+		case "PATCH":
+			router.Patch(route.path, http.HandlerFunc(httpHandlerFunc))
+		case "DELETE":
+			router.Delete(route.path, http.HandlerFunc(httpHandlerFunc))
+		default:
+			panic("Unknow HTTP method: " + route.method)
+		}
+	}
+	return router
+}
+
+func loadBoneSingle(method, path string, handler http.Handler) http.Handler {
+	router := bone.New()
+	switch method {
+	case "GET":
+		router.Get(path, handler)
+	case "POST":
+		router.Post(path, handler)
+	case "PUT":
+		router.Put(path, handler)
+	case "PATCH":
+		router.Patch(path, handler)
+	case "DELETE":
+		router.Delete(path, handler)
+	default:
+		panic("Unknow HTTP method: " + method)
+	}
+	return router
 }
 
 // Denco
