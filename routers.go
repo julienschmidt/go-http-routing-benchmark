@@ -6,6 +6,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/plimble/ace"
 	"io"
 	"log"
 	"net/http"
@@ -78,6 +79,27 @@ func init() {
 
 // Common
 func httpHandlerFunc(w http.ResponseWriter, r *http.Request) {}
+
+// Ace
+func aceHandle(_ *ace.C) {}
+
+func aceHandleWrite(c *ace.C) {
+	io.WriteString(c.Writer, c.Params.ByName("name"))
+}
+
+func loadAce(routes []route) http.Handler {
+	router := ace.New()
+	for _, route := range routes {
+		router.Handle(route.method, route.path, []ace.HandlerFunc{aceHandle})
+	}
+	return router
+}
+
+func loadAceSingle(method, path string, handle ace.HandlerFunc) http.Handler {
+	router := ace.New()
+	router.Handle(method, path, []ace.HandlerFunc{handle})
+	return router
+}
 
 // beego
 func beegoHandler(ctx *context.Context) {}

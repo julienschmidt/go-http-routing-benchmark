@@ -172,6 +172,7 @@ var staticRoutes = []route{
 var (
 	staticHttpServeMux http.Handler
 
+	staticAce         http.Handler
 	staticBeego       http.Handler
 	staticBone        http.Handler
 	staticDenco       http.Handler
@@ -204,6 +205,9 @@ func init() {
 		staticHttpServeMux = serveMux
 	})
 
+	calcMem("Ace", func() {
+		staticAce = loadAce(staticRoutes)
+	})
 	calcMem("Beego", func() {
 		staticBeego = loadBeego(staticRoutes)
 	})
@@ -266,6 +270,10 @@ func init() {
 }
 
 // All routes
+
+func BenchmarkAce_StaticAll(b *testing.B) {
+	benchRoutes(b, staticAce, staticRoutes)
+}
 func BenchmarkHttpServeMux_StaticAll(b *testing.B) {
 	benchRoutes(b, staticHttpServeMux, staticRoutes)
 }
