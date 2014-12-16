@@ -294,6 +294,7 @@ var (
 	githubRivet       http.Handler
 	githubTigerTonic  http.Handler
 	githubTraffic     http.Handler
+	githubZeus        http.Handler
 )
 
 func init() {
@@ -358,6 +359,9 @@ func init() {
 	})
 	calcMem("Traffic", func() {
 		githubTraffic = loadTraffic(githubAPI)
+	})
+	calcMem("Zeus", func() {
+		githubZeus = loadZeus(githubAPI)
 	})
 
 	println()
@@ -444,6 +448,10 @@ func BenchmarkTraffic_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
 	benchRequest(b, githubTraffic, req)
 }
+func BenchmarkZeus_GithubStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/user/repos", nil)
+	benchRequest(b, githubZeus, req)
+}
 
 // Param
 func BenchmarkAce_GithubParam(b *testing.B) {
@@ -526,6 +534,10 @@ func BenchmarkTraffic_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubTraffic, req)
 }
+func BenchmarkZeus_GithubParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
+	benchRequest(b, githubZeus, req)
+}
 
 // All routes
 func BenchmarkAce_GithubAll(b *testing.B) {
@@ -587,4 +599,7 @@ func BenchmarkTigerTonic_GithubAll(b *testing.B) {
 }
 func BenchmarkTraffic_GithubAll(b *testing.B) {
 	benchRoutes(b, githubTraffic, githubAPI)
+}
+func BenchmarkZeus_GithubAll(b *testing.B) {
+	benchRoutes(b, githubZeus, githubAPI)
 }

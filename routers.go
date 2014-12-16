@@ -19,6 +19,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
 	"github.com/bmizerany/pat"
+	"github.com/daryl/zeus"
 	"github.com/dimfeld/httptreemux"
 	"github.com/emicklei/go-restful"
 	"github.com/gin-gonic/gin"
@@ -971,6 +972,43 @@ func loadTrafficSingle(method, path string, handler traffic.HttpHandleFunc) http
 		panic("Unknow HTTP method: " + method)
 	}
 	return router
+}
+
+// Zeus
+func loadZeus(routes []route) http.Handler {
+	m := zeus.New()
+	for _, route := range routes {
+		switch route.method {
+		case "GET":
+			m.GET(route.path, http.HandlerFunc(httpHandlerFunc))
+		case "POST":
+			m.POST(route.path, http.HandlerFunc(httpHandlerFunc))
+		case "PUT":
+			m.PUT(route.path, http.HandlerFunc(httpHandlerFunc))
+		case "DELETE":
+			m.DELETE(route.path, http.HandlerFunc(httpHandlerFunc))
+		default:
+			panic("Unknow HTTP method: " + route.method)
+		}
+	}
+	return m
+}
+
+func loadZeusSingle(method, path string, handler http.HandlerFunc) http.Handler {
+	m := zeus.New()
+	switch method {
+	case "GET":
+		m.GET(path, handler)
+	case "POST":
+		m.POST(path, handler)
+	case "PUT":
+		m.PUT(path, handler)
+	case "DELETE":
+		m.DELETE(path, handler)
+	default:
+		panic("Unknow HTTP method: " + method)
+	}
+	return m
 }
 
 // Usage notice
