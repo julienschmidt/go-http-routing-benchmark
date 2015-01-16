@@ -36,6 +36,7 @@ var gplusAPI = []route{
 }
 
 var (
+	gplusTango       http.Handler
 	gplusBeego       http.Handler
 	gplusBone        http.Handler
 	gplusDenco       http.Handler
@@ -59,6 +60,9 @@ var (
 func init() {
 	println("#GPlusAPI Routes:", len(gplusAPI))
 
+	calcMem("Tango", func() {
+		gplusTango = loadTango(gplusAPI)
+	})
 	calcMem("Beego", func() {
 		gplusBeego = loadBeego(gplusAPI)
 	})
@@ -118,6 +122,10 @@ func init() {
 }
 
 // Static
+func BenchmarkTango_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	benchRequest(b, gplusTango, req)
+}
 func BenchmarkBeego_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusBeego, req)
@@ -192,6 +200,10 @@ func BenchmarkTraffic_GPlusStatic(b *testing.B) {
 }
 
 // One Param
+func BenchmarkTango_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	benchRequest(b, gplusTango, req)
+}
 func BenchmarkBeego_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusBeego, req)
@@ -266,6 +278,10 @@ func BenchmarkTraffic_GPlusParam(b *testing.B) {
 }
 
 // Two Params
+func BenchmarkTango_GPlus2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	benchRequest(b, gplusTango, req)
+}
 func BenchmarkBeego_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusBeego, req)
@@ -340,6 +356,9 @@ func BenchmarkTraffic_GPlus2Params(b *testing.B) {
 }
 
 // All Routes
+func BenchmarkTango_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusTango, gplusAPI)
+}
 func BenchmarkBeego_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusBeego, gplusAPI)
 }

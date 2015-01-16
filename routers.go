@@ -14,6 +14,7 @@ import (
 	"runtime"
 
 	"github.com/ant0ine/go-json-rest/rest"
+	"github.com/lunny/tango"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
 	"github.com/bmizerany/pat"
@@ -68,6 +69,7 @@ func init() {
 	log.SetOutput(new(mockResponseWriter))
 	nullLogger = log.New(new(mockResponseWriter), "", 0)
 
+	initTango()
 	initBeego()
 	initGin()
 	initMartini()
@@ -77,6 +79,16 @@ func init() {
 
 // Common
 func httpHandlerFunc(w http.ResponseWriter, r *http.Request) {}
+
+func tangoHandler(ctx *tango.Context) {
+}
+func tangoHandlerWrite(ctx *tango.Context) {
+	ctx.Write([]byte(ctx.Params().Get(":name")))
+}
+
+func initTango() {
+	tango.Env = tango.Prod
+}
 
 // beego
 func beegoHandler(ctx *context.Context) {}
@@ -88,6 +100,20 @@ func beegoHandlerWrite(ctx *context.Context) {
 func initBeego() {
 	beego.RunMode = "prod"
 	beego.BeeLogger.Close()
+}
+
+func loadTango(routes []route) http.Handler {
+	tg := tango.New()
+	for _, route := range routes {
+		tg.Route([]string{route.method}, route.path, tangoHandler)
+	}
+	return tg
+}
+
+func loadTangoSingle(method, path string, handler func(*tango.Context)) http.Handler {
+	tg := tango.New()
+	tg.Route([]string{method}, path, handler)
+	return tg
 }
 
 func loadBeego(routes []route) http.Handler {

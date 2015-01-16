@@ -56,6 +56,7 @@ var parseAPI = []route{
 }
 
 var (
+	parseTango       http.Handler
 	parseBeego       http.Handler
 	parseBone        http.Handler
 	parseDenco       http.Handler
@@ -79,6 +80,9 @@ var (
 func init() {
 	println("#ParseAPI Routes:", len(parseAPI))
 
+	calcMem("Tango", func() {
+		parseTango = loadTango(parseAPI)
+	})
 	calcMem("Beego", func() {
 		parseBeego = loadBeego(parseAPI)
 	})
@@ -138,6 +142,10 @@ func init() {
 }
 
 // Static
+func BenchmarkTango_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseTango, req)
+}
 func BenchmarkBeego_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseBeego, req)
@@ -212,6 +220,10 @@ func BenchmarkTraffic_ParseStatic(b *testing.B) {
 }
 
 // One Param
+func BenchmarkTango_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseTango, req)
+}
 func BenchmarkBeego_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseBeego, req)
@@ -286,6 +298,10 @@ func BenchmarkTraffic_ParseParam(b *testing.B) {
 }
 
 // Two Params
+func BenchmarkTango_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseTango, req)
+}
 func BenchmarkBeego_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseBeego, req)
@@ -360,6 +376,9 @@ func BenchmarkTraffic_Parse2Params(b *testing.B) {
 }
 
 // All Routes
+func BenchmarkTango_ParseAll(b *testing.B) {
+	benchRoutes(b, parseTango, parseAPI)
+}
 func BenchmarkBeego_ParseAll(b *testing.B) {
 	benchRoutes(b, parseBeego, parseAPI)
 }
