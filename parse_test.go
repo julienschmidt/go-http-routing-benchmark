@@ -244,7 +244,7 @@ func BenchmarkTraffic_ParseStatic(b *testing.B) {
 }
 func BenchmarkVulcan_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
-	benchRequest(b, parseTraffic, req)
+	benchRequest(b, parseVulcan, req)
 }
 func BenchmarkZeus_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)

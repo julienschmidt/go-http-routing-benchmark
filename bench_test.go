@@ -318,7 +318,7 @@ func BenchmarkMartini_Param5(b *testing.B) {
 func BenchmarkPat_Param5(b *testing.B) {
 	router := loadPatSingle("GET", fiveColon, http.HandlerFunc(httpHandlerFunc))
 
-	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
 }
 func BenchmarkRevel_Param5(b *testing.B) {
@@ -360,7 +360,7 @@ func BenchmarkVulcan_Param5(b *testing.B) {
 func BenchmarkZeus_Param5(b *testing.B) {
 	router := loadZeusSingle("GET", fiveColon, http.HandlerFunc(httpHandlerFunc))
 
-	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
 }
 
@@ -470,7 +470,7 @@ func BenchmarkMartini_Param20(b *testing.B) {
 func BenchmarkPat_Param20(b *testing.B) {
 	router := loadPatSingle("GET", twentyColon, http.HandlerFunc(httpHandlerFunc))
 
-	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
 func BenchmarkRevel_Param20(b *testing.B) {
@@ -512,7 +512,7 @@ func BenchmarkVulcan_Param20(b *testing.B) {
 func BenchmarkZeus_Param20(b *testing.B) {
 	router := loadZeusSingle("GET", twentyColon, http.HandlerFunc(httpHandlerFunc))
 
-	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
 
