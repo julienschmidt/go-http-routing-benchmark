@@ -199,6 +199,12 @@ func BenchmarkTraffic_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkVulcan_Param(b *testing.B) {
+	router := loadVulcanSingle("GET", "/user/:name", vulcanHandler)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkZeus_Param(b *testing.B) {
 	router := loadZeusSingle("GET", "/user/:name", http.HandlerFunc(httpHandlerFunc))
 
@@ -341,6 +347,12 @@ func BenchmarkTigerTonic_Param5(b *testing.B) {
 }
 func BenchmarkTraffic_Param5(b *testing.B) {
 	router := loadTrafficSingle("GET", fiveColon, trafficHandler)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkVulcan_Param5(b *testing.B) {
+	router := loadVulcanSingle("GET", fiveColon, vulcanHandler)
 
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
@@ -491,6 +503,12 @@ func BenchmarkTraffic_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkVulcan_Param20(b *testing.B) {
+	router := loadVulcanSingle("GET", twentyColon, vulcanHandler)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkZeus_Param20(b *testing.B) {
 	router := loadZeusSingle("GET", twentyColon, http.HandlerFunc(httpHandlerFunc))
 
@@ -632,6 +650,12 @@ func BenchmarkTigerTonic_ParamWrite(b *testing.B) {
 }
 func BenchmarkTraffic_ParamWrite(b *testing.B) {
 	router := loadTrafficSingle("GET", "/user/:name", trafficHandlerWrite)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkVulcan_ParamWrite(b *testing.B) {
+	router := loadVulcanSingle("GET", "/user/:name", vulcanHandlerWrite)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
