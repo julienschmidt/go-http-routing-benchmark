@@ -822,37 +822,6 @@ func initTraffic() {
 	traffic.SetVar("env", "bench")
 }
 
-// Mailgun Vulcan
-func vulcanHandler(w http.ResponseWriter, r *http.Request) {}
-
-func vulcanHandlerWrite(w http.ResponseWriter, r *http.Request) {
-	io.WriteString(w, r.URL.Query().Get("name"))
-}
-
-func loadVulcan(routes []route) http.Handler {
-	re := regexp.MustCompile(":([^/]*)")
-	mux := vulcan.NewMux()
-	for _, route := range routes {
-		path := re.ReplaceAllString(route.path, "<$1>")
-		expr := fmt.Sprintf(`Method("%s") && Path("%s")`, route.method, path)
-		if err := mux.HandleFunc(expr, httpHandlerFunc); err != nil {
-			panic(err)
-		}
-	}
-	return mux
-}
-
-func loadVulcanSingle(method, path string, handler http.HandlerFunc) http.Handler {
-	re := regexp.MustCompile(":([^/]*)")
-	mux := vulcan.NewMux()
-	path = re.ReplaceAllString(path, "<$1>")
-	expr := fmt.Sprintf(`Method("%s") && Path("%s")`, method, path)
-	if err := mux.HandleFunc(expr, httpHandlerFunc); err != nil {
-		panic(err)
-	}
-	return mux
-}
-
 func loadTraffic(routes []route) http.Handler {
 	router := traffic.New()
 	for _, route := range routes {
@@ -891,6 +860,37 @@ func loadTrafficSingle(method, path string, handler traffic.HttpHandleFunc) http
 		panic("Unknow HTTP method: " + method)
 	}
 	return router
+}
+
+// Mailgun Vulcan
+func vulcanHandler(w http.ResponseWriter, r *http.Request) {}
+
+func vulcanHandlerWrite(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, r.URL.Query().Get("name"))
+}
+
+func loadVulcan(routes []route) http.Handler {
+	re := regexp.MustCompile(":([^/]*)")
+	mux := vulcan.NewMux()
+	for _, route := range routes {
+		path := re.ReplaceAllString(route.path, "<$1>")
+		expr := fmt.Sprintf(`Method("%s") && Path("%s")`, route.method, path)
+		if err := mux.HandleFunc(expr, httpHandlerFunc); err != nil {
+			panic(err)
+		}
+	}
+	return mux
+}
+
+func loadVulcanSingle(method, path string, handler http.HandlerFunc) http.Handler {
+	re := regexp.MustCompile(":([^/]*)")
+	mux := vulcan.NewMux()
+	path = re.ReplaceAllString(path, "<$1>")
+	expr := fmt.Sprintf(`Method("%s") && Path("%s")`, method, path)
+	if err := mux.HandleFunc(expr, httpHandlerFunc); err != nil {
+		panic(err)
+	}
+	return mux
 }
 
 // Usage notice

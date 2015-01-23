@@ -64,7 +64,7 @@ func benchRoutes(b *testing.B, router http.Handler, routes []route) {
 
 // Micro Benchmarks
 
-//Route with Param (no write)
+// Route with Param (no write)
 func BenchmarkBeego_Param(b *testing.B) {
 	router := loadBeegoSingle("GET", "/user/:name", beegoHandler)
 
