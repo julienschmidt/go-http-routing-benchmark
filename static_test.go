@@ -172,7 +172,6 @@ var staticRoutes = []route{
 var (
 	staticHttpServeMux http.Handler
 
-	staticTango       http.Handler
 	staticBeego       http.Handler
 	staticBone        http.Handler
 	staticDenco       http.Handler
@@ -189,6 +188,7 @@ var (
 	staticPat         http.Handler
 	staticRevel       http.Handler
 	staticRivet       http.Handler
+	staticTango       http.Handler
 	staticTigerTonic  http.Handler
 	staticTraffic     http.Handler
 )
@@ -204,9 +204,6 @@ func init() {
 		staticHttpServeMux = serveMux
 	})
 
-	calcMem("Tango", func() {
-		staticTango = loadTango(staticRoutes)
-	})
 	calcMem("Beego", func() {
 		staticBeego = loadBeego(staticRoutes)
 	})
@@ -255,6 +252,9 @@ func init() {
 	calcMem("Rivet", func() {
 		staticRivet = loadRivet(staticRoutes)
 	})
+	calcMem("Tango", func() {
+		staticTango = loadTango(staticRoutes)
+	})
 	calcMem("TigerTonic", func() {
 		staticTigerTonic = loadTigerTonic(staticRoutes)
 	})
@@ -268,9 +268,6 @@ func init() {
 // All routes
 func BenchmarkHttpServeMux_StaticAll(b *testing.B) {
 	benchRoutes(b, staticHttpServeMux, staticRoutes)
-}
-func BenchmarkTango_StaticAll(b *testing.B) {
-	benchRoutes(b, staticTango, staticRoutes)
 }
 func BenchmarkBeego_StaticAll(b *testing.B) {
 	benchRoutes(b, staticBeego, staticRoutes)
@@ -319,6 +316,9 @@ func BenchmarkRevel_StaticAll(b *testing.B) {
 }
 func BenchmarkRivet_StaticAll(b *testing.B) {
 	benchRoutes(b, staticRivet, staticRoutes)
+}
+func BenchmarkTango_StaticAll(b *testing.B) {
+	benchRoutes(b, staticTango, staticRoutes)
 }
 func BenchmarkTigerTonic_StaticAll(b *testing.B) {
 	benchRoutes(b, staticTigerTonic, staticRoutes)

@@ -56,7 +56,6 @@ var parseAPI = []route{
 }
 
 var (
-	parseTango       http.Handler
 	parseBeego       http.Handler
 	parseBone        http.Handler
 	parseDenco       http.Handler
@@ -73,6 +72,7 @@ var (
 	parsePat         http.Handler
 	parseRevel       http.Handler
 	parseRivet       http.Handler
+	parseTango       http.Handler
 	parseTigerTonic  http.Handler
 	parseTraffic     http.Handler
 )
@@ -80,9 +80,6 @@ var (
 func init() {
 	println("#ParseAPI Routes:", len(parseAPI))
 
-	calcMem("Tango", func() {
-		parseTango = loadTango(parseAPI)
-	})
 	calcMem("Beego", func() {
 		parseBeego = loadBeego(parseAPI)
 	})
@@ -131,6 +128,9 @@ func init() {
 	calcMem("Rivet", func() {
 		parseRivet = loadRivet(parseAPI)
 	})
+	calcMem("Tango", func() {
+		parseTango = loadTango(parseAPI)
+	})
 	calcMem("TigerTonic", func() {
 		parseTigerTonic = loadTigerTonic(parseAPI)
 	})
@@ -142,10 +142,6 @@ func init() {
 }
 
 // Static
-func BenchmarkTango_ParseStatic(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/1/users", nil)
-	benchRequest(b, parseTango, req)
-}
 func BenchmarkBeego_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseBeego, req)
@@ -210,6 +206,10 @@ func BenchmarkRivet_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseRivet, req)
 }
+func BenchmarkTango_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseTango, req)
+}
 func BenchmarkTigerTonic_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseTigerTonic, req)
@@ -220,10 +220,6 @@ func BenchmarkTraffic_ParseStatic(b *testing.B) {
 }
 
 // One Param
-func BenchmarkTango_ParseParam(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
-	benchRequest(b, parseTango, req)
-}
 func BenchmarkBeego_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseBeego, req)
@@ -276,6 +272,10 @@ func BenchmarkMartini_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseMartini, req)
 }
+func BenchmarkPat_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parsePat, req)
+}
 func BenchmarkRevel_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseRevel, req)
@@ -284,9 +284,9 @@ func BenchmarkRivet_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseRivet, req)
 }
-func BenchmarkPat_ParseParam(b *testing.B) {
+func BenchmarkTango_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
-	benchRequest(b, parsePat, req)
+	benchRequest(b, parseTango, req)
 }
 func BenchmarkTigerTonic_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
@@ -298,10 +298,6 @@ func BenchmarkTraffic_ParseParam(b *testing.B) {
 }
 
 // Two Params
-func BenchmarkTango_Parse2Params(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
-	benchRequest(b, parseTango, req)
-}
 func BenchmarkBeego_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseBeego, req)
@@ -354,6 +350,10 @@ func BenchmarkMartini_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseMartini, req)
 }
+func BenchmarkPat_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parsePat, req)
+}
 func BenchmarkRevel_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseRevel, req)
@@ -362,9 +362,9 @@ func BenchmarkRivet_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseRivet, req)
 }
-func BenchmarkPat_Parse2Params(b *testing.B) {
+func BenchmarkTango_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
-	benchRequest(b, parsePat, req)
+	benchRequest(b, parseTango, req)
 }
 func BenchmarkTigerTonic_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
@@ -376,9 +376,6 @@ func BenchmarkTraffic_Parse2Params(b *testing.B) {
 }
 
 // All Routes
-func BenchmarkTango_ParseAll(b *testing.B) {
-	benchRoutes(b, parseTango, parseAPI)
-}
 func BenchmarkBeego_ParseAll(b *testing.B) {
 	benchRoutes(b, parseBeego, parseAPI)
 }
@@ -418,14 +415,17 @@ func BenchmarkKocha_ParseAll(b *testing.B) {
 func BenchmarkMartini_ParseAll(b *testing.B) {
 	benchRoutes(b, parseMartini, parseAPI)
 }
+func BenchmarkPat_ParseAll(b *testing.B) {
+	benchRoutes(b, parsePat, parseAPI)
+}
 func BenchmarkRevel_ParseAll(b *testing.B) {
 	benchRoutes(b, parseRevel, parseAPI)
 }
 func BenchmarkRivet_ParseAll(b *testing.B) {
 	benchRoutes(b, parseRivet, parseAPI)
 }
-func BenchmarkPat_ParseAll(b *testing.B) {
-	benchRoutes(b, parsePat, parseAPI)
+func BenchmarkTango_ParseAll(b *testing.B) {
+	benchRoutes(b, parseTango, parseAPI)
 }
 func BenchmarkTigerTonic_ParseAll(b *testing.B) {
 	benchRoutes(b, parseTigerTonic, parseAPI)

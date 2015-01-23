@@ -36,7 +36,6 @@ var gplusAPI = []route{
 }
 
 var (
-	gplusTango       http.Handler
 	gplusBeego       http.Handler
 	gplusBone        http.Handler
 	gplusDenco       http.Handler
@@ -53,6 +52,7 @@ var (
 	gplusPat         http.Handler
 	gplusRevel       http.Handler
 	gplusRivet       http.Handler
+	gplusTango       http.Handler
 	gplusTigerTonic  http.Handler
 	gplusTraffic     http.Handler
 )
@@ -60,9 +60,6 @@ var (
 func init() {
 	println("#GPlusAPI Routes:", len(gplusAPI))
 
-	calcMem("Tango", func() {
-		gplusTango = loadTango(gplusAPI)
-	})
 	calcMem("Beego", func() {
 		gplusBeego = loadBeego(gplusAPI)
 	})
@@ -111,6 +108,9 @@ func init() {
 	calcMem("Rivet", func() {
 		gplusRivet = loadRivet(gplusAPI)
 	})
+	calcMem("Tango", func() {
+		gplusTango = loadTango(gplusAPI)
+	})
 	calcMem("TigerTonic", func() {
 		gplusTigerTonic = loadTigerTonic(gplusAPI)
 	})
@@ -122,10 +122,6 @@ func init() {
 }
 
 // Static
-func BenchmarkTango_GPlusStatic(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/people", nil)
-	benchRequest(b, gplusTango, req)
-}
 func BenchmarkBeego_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusBeego, req)
@@ -190,6 +186,10 @@ func BenchmarkRivet_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusRivet, req)
 }
+func BenchmarkTango_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	benchRequest(b, gplusTango, req)
+}
 func BenchmarkTigerTonic_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusTigerTonic, req)
@@ -200,10 +200,6 @@ func BenchmarkTraffic_GPlusStatic(b *testing.B) {
 }
 
 // One Param
-func BenchmarkTango_GPlusParam(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
-	benchRequest(b, gplusTango, req)
-}
 func BenchmarkBeego_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusBeego, req)
@@ -268,6 +264,10 @@ func BenchmarkRivet_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusRivet, req)
 }
+func BenchmarkTango_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	benchRequest(b, gplusTango, req)
+}
 func BenchmarkTigerTonic_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusTigerTonic, req)
@@ -278,10 +278,6 @@ func BenchmarkTraffic_GPlusParam(b *testing.B) {
 }
 
 // Two Params
-func BenchmarkTango_GPlus2Params(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
-	benchRequest(b, gplusTango, req)
-}
 func BenchmarkBeego_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusBeego, req)
@@ -346,6 +342,10 @@ func BenchmarkRivet_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusRivet, req)
 }
+func BenchmarkTango_GPlus2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	benchRequest(b, gplusTango, req)
+}
 func BenchmarkTigerTonic_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusTigerTonic, req)
@@ -356,9 +356,6 @@ func BenchmarkTraffic_GPlus2Params(b *testing.B) {
 }
 
 // All Routes
-func BenchmarkTango_GPlusAll(b *testing.B) {
-	benchRoutes(b, gplusTango, gplusAPI)
-}
 func BenchmarkBeego_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusBeego, gplusAPI)
 }
@@ -406,6 +403,9 @@ func BenchmarkRevel_GPlusAll(b *testing.B) {
 }
 func BenchmarkRivet_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusRivet, gplusAPI)
+}
+func BenchmarkTango_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusTango, gplusAPI)
 }
 func BenchmarkTigerTonic_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusTigerTonic, gplusAPI)
