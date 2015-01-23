@@ -6,7 +6,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/plimble/ace"
 	"io"
 	"log"
 	"net/http"
@@ -36,6 +35,7 @@ import (
 	"github.com/naoina/kocha-urlrouter"
 	_ "github.com/naoina/kocha-urlrouter/doublearray"
 	"github.com/pilu/traffic"
+	"github.com/plimble/ace"
 	"github.com/rcrowley/go-tigertonic"
 	"github.com/revel/revel"
 	"github.com/robfig/pathtree"
