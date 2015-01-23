@@ -27,6 +27,7 @@ import (
 	"github.com/gocraft/web"
 	"github.com/gorilla/mux"
 	"github.com/julienschmidt/httprouter"
+	"github.com/lunny/tango"
 	"github.com/naoina/denco"
 	"github.com/naoina/kocha-urlrouter"
 	_ "github.com/naoina/kocha-urlrouter/doublearray"
@@ -75,6 +76,7 @@ func init() {
 	initGin()
 	initMartini()
 	initRevel()
+	initTango()
 	initTraffic()
 }
 
@@ -902,6 +904,31 @@ func loadRivetSingle(method, path string, handler interface{}) http.Handler {
 	router.Handle(method, path, handler)
 
 	return router
+}
+
+// Tango
+func tangoHandler(ctx *tango.Context) {
+}
+func tangoHandlerWrite(ctx *tango.Context) {
+	ctx.Write([]byte(ctx.Params().Get(":name")))
+}
+
+func initTango() {
+	tango.Env = tango.Prod
+}
+
+func loadTango(routes []route) http.Handler {
+	tg := tango.New()
+	for _, route := range routes {
+		tg.Route([]string{route.method}, route.path, tangoHandler)
+	}
+	return tg
+}
+
+func loadTangoSingle(method, path string, handler func(*tango.Context)) http.Handler {
+	tg := tango.New()
+	tg.Route([]string{method}, path, handler)
+	return tg
 }
 
 // Tiger Tonic

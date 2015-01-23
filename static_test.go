@@ -190,6 +190,7 @@ var (
 	staticPat         http.Handler
 	staticRevel       http.Handler
 	staticRivet       http.Handler
+	staticTango       http.Handler
 	staticTigerTonic  http.Handler
 	staticTraffic     http.Handler
 	staticZeus        http.Handler
@@ -259,6 +260,9 @@ func init() {
 	})
 	calcMem("Rivet", func() {
 		staticRivet = loadRivet(staticRoutes)
+	})
+	calcMem("Tango", func() {
+		staticTango = loadTango(staticRoutes)
 	})
 	calcMem("TigerTonic", func() {
 		staticTigerTonic = loadTigerTonic(staticRoutes)
@@ -331,6 +335,9 @@ func BenchmarkRevel_StaticAll(b *testing.B) {
 }
 func BenchmarkRivet_StaticAll(b *testing.B) {
 	benchRoutes(b, staticRivet, staticRoutes)
+}
+func BenchmarkTango_StaticAll(b *testing.B) {
+	benchRoutes(b, staticTango, staticRoutes)
 }
 func BenchmarkTigerTonic_StaticAll(b *testing.B) {
 	benchRoutes(b, staticTigerTonic, staticRoutes)

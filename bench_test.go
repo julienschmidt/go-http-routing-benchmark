@@ -181,6 +181,12 @@ func BenchmarkRivet_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkTango_Param(b *testing.B) {
+	router := loadTangoSingle("GET", "/user/:name", tangoHandler)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkTigerTonic_Param(b *testing.B) {
 	router := loadTigerTonicSingle("GET", "/user/{name}", httpHandlerFunc)
 
@@ -317,6 +323,12 @@ func BenchmarkRevel_Param5(b *testing.B) {
 }
 func BenchmarkRivet_Param5(b *testing.B) {
 	router := loadRivetSingle("GET", fiveColon, rivetHandler)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkTango_Param5(b *testing.B) {
+	router := loadTangoSingle("GET", fiveColon, tangoHandler)
 
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
@@ -461,6 +473,12 @@ func BenchmarkRivet_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkTango_Param20(b *testing.B) {
+	router := loadTangoSingle("GET", twentyColon, tangoHandler)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkTigerTonic_Param20(b *testing.B) {
 	router := loadTigerTonicSingle("GET", twentyBrace, httpHandlerFunc)
 
@@ -593,6 +611,12 @@ func BenchmarkRevel_ParamWrite(b *testing.B) {
 }
 func BenchmarkRivet_ParamWrite(b *testing.B) {
 	router := loadRivetSingle("GET", "/user/:name", rivetHandlerWrite)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkTango_ParamWrite(b *testing.B) {
+	router := loadTangoSingle("GET", "/user/:name", tangoHandlerWrite)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
