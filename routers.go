@@ -27,6 +27,7 @@ import (
 	"github.com/emicklei/go-restful"
 	"github.com/gin-gonic/gin"
 	"github.com/go-martini/martini"
+	"github.com/go-zoo/bone"
 	"github.com/gocraft/web"
 	"github.com/gorilla/mux"
 	"github.com/julienschmidt/httprouter"
@@ -40,7 +41,6 @@ import (
 	"github.com/rcrowley/go-tigertonic"
 	"github.com/revel/revel"
 	"github.com/robfig/pathtree"
-	"github.com/squiidz/bone"
 	"github.com/typepress/rivet"
 	goji "github.com/zenazn/goji/web"
 )
