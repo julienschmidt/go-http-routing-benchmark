@@ -205,32 +205,11 @@ func loadBoneSingle(method, path string, handler http.Handler) http.Handler {
 }
 
 // Denco
-type dencoHandler struct {
-	routerMap map[string]*denco.Router
-	params    []denco.Param
-}
+func dencoHandler(w http.ResponseWriter, r *http.Request, params denco.Params) {}
 
-func (h *dencoHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	router, found := h.routerMap[r.Method]
-	if !found {
-		panic("Unknown HTTP method: " + r.Method)
-	}
-	meth, params, found := router.Lookup(r.URL.Path)
-	if !found {
-		panic("Router not found: " + r.URL.Path)
-	}
-	h.params = params
-	meth.(http.HandlerFunc).ServeHTTP(w, r)
-}
-
-func (h *dencoHandler) Get(w http.ResponseWriter, r *http.Request)    {}
-func (h *dencoHandler) Post(w http.ResponseWriter, r *http.Request)   {}
-func (h *dencoHandler) Put(w http.ResponseWriter, r *http.Request)    {}
-func (h *dencoHandler) Patch(w http.ResponseWriter, r *http.Request)  {}
-func (h *dencoHandler) Delete(w http.ResponseWriter, r *http.Request) {}
-func (h *dencoHandler) dencoHandlerWrite(w http.ResponseWriter, r *http.Request) {
+func dencoHandlerWrite(w http.ResponseWriter, r *http.Request, params denco.Params) {
 	var name string
-	for _, param := range h.params {
+	for _, param := range params {
 		if param.Name == "name" {
 			name = param.Value
 			break
@@ -240,46 +219,23 @@ func (h *dencoHandler) dencoHandlerWrite(w http.ResponseWriter, r *http.Request)
 }
 
 func loadDenco(routes []route) http.Handler {
-	handler := &dencoHandler{routerMap: map[string]*denco.Router{
-		"GET":    denco.New(),
-		"POST":   denco.New(),
-		"PUT":    denco.New(),
-		"PATCH":  denco.New(),
-		"DELETE": denco.New(),
-	}}
-	recordMap := make(map[string][]denco.Record)
+	mux := denco.NewMux()
+	handlers := make([]denco.Handler, 0, len(routes))
 	for _, route := range routes {
-		var f http.HandlerFunc
-		switch route.method {
-		case "GET":
-			f = handler.Get
-		case "POST":
-			f = handler.Post
-		case "PUT":
-			f = handler.Put
-		case "PATCH":
-			f = handler.Patch
-		case "DELETE":
-			f = handler.Delete
-		}
-		recordMap[route.method] = append(recordMap[route.method], denco.NewRecord(route.path, f))
+		h := mux.Handler(route.method, route.path, dencoHandler)
+		handlers = append(handlers, h)
 	}
-	for method, records := range recordMap {
-		if err := handler.routerMap[method].Build(records); err != nil {
-			panic(err)
-		}
+	handler, err := mux.Build(handlers)
+	if err != nil {
+		panic(err)
 	}
 	return handler
 }
 
-func loadDencoSingle(method, path string, handler *dencoHandler, hfunc http.HandlerFunc) http.Handler {
-	handler.routerMap = map[string]*denco.Router{
-		method: denco.New(),
-	}
-
-	if err := handler.routerMap[method].Build([]denco.Record{
-		denco.NewRecord(path, hfunc),
-	}); err != nil {
+func loadDencoSingle(method, path string, h denco.HandlerFunc) http.Handler {
+	mux := denco.NewMux()
+	handler, err := mux.Build([]denco.Handler{mux.Handler(method, path, h)})
+	if err != nil {
 		panic(err)
 	}
 	return handler
