@@ -42,6 +42,7 @@ import (
 	"github.com/revel/revel"
 	"github.com/robfig/pathtree"
 	"github.com/typepress/rivet"
+	"github.com/ursiform/bear"
 	goji "github.com/zenazn/goji/web"
 )
 
@@ -109,6 +110,37 @@ func loadAceSingle(method, path string, handle ace.HandlerFunc) http.Handler {
 	return router
 }
 
+// bear
+func bearHandler(_ http.ResponseWriter, _ *http.Request, ctx *bear.Context) {}
+
+func bearHandlerWrite(res http.ResponseWriter, req *http.Request, ctx *bear.Context) {
+	res.Write([]byte(ctx.Params["name"]))
+}
+func loadBear(routes []route) http.Handler {
+	router := bear.New()
+	re := regexp.MustCompile(":([^/]*)")
+	for _, route := range routes {
+		switch route.method {
+		case "GET", "POST", "PUT", "PATCH", "DELETE":
+			router.On(route.method, re.ReplaceAllString(route.path, "{$1}"), bearHandler)
+		default:
+			panic("Unknown HTTP method: " + route.method)
+		}
+	}
+	return router
+}
+
+func loadBearSingle(method string, path string, handler bear.HandlerFunc) http.Handler {
+	router := bear.New()
+	switch method {
+	case "GET", "POST", "PUT", "PATCH", "DELETE":
+		router.On(method, path, handler)
+	default:
+		panic("Unknown HTTP method: " + method)
+	}
+	return router
+}
+
 // beego
 func beegoHandler(ctx *context.Context) {}
 
@@ -138,7 +170,7 @@ func loadBeego(routes []route) http.Handler {
 		case "DELETE":
 			app.Delete(route.path, beegoHandler)
 		default:
-			panic("Unknow HTTP method: " + route.method)
+			panic("Unknown HTTP method: " + route.method)
 		}
 	}
 	return app
@@ -158,7 +190,7 @@ func loadBeegoSingle(method, path string, handler beego.FilterFunc) http.Handler
 	case "DELETE":
 		app.Delete(path, handler)
 	default:
-		panic("Unknow HTTP method: " + method)
+		panic("Unknown HTTP method: " + method)
 	}
 	return app
 }
@@ -179,7 +211,7 @@ func loadBone(routes []route) http.Handler {
 		case "DELETE":
 			router.Delete(route.path, http.HandlerFunc(httpHandlerFunc))
 		default:
-			panic("Unknow HTTP method: " + route.method)
+			panic("Unknown HTTP method: " + route.method)
 		}
 	}
 	return router
@@ -199,7 +231,7 @@ func loadBoneSingle(method, path string, handler http.Handler) http.Handler {
 	case "DELETE":
 		router.Delete(path, handler)
 	default:
-		panic("Unknow HTTP method: " + method)
+		panic("Unknown HTTP method: " + method)
 	}
 	return router
 }
@@ -290,7 +322,7 @@ func loadGocraftWeb(routes []route) http.Handler {
 		case "DELETE":
 			router.Delete(route.path, gocraftWebHandler)
 		default:
-			panic("Unknow HTTP method: " + route.method)
+			panic("Unknown HTTP method: " + route.method)
 		}
 	}
 	return router
@@ -310,7 +342,7 @@ func loadGocraftWebSingle(method, path string, handler interface{}) http.Handler
 	case "DELETE":
 		router.Delete(path, handler)
 	default:
-		panic("Unknow HTTP method: " + method)
+		panic("Unknown HTTP method: " + method)
 	}
 	return router
 }
@@ -355,7 +387,7 @@ func loadGojiSingle(method, path string, handler interface{}) http.Handler {
 	case "DELETE":
 		mux.Delete(path, handler)
 	default:
-		panic("Unknow HTTP method: " + method)
+		panic("Unknown HTTP method: " + method)
 	}
 	return mux
 }
@@ -421,7 +453,7 @@ func loadGoRestful(routes []route) http.Handler {
 		case "DELETE":
 			ws.Route(ws.DELETE(route.path).To(goRestfulHandler))
 		default:
-			panic("Unknow HTTP method: " + route.method)
+			panic("Unknown HTTP method: " + route.method)
 		}
 	}
 	wsContainer.Add(ws)
@@ -443,7 +475,7 @@ func loadGoRestfulSingle(method, path string, handler restful.RouteFunction) htt
 	case "DELETE":
 		ws.Route(ws.DELETE(path).To(handler))
 	default:
-		panic("Unknow HTTP method: " + method)
+		panic("Unknown HTTP method: " + method)
 	}
 	wsContainer.Add(ws)
 	return wsContainer
@@ -614,7 +646,7 @@ func loadMacaron(routes []route) http.Handler {
 		case "DELETE":
 			m.Delete(route.path, martiniHandler)
 		default:
-			panic("Unknow HTTP method: " + route.method)
+			panic("Unknown HTTP method: " + route.method)
 		}
 	}
 	return m
@@ -634,7 +666,7 @@ func loadMacaronSingle(method, path string, handler interface{}) http.Handler {
 	case "DELETE":
 		m.Delete(path, handler)
 	default:
-		panic("Unknow HTTP method: " + method)
+		panic("Unknown HTTP method: " + method)
 	}
 	return m
 }
@@ -665,7 +697,7 @@ func loadMartini(routes []route) http.Handler {
 		case "DELETE":
 			router.Delete(route.path, martiniHandler)
 		default:
-			panic("Unknow HTTP method: " + route.method)
+			panic("Unknown HTTP method: " + route.method)
 		}
 	}
 	martini := martini.New()
@@ -687,7 +719,7 @@ func loadMartiniSingle(method, path string, handler interface{}) http.Handler {
 	case "DELETE":
 		router.Delete(path, handler)
 	default:
-		panic("Unknow HTTP method: " + method)
+		panic("Unknown HTTP method: " + method)
 	}
 
 	martini := martini.New()
@@ -713,7 +745,7 @@ func loadPat(routes []route) http.Handler {
 		case "DELETE":
 			m.Del(route.path, http.HandlerFunc(httpHandlerFunc))
 		default:
-			panic("Unknow HTTP method: " + route.method)
+			panic("Unknown HTTP method: " + route.method)
 		}
 	}
 	return m
@@ -731,7 +763,7 @@ func loadPatSingle(method, path string, handler http.Handler) http.Handler {
 	case "DELETE":
 		m.Del(path, handler)
 	default:
-		panic("Unknow HTTP method: " + method)
+		panic("Unknown HTTP method: " + method)
 	}
 	return m
 }
@@ -937,7 +969,7 @@ func loadTraffic(routes []route) http.Handler {
 		case "DELETE":
 			router.Delete(route.path, trafficHandler)
 		default:
-			panic("Unknow HTTP method: " + route.method)
+			panic("Unknown HTTP method: " + route.method)
 		}
 	}
 	return router
@@ -957,7 +989,7 @@ func loadTrafficSingle(method, path string, handler traffic.HttpHandleFunc) http
 	case "DELETE":
 		router.Delete(path, handler)
 	default:
-		panic("Unknow HTTP method: " + method)
+		panic("Unknown HTTP method: " + method)
 	}
 	return router
 }
@@ -1007,7 +1039,7 @@ func loadZeus(routes []route) http.Handler {
 		case "DELETE":
 			m.DELETE(route.path, http.HandlerFunc(httpHandlerFunc))
 		default:
-			panic("Unknow HTTP method: " + route.method)
+			panic("Unknown HTTP method: " + route.method)
 		}
 	}
 	return m
@@ -1025,7 +1057,7 @@ func loadZeusSingle(method, path string, handler http.HandlerFunc) http.Handler 
 	case "DELETE":
 		m.DELETE(path, handler)
 	default:
-		panic("Unknow HTTP method: " + method)
+		panic("Unknown HTTP method: " + method)
 	}
 	return m
 }
