@@ -15,6 +15,7 @@ import (
 
 	"github.com/ant0ine/go-json-rest/rest"
 	"github.com/lunny/tango"
+	llog "github.com/lunny/log"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
 	"github.com/bmizerany/pat"
@@ -68,6 +69,7 @@ func init() {
 	// makes logging 'webscale' (ignores them)
 	log.SetOutput(new(mockResponseWriter))
 	nullLogger = log.New(new(mockResponseWriter), "", 0)
+	llog.SetOutput(new(mockResponseWriter))
 
 	initTango()
 	initBeego()
@@ -103,16 +105,16 @@ func initBeego() {
 }
 
 func loadTango(routes []route) http.Handler {
-	tg := tango.New()
+	tg := tango.NewWithLog(llog.Std)
 	for _, route := range routes {
-		tg.Route([]string{route.method}, route.path, tangoHandler)
+		tg.Route(route.method, route.path, tangoHandler)
 	}
 	return tg
 }
 
 func loadTangoSingle(method, path string, handler func(*tango.Context)) http.Handler {
-	tg := tango.New()
-	tg.Route([]string{method}, path, handler)
+	tg := tango.NewWithLog(llog.Std)
+	tg.Route(method, path, handler)
 	return tg
 }
 
