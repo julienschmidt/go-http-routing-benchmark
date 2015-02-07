@@ -367,34 +367,32 @@ func goJsonRestHandlerWrite(w rest.ResponseWriter, req *rest.Request) {
 	io.WriteString(w.(io.Writer), req.PathParam("name"))
 }
 
-func newGoJsonRestResourceHandler() *rest.ResourceHandler {
-	handler := rest.ResourceHandler{
-		EnableRelaxedContentType: true,
-		Logger:            nullLogger,
-		ErrorLogger:       nullLogger,
-		DisableXPoweredBy: true,
-	}
-	return &handler
-}
-
 func loadGoJsonRest(routes []route) http.Handler {
-	handler := newGoJsonRestResourceHandler()
+	api := rest.NewApi()
 	restRoutes := make([]*rest.Route, 0, len(routes))
 	for _, route := range routes {
 		restRoutes = append(restRoutes,
 			&rest.Route{route.method, route.path, goJsonRestHandler},
 		)
 	}
-	handler.SetRoutes(restRoutes...)
-	return handler
+	router, err := rest.MakeRouter(restRoutes...)
+	if err != nil {
+		log.Fatal(err)
+	}
+	api.SetApp(router)
+	return api.MakeHandler()
 }
 
 func loadGoJsonRestSingle(method, path string, hfunc rest.HandlerFunc) http.Handler {
-	handler := newGoJsonRestResourceHandler()
-	handler.SetRoutes(
+	api := rest.NewApi()
+	router, err := rest.MakeRouter(
 		&rest.Route{method, path, hfunc},
 	)
-	return handler
+	if err != nil {
+		log.Fatal(err)
+	}
+	api.SetApp(router)
+	return api.MakeHandler()
 }
 
 // go-restful
