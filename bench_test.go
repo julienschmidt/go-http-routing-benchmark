@@ -71,6 +71,12 @@ func BenchmarkAce_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkBear_Param(b *testing.B) {
+	router := loadBearSingle("GET", "/user/{name}", bearHandler)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkBeego_Param(b *testing.B) {
 	router := loadBeegoSingle("GET", "/user/:name", beegoHandler)
 
@@ -215,6 +221,12 @@ const fiveRoute = "/test/test/test/test/test"
 
 func BenchmarkAce_Param5(b *testing.B) {
 	router := loadAceSingle("GET", fiveColon, aceHandle)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkBear_Param5(b *testing.B) {
+	router := loadBearSingle("GET", fiveBrace, bearHandler)
 
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
@@ -367,6 +379,12 @@ func BenchmarkAce_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkBear_Param20(b *testing.B) {
+	router := loadBearSingle("GET", twentyBrace, bearHandler)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkBeego_Param20(b *testing.B) {
 	router := loadBeegoSingle("GET", twentyColon, beegoHandler)
 
@@ -507,6 +525,12 @@ func BenchmarkZeus_Param20(b *testing.B) {
 // Route with Param and write
 func BenchmarkAce_ParamWrite(b *testing.B) {
 	router := loadAceSingle("GET", "/user/:name", aceHandleWrite)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkBear_ParamWrite(b *testing.B) {
+	router := loadBearSingle("GET", "/user/{name}", bearHandlerWrite)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)

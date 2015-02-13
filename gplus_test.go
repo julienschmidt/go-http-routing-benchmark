@@ -37,6 +37,7 @@ var gplusAPI = []route{
 
 var (
 	gplusAce         http.Handler
+	gplusBear        http.Handler
 	gplusBeego       http.Handler
 	gplusBone        http.Handler
 	gplusDenco       http.Handler
@@ -66,6 +67,9 @@ func init() {
 
 	calcMem("Ace", func() {
 		gplusAce = loadAce(gplusAPI)
+	})
+	calcMem("Bear", func() {
+		gplusBear = loadBear(gplusAPI)
 	})
 	calcMem("Beego", func() {
 		gplusBeego = loadBeego(gplusAPI)
@@ -141,6 +145,10 @@ func init() {
 func BenchmarkAce_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusAce, req)
+}
+func BenchmarkBear_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	benchRequest(b, gplusBear, req)
 }
 func BenchmarkBeego_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
@@ -236,6 +244,10 @@ func BenchmarkAce_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusAce, req)
 }
+func BenchmarkBear_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	benchRequest(b, gplusBear, req)
+}
 func BenchmarkBeego_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusBeego, req)
@@ -330,6 +342,10 @@ func BenchmarkAce_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusAce, req)
 }
+func BenchmarkBear_GPlus2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	benchRequest(b, gplusBear, req)
+}
 func BenchmarkBeego_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusBeego, req)
@@ -422,6 +438,9 @@ func BenchmarkZeus_GPlus2Params(b *testing.B) {
 // All Routes
 func BenchmarkAce_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusAce, gplusAPI)
+}
+func BenchmarkBear_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusBear, gplusAPI)
 }
 func BenchmarkBeego_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusBeego, gplusAPI)
