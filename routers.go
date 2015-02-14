@@ -42,6 +42,7 @@ import (
 	"github.com/revel/revel"
 	"github.com/robfig/pathtree"
 	"github.com/typepress/rivet"
+	"github.com/ursiform/bear"
 	goji "github.com/zenazn/goji/web"
 )
 
@@ -106,6 +107,37 @@ func loadAce(routes []route) http.Handler {
 func loadAceSingle(method, path string, handle ace.HandlerFunc) http.Handler {
 	router := ace.New()
 	router.Handle(method, path, []ace.HandlerFunc{handle})
+	return router
+}
+
+// bear
+func bearHandler(_ http.ResponseWriter, _ *http.Request, ctx *bear.Context) {}
+
+func bearHandlerWrite(res http.ResponseWriter, _ *http.Request, ctx *bear.Context) {
+	res.Write([]byte(ctx.Params["name"]))
+}
+func loadBear(routes []route) http.Handler {
+	router := bear.New()
+	re := regexp.MustCompile(":([^/]*)")
+	for _, route := range routes {
+		switch route.method {
+		case "GET", "POST", "PUT", "PATCH", "DELETE":
+			router.On(route.method, re.ReplaceAllString(route.path, "{$1}"), bearHandler)
+		default:
+			panic("Unknown HTTP method: " + route.method)
+		}
+	}
+	return router
+}
+
+func loadBearSingle(method string, path string, handler bear.HandlerFunc) http.Handler {
+	router := bear.New()
+	switch method {
+	case "GET", "POST", "PUT", "PATCH", "DELETE":
+		router.On(method, path, handler)
+	default:
+		panic("Unknown HTTP method: " + method)
+	}
 	return router
 }
 

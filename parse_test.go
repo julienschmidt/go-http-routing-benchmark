@@ -57,6 +57,7 @@ var parseAPI = []route{
 
 var (
 	parseAce         http.Handler
+	parseBear        http.Handler
 	parseBeego       http.Handler
 	parseBone        http.Handler
 	parseDenco       http.Handler
@@ -86,6 +87,9 @@ func init() {
 
 	calcMem("Ace", func() {
 		parseAce = loadAce(parseAPI)
+	})
+	calcMem("Bear", func() {
+		parseBear = loadBear(parseAPI)
 	})
 	calcMem("Beego", func() {
 		parseBeego = loadBeego(parseAPI)
@@ -161,6 +165,10 @@ func init() {
 func BenchmarkAce_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseAce, req)
+}
+func BenchmarkBear_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseBear, req)
 }
 func BenchmarkBeego_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
@@ -256,6 +264,10 @@ func BenchmarkAce_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseAce, req)
 }
+func BenchmarkBear_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseBear, req)
+}
 func BenchmarkBeego_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseBeego, req)
@@ -350,6 +362,10 @@ func BenchmarkAce_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseAce, req)
 }
+func BenchmarkBear_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseBear, req)
+}
 func BenchmarkBeego_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseBeego, req)
@@ -442,6 +458,9 @@ func BenchmarkZeus_Parse2Params(b *testing.B) {
 // All Routes
 func BenchmarkAce_ParseAll(b *testing.B) {
 	benchRoutes(b, parseAce, parseAPI)
+}
+func BenchmarkBear_ParseAll(b *testing.B) {
+	benchRoutes(b, parseBeego, parseAPI)
 }
 func BenchmarkBeego_ParseAll(b *testing.B) {
 	benchRoutes(b, parseBeego, parseAPI)
