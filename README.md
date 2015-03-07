@@ -9,20 +9,31 @@ Of course the tested routers can be used for any kind of HTTP request → handle
 
 #### Tested routers & frameworks:
 
+ * [Ace](https://github.com/plimble/ace)
+ * [Bear](https://github.com/ursiform/bear)
  * [Beego](http://beego.me/)
- * [go-json-rest](https://github.com/ant0ine/go-json-rest)
+ * [Bone](https://github.com/go-zoo/bone)
  * [Denco](https://github.com/naoina/denco)
+ * [Gin](https://github.com/gin-gonic/gin)
  * [Gocraft Web](https://github.com/gocraft/web)
  * [Goji](https://github.com/zenazn/goji/)
+ * [go-json-rest](https://github.com/ant0ine/go-json-rest)
+ * [go-restful](https://github.com/emicklei/go-restful)
  * [Gorilla Mux](http://www.gorillatoolkit.org/pkg/mux)
  * [http.ServeMux](http://golang.org/pkg/net/http/#ServeMux)
  * [HttpRouter](https://github.com/julienschmidt/httprouter)
  * [HttpTreeMux](https://github.com/dimfeld/httptreemux)
  * [Kocha-urlrouter](https://github.com/naoina/kocha-urlrouter)
+ * [Macaron](https://github.com/Unknwon/macaron)
  * [Martini](https://github.com/go-martini/martini)
  * [Pat](https://github.com/bmizerany/pat)
+ * [Revel](https://github.com/revel/revel)
+ * [Rivet](https://github.com/typepress/rivet)
+ * [Tango](https://github.com/lunny/tango)
  * [TigerTonic](https://github.com/rcrowley/go-tigertonic)
  * [Traffic](https://github.com/pilu/traffic)
+ * [Vulcan](https://github.com/mailgun/route)
+ * [Zeus](https://github.com/daryl/zeus)
 
 
 ## Motivation
