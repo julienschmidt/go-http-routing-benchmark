@@ -31,6 +31,7 @@ import (
 	"github.com/gocraft/web"
 	"github.com/gorilla/mux"
 	"github.com/julienschmidt/httprouter"
+	"github.com/labstack/bolt"
 	"github.com/lunny/tango"
 	vulcan "github.com/mailgun/route"
 	"github.com/naoina/denco"
@@ -193,6 +194,27 @@ func loadBeegoSingle(method, path string, handler beego.FilterFunc) http.Handler
 		panic("Unknow HTTP method: " + method)
 	}
 	return app
+}
+
+// Bolt
+func boltHandler(*bolt.Context) {}
+
+func boltHandlerWrite(c *bolt.Context) {
+	io.WriteString(c.Response, c.Param("name"))
+}
+
+func loadBolt(routes []route) http.Handler {
+	router := bolt.New().Router
+	for _, r := range routes {
+		router.Add(r.method, r.path, boltHandler)
+	}
+	return router
+}
+
+func loadBoltSingle(method, path string, handler bolt.HandlerFunc) http.Handler {
+	router := bolt.New(bolt.MaxParam(20)).Router
+	router.Add(method, path, boltHandler)
+	return router
 }
 
 // bone
