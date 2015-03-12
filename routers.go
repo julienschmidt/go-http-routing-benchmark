@@ -7,6 +7,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -31,6 +32,7 @@ import (
 	"github.com/gocraft/web"
 	"github.com/gorilla/mux"
 	"github.com/julienschmidt/httprouter"
+	"github.com/labstack/echo"
 	"github.com/lunny/tango"
 	vulcan "github.com/mailgun/route"
 	"github.com/naoina/denco"
@@ -271,6 +273,28 @@ func loadDencoSingle(method, path string, h denco.HandlerFunc) http.Handler {
 		panic(err)
 	}
 	return handler
+}
+
+// Echo
+func echoHandler(*echo.Context) {}
+
+func echoHandlerWrite(c *echo.Context) {
+	io.WriteString(c.Response, c.Param("name"))
+}
+
+func loadEcho(routes []route) http.Handler {
+	router := echo.New().Router
+	for _, r := range routes {
+		router.Add(r.method, r.path, echoHandler, 0)
+	}
+	return router
+}
+
+func loadEchoSingle(method, path string, handler echo.HandlerFunc) http.Handler {
+	e := echo.New()
+	e.MaxParam(20)
+	e.Router.Add(method, path, echoHandler, 0)
+	return e.Router
 }
 
 // Gin
@@ -909,7 +933,7 @@ func initTango() {
 }
 
 func loadTango(routes []route) http.Handler {
-	tg := tango.New()
+	tg := tango.NewWithLog(tango.NewLogger(ioutil.Discard))
 	for _, route := range routes {
 		tg.Route([]string{route.method}, route.path, tangoHandler)
 	}
@@ -917,7 +941,7 @@ func loadTango(routes []route) http.Handler {
 }
 
 func loadTangoSingle(method, path string, handler func(*tango.Context)) http.Handler {
-	tg := tango.New()
+	tg := tango.NewWithLog(tango.NewLogger(ioutil.Discard))
 	tg.Route([]string{method}, path, handler)
 	return tg
 }
