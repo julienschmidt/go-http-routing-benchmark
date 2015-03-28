@@ -277,7 +277,7 @@ var (
 	githubAce         http.Handler
 	githubBear        http.Handler
 	githubBeego       http.Handler
-	githubBolt        http.Handler
+	githubEcho        http.Handler
 	githubBone        http.Handler
 	githubDenco       http.Handler
 	githubGin         http.Handler
@@ -313,8 +313,8 @@ func init() {
 	calcMem("Beego", func() {
 		githubBeego = loadBeego(githubAPI)
 	})
-	calcMem("Bolt", func() {
-		githubBolt = loadBolt(githubAPI)
+	calcMem("Echo", func() {
+		githubEcho = loadEcho(githubAPI)
 	})
 	calcMem("Bone", func() {
 		githubBone = loadBone(githubAPI)
@@ -396,9 +396,9 @@ func BenchmarkBeego_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
 	benchRequest(b, githubBeego, req)
 }
-func BenchmarkBolt_GithubStatic(b *testing.B) {
+func BenchmarkEcho_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
-	benchRequest(b, githubBolt, req)
+	benchRequest(b, githubEcho, req)
 }
 func BenchmarkBone_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
@@ -498,9 +498,9 @@ func BenchmarkBeego_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubBeego, req)
 }
-func BenchmarkBolt_GithubParam(b *testing.B) {
+func BenchmarkEcho_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
-	benchRequest(b, githubBolt, req)
+	benchRequest(b, githubEcho, req)
 }
 func BenchmarkBone_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
@@ -597,8 +597,8 @@ func BenchmarkBear_GithubAll(b *testing.B) {
 func BenchmarkBeego_GithubAll(b *testing.B) {
 	benchRoutes(b, githubBeego, githubAPI)
 }
-func BenchmarkBolt_GithubAll(b *testing.B) {
-	benchRoutes(b, githubBolt, githubAPI)
+func BenchmarkEcho_GithubAll(b *testing.B) {
+	benchRoutes(b, githubEcho, githubAPI)
 }
 func BenchmarkBone_GithubAll(b *testing.B) {
 	benchRoutes(b, githubBone, githubAPI)

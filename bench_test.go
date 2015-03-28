@@ -83,8 +83,8 @@ func BenchmarkBeego_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
-func BenchmarkBolt_Param(b *testing.B) {
-	router := loadBoltSingle("GET", "/user/:name", boltHandler)
+func BenchmarkEcho_Param(b *testing.B) {
+	router := loadEchoSingle("GET", "/user/:name", echoHandler)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
@@ -243,8 +243,8 @@ func BenchmarkBeego_Param5(b *testing.B) {
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
 }
-func BenchmarkBolt_Param5(b *testing.B) {
-	router := loadBoltSingle("GET", fiveColon, boltHandler)
+func BenchmarkEcho_Param5(b *testing.B) {
+	router := loadEchoSingle("GET", fiveColon, echoHandler)
 
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
@@ -403,8 +403,8 @@ func BenchmarkBeego_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
-func BenchmarkBolt_Param20(b *testing.B) {
-	router := loadBoltSingle("GET", twentyColon, boltHandler)
+func BenchmarkEcho_Param20(b *testing.B) {
+	router := loadEchoSingle("GET", twentyColon, echoHandler)
 
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
@@ -559,8 +559,8 @@ func BenchmarkBeego_ParamWrite(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
-func BenchmarkBolt_ParamWrite(b *testing.B) {
-	router := loadBoltSingle("GET", "/user/:name", boltHandlerWrite)
+func BenchmarkEcho_ParamWrite(b *testing.B) {
+	router := loadEchoSingle("GET", "/user/:name", echoHandlerWrite)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)

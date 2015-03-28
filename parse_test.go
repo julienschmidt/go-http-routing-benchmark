@@ -59,7 +59,7 @@ var (
 	parseAce         http.Handler
 	parseBear        http.Handler
 	parseBeego       http.Handler
-	parseBolt        http.Handler
+	parseEcho        http.Handler
 	parseBone        http.Handler
 	parseDenco       http.Handler
 	parseGin         http.Handler
@@ -95,8 +95,8 @@ func init() {
 	calcMem("Beego", func() {
 		parseBeego = loadBeego(parseAPI)
 	})
-	calcMem("Bolt", func() {
-		parseBolt = loadBolt(parseAPI)
+	calcMem("Echo", func() {
+		parseEcho = loadEcho(parseAPI)
 	})
 	calcMem("Bone", func() {
 		parseBone = loadBone(parseAPI)
@@ -178,9 +178,9 @@ func BenchmarkBeego_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseBeego, req)
 }
-func BenchmarkBolt_ParseStatic(b *testing.B) {
+func BenchmarkEcho_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
-	benchRequest(b, parseBolt, req)
+	benchRequest(b, parseEcho, req)
 }
 func BenchmarkBone_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
@@ -280,9 +280,9 @@ func BenchmarkBeego_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseBeego, req)
 }
-func BenchmarkBolt_ParseParam(b *testing.B) {
+func BenchmarkEcho_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
-	benchRequest(b, parseBolt, req)
+	benchRequest(b, parseEcho, req)
 }
 func BenchmarkBone_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
@@ -382,9 +382,9 @@ func BenchmarkBeego_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseBeego, req)
 }
-func BenchmarkBolt_Parse2Params(b *testing.B) {
+func BenchmarkEcho_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
-	benchRequest(b, parseBolt, req)
+	benchRequest(b, parseEcho, req)
 }
 func BenchmarkBone_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
@@ -481,8 +481,8 @@ func BenchmarkBear_ParseAll(b *testing.B) {
 func BenchmarkBeego_ParseAll(b *testing.B) {
 	benchRoutes(b, parseBeego, parseAPI)
 }
-func BenchmarkBolt_ParseAll(b *testing.B) {
-	benchRoutes(b, parseBolt, parseAPI)
+func BenchmarkEcho_ParseAll(b *testing.B) {
+	benchRoutes(b, parseEcho, parseAPI)
 }
 func BenchmarkBone_ParseAll(b *testing.B) {
 	benchRoutes(b, parseBone, parseAPI)
