@@ -7,6 +7,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -932,7 +933,7 @@ func initTango() {
 }
 
 func loadTango(routes []route) http.Handler {
-	tg := tango.New()
+	tg := tango.NewWithLog(tango.NewLogger(ioutil.Discard))
 	for _, route := range routes {
 		tg.Route([]string{route.method}, route.path, tangoHandler)
 	}
@@ -940,7 +941,7 @@ func loadTango(routes []route) http.Handler {
 }
 
 func loadTangoSingle(method, path string, handler func(*tango.Context)) http.Handler {
-	tg := tango.New()
+	tg := tango.NewWithLog(tango.NewLogger(ioutil.Discard))
 	tg.Route([]string{method}, path, handler)
 	return tg
 }
