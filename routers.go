@@ -32,7 +32,6 @@ import (
 	"github.com/gocraft/web"
 	"github.com/gorilla/mux"
 	"github.com/julienschmidt/httprouter"
-	"github.com/labstack/echo"
 	"github.com/lunny/tango"
 	vulcan "github.com/mailgun/route"
 	"github.com/naoina/denco"
@@ -195,28 +194,6 @@ func loadBeegoSingle(method, path string, handler beego.FilterFunc) http.Handler
 		panic("Unknow HTTP method: " + method)
 	}
 	return app
-}
-
-// Echo
-func echoHandler(*echo.Context) {}
-
-func echoHandlerWrite(c *echo.Context) {
-	io.WriteString(c.Response, c.Param("name"))
-}
-
-func loadEcho(routes []route) http.Handler {
-	router := echo.New().Router
-	for _, r := range routes {
-		router.Add(r.method, r.path, echoHandler)
-	}
-	return router
-}
-
-func loadEchoSingle(method, path string, handler echo.HandlerFunc) http.Handler {
-	e := echo.New()
-	e.MaxParam(20)
-	e.Router.Add(method, path, echoHandler)
-	return e.Router
 }
 
 // bone

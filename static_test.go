@@ -175,9 +175,9 @@ var (
 	staticAce         http.Handler
 	staticBear        http.Handler
 	staticBeego       http.Handler
-	staticEcho        http.Handler
 	staticBone        http.Handler
 	staticDenco       http.Handler
+	staticEcho        http.Handler
 	staticGin         http.Handler
 	staticGocraftWeb  http.Handler
 	staticGoji        http.Handler
@@ -219,14 +219,14 @@ func init() {
 	calcMem("Beego", func() {
 		staticBeego = loadBeego(staticRoutes)
 	})
-	calcMem("Echo", func() {
-		staticEcho = loadEcho(staticRoutes)
-	})
 	calcMem("Bone", func() {
 		staticBone = loadBone(staticRoutes)
 	})
 	calcMem("Denco", func() {
 		staticDenco = loadDenco(staticRoutes)
+	})
+	calcMem("Echo", func() {
+		staticEcho = loadEcho(staticRoutes)
 	})
 	calcMem("Gin", func() {
 		staticGin = loadGin(staticRoutes)
@@ -303,14 +303,14 @@ func BenchmarkBeego_StaticAll(b *testing.B) {
 func BenchmarkBear_StaticAll(b *testing.B) {
 	benchRoutes(b, staticBear, staticRoutes)
 }
-func BenchmarkEcho_StaticAll(b *testing.B) {
-	benchRoutes(b, staticEcho, staticRoutes)
-}
 func BenchmarkBone_StaticAll(b *testing.B) {
 	benchRoutes(b, staticBone, staticRoutes)
 }
 func BenchmarkDenco_StaticAll(b *testing.B) {
 	benchRoutes(b, staticDenco, staticRoutes)
+}
+func BenchmarkEcho_StaticAll(b *testing.B) {
+	benchRoutes(b, staticEcho, staticRoutes)
 }
 func BenchmarkGin_StaticAll(b *testing.B) {
 	benchRoutes(b, staticGin, staticRoutes)

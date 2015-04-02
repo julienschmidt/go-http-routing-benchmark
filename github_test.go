@@ -277,9 +277,9 @@ var (
 	githubAce         http.Handler
 	githubBear        http.Handler
 	githubBeego       http.Handler
-	githubEcho        http.Handler
 	githubBone        http.Handler
 	githubDenco       http.Handler
+	githubEcho        http.Handler
 	githubGin         http.Handler
 	githubGocraftWeb  http.Handler
 	githubGoji        http.Handler
@@ -313,14 +313,14 @@ func init() {
 	calcMem("Beego", func() {
 		githubBeego = loadBeego(githubAPI)
 	})
-	calcMem("Echo", func() {
-		githubEcho = loadEcho(githubAPI)
-	})
 	calcMem("Bone", func() {
 		githubBone = loadBone(githubAPI)
 	})
 	calcMem("Denco", func() {
 		githubDenco = loadDenco(githubAPI)
+	})
+	calcMem("Echo", func() {
+		githubEcho = loadEcho(githubAPI)
 	})
 	calcMem("Gin", func() {
 		githubGin = loadGin(githubAPI)
@@ -396,10 +396,6 @@ func BenchmarkBeego_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
 	benchRequest(b, githubBeego, req)
 }
-func BenchmarkEcho_GithubStatic(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/user/repos", nil)
-	benchRequest(b, githubEcho, req)
-}
 func BenchmarkBone_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
 	benchRequest(b, githubBone, req)
@@ -407,6 +403,10 @@ func BenchmarkBone_GithubStatic(b *testing.B) {
 func BenchmarkDenco_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
 	benchRequest(b, githubDenco, req)
+}
+func BenchmarkEcho_GithubStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/user/repos", nil)
+	benchRequest(b, githubEcho, req)
 }
 func BenchmarkGin_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
@@ -498,10 +498,6 @@ func BenchmarkBeego_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubBeego, req)
 }
-func BenchmarkEcho_GithubParam(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
-	benchRequest(b, githubEcho, req)
-}
 func BenchmarkBone_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubBone, req)
@@ -509,6 +505,10 @@ func BenchmarkBone_GithubParam(b *testing.B) {
 func BenchmarkDenco_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubDenco, req)
+}
+func BenchmarkEcho_GithubParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
+	benchRequest(b, githubEcho, req)
 }
 func BenchmarkGin_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
@@ -597,14 +597,14 @@ func BenchmarkBear_GithubAll(b *testing.B) {
 func BenchmarkBeego_GithubAll(b *testing.B) {
 	benchRoutes(b, githubBeego, githubAPI)
 }
-func BenchmarkEcho_GithubAll(b *testing.B) {
-	benchRoutes(b, githubEcho, githubAPI)
-}
 func BenchmarkBone_GithubAll(b *testing.B) {
 	benchRoutes(b, githubBone, githubAPI)
 }
 func BenchmarkDenco_GithubAll(b *testing.B) {
 	benchRoutes(b, githubDenco, githubAPI)
+}
+func BenchmarkEcho_GithubAll(b *testing.B) {
+	benchRoutes(b, githubEcho, githubAPI)
 }
 func BenchmarkGin_GithubAll(b *testing.B) {
 	benchRoutes(b, githubGin, githubAPI)
