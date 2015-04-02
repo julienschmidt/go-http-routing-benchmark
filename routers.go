@@ -285,7 +285,7 @@ func echoHandlerWrite(c *echo.Context) {
 func loadEcho(routes []route) http.Handler {
 	router := echo.New().Router
 	for _, r := range routes {
-		router.Add(r.method, r.path, echoHandler, 0)
+		router.Add(r.method, r.path, echoHandler, nil)
 	}
 	return router
 }
@@ -293,7 +293,7 @@ func loadEcho(routes []route) http.Handler {
 func loadEchoSingle(method, path string, handler echo.HandlerFunc) http.Handler {
 	e := echo.New()
 	e.MaxParam(20)
-	e.Router.Add(method, path, echoHandler, 0)
+	e.Router.Add(method, path, echoHandler, nil)
 	return e.Router
 }
 
