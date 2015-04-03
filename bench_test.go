@@ -177,6 +177,14 @@ func BenchmarkPat_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+
+func BenchmarkR2router_Param(b *testing.B) {
+	router := loadR2routerSingle("GET", "/user/:name", r2routerHandler)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+
 func BenchmarkRevel_Param(b *testing.B) {
 	router := loadRevelSingle("GET", "/user/:name", "RevelController.Handle")
 
@@ -337,6 +345,14 @@ func BenchmarkPat_Param5(b *testing.B) {
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
 }
+
+func BenchmarkR2router_Param5(b *testing.B) {
+	router := loadR2routerSingle("GET", fiveColon, r2routerHandler)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
+
 func BenchmarkRevel_Param5(b *testing.B) {
 	router := loadRevelSingle("GET", fiveColon, "RevelController.Handle")
 
@@ -497,6 +513,14 @@ func BenchmarkPat_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
+
+func BenchmarkR2router_Param20(b *testing.B) {
+	router := loadR2routerSingle("GET", twentyColon, r2routerHandler)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
+
 func BenchmarkRevel_Param20(b *testing.B) {
 	router := loadRevelSingle("GET", twentyColon, "RevelController.Handle")
 
@@ -653,6 +677,14 @@ func BenchmarkPat_ParamWrite(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+
+func BenchmarkR2router_ParamWrite(b *testing.B) {
+	router := loadR2routerSingle("GET", "/user/:name", r2routerHandleWrite)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+
 func BenchmarkRevel_ParamWrite(b *testing.B) {
 	router := loadRevelSingle("GET", "/user/:name", "RevelController.HandleWrite")
 
