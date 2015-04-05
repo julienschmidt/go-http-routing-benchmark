@@ -70,6 +70,7 @@ func init() {
 	log.SetOutput(new(mockResponseWriter))
 	nullLogger = log.New(new(mockResponseWriter), "", 0)
 	llog.SetOutput(new(mockResponseWriter))
+	llog.SetOutputLevel(llog.Lnone)
 
 	initTango()
 	initBeego()
