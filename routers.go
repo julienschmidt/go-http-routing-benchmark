@@ -7,7 +7,6 @@ package main
 import (
 	"fmt"
 	"io"
-	"io/ioutil"
 	"log"
 	"net/http"
 	"os"
@@ -33,6 +32,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/julienschmidt/httprouter"
 	"github.com/labstack/echo"
+	llog "github.com/lunny/log"
 	"github.com/lunny/tango"
 	vulcan "github.com/mailgun/route"
 	"github.com/naoina/denco"
@@ -930,19 +930,21 @@ func tangoHandlerWrite(ctx *tango.Context) {
 
 func initTango() {
 	tango.Env = tango.Prod
+	llog.SetOutput(new(mockResponseWriter))
+	llog.SetOutputLevel(llog.Lnone)
 }
 
 func loadTango(routes []route) http.Handler {
-	tg := tango.NewWithLog(tango.NewLogger(ioutil.Discard))
+	tg := tango.NewWithLog(llog.Std)
 	for _, route := range routes {
-		tg.Route([]string{route.method}, route.path, tangoHandler)
+		tg.Route(route.method, route.path, tangoHandler)
 	}
 	return tg
 }
 
 func loadTangoSingle(method, path string, handler func(*tango.Context)) http.Handler {
-	tg := tango.NewWithLog(tango.NewLogger(ioutil.Discard))
-	tg.Route([]string{method}, path, handler)
+	tg := tango.NewWithLog(llog.Std)
+	tg.Route(method, path, handler)
 	return tg
 }
 
