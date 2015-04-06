@@ -13,28 +13,38 @@ import (
 	"regexp"
 	"runtime"
 
+	// If you add new routers please:
+	// - Keep the benchmark functions etc. alphabetically sorted
+	// - Make a pull request (without benchmark results) at
+	//   https://github.com/julienschmidt/go-http-routing-benchmark
+	"github.com/Unknwon/macaron"
 	"github.com/ant0ine/go-json-rest/rest"
-	"github.com/lunny/tango"
-	llog "github.com/lunny/log"
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
 	"github.com/bmizerany/pat"
+	"github.com/daryl/zeus"
 	"github.com/dimfeld/httptreemux"
 	"github.com/emicklei/go-restful"
 	"github.com/gin-gonic/gin"
 	"github.com/go-martini/martini"
+	"github.com/go-zoo/bone"
 	"github.com/gocraft/web"
 	"github.com/gorilla/mux"
 	"github.com/julienschmidt/httprouter"
+	"github.com/labstack/echo"
+	llog "github.com/lunny/log"
+	"github.com/lunny/tango"
+	vulcan "github.com/mailgun/route"
 	"github.com/naoina/denco"
 	"github.com/naoina/kocha-urlrouter"
 	_ "github.com/naoina/kocha-urlrouter/doublearray"
 	"github.com/pilu/traffic"
+	"github.com/plimble/ace"
 	"github.com/rcrowley/go-tigertonic"
 	"github.com/revel/revel"
 	"github.com/robfig/pathtree"
-	"github.com/squiidz/bone"
 	"github.com/typepress/rivet"
+	"github.com/ursiform/bear"
 	goji "github.com/zenazn/goji/web"
 )
 
@@ -69,28 +79,68 @@ func init() {
 	// makes logging 'webscale' (ignores them)
 	log.SetOutput(new(mockResponseWriter))
 	nullLogger = log.New(new(mockResponseWriter), "", 0)
-	llog.SetOutput(new(mockResponseWriter))
-	llog.SetOutputLevel(llog.Lnone)
 
-	initTango()
 	initBeego()
 	initGin()
 	initMartini()
 	initRevel()
+	initTango()
 	initTraffic()
 }
 
 // Common
 func httpHandlerFunc(w http.ResponseWriter, r *http.Request) {}
 
-func tangoHandler(ctx *tango.Context) {
-}
-func tangoHandlerWrite(ctx *tango.Context) {
-	ctx.Write([]byte(ctx.Params().Get(":name")))
+// Ace
+func aceHandle(_ *ace.C) {}
+
+func aceHandleWrite(c *ace.C) {
+	io.WriteString(c.Writer, c.Params.ByName("name"))
 }
 
-func initTango() {
-	tango.Env = tango.Prod
+func loadAce(routes []route) http.Handler {
+	router := ace.New()
+	for _, route := range routes {
+		router.Handle(route.method, route.path, []ace.HandlerFunc{aceHandle})
+	}
+	return router
+}
+
+func loadAceSingle(method, path string, handle ace.HandlerFunc) http.Handler {
+	router := ace.New()
+	router.Handle(method, path, []ace.HandlerFunc{handle})
+	return router
+}
+
+// bear
+func bearHandler(_ http.ResponseWriter, _ *http.Request, ctx *bear.Context) {}
+
+func bearHandlerWrite(res http.ResponseWriter, _ *http.Request, ctx *bear.Context) {
+	res.Write([]byte(ctx.Params["name"]))
+}
+func loadBear(routes []route) http.Handler {
+	router := bear.New()
+	re := regexp.MustCompile(":([^/]*)")
+	for _, route := range routes {
+		switch route.method {
+		case "GET", "POST", "PUT", "PATCH", "DELETE":
+			router.On(route.method, re.ReplaceAllString(route.path, "{$1}"), bearHandler)
+		default:
+			panic("Unknown HTTP method: " + route.method)
+		}
+	}
+	return router
+}
+
+func loadBearSingle(method string, path string, handler bear.HandlerFunc) http.Handler {
+	router := bear.New()
+	switch method {
+	case "GET", "POST", "PUT", "PATCH", "DELETE":
+		router.On(method, path, handler)
+	default:
+		panic("Unknown HTTP method: " + method)
+	}
+	return router
 }
 
 // beego
@@ -103,20 +153,6 @@ func beegoHandlerWrite(ctx *context.Context) {
 func initBeego() {
 	beego.RunMode = "prod"
 	beego.BeeLogger.Close()
-}
-
-func loadTango(routes []route) http.Handler {
-	tg := tango.NewWithLog(llog.Std)
-	for _, route := range routes {
-		tg.Route(route.method, route.path, tangoHandler)
-	}
-	return tg
-}
-
-func loadTangoSingle(method, path string, handler func(*tango.Context)) http.Handler {
-	tg := tango.NewWithLog(llog.Std)
-	tg.Route(method, path, handler)
-	return tg
 }
 
 func loadBeego(routes []route) http.Handler {
@@ -203,32 +239,11 @@ func loadBoneSingle(method, path string, handler http.Handler) http.Handler {
 }
 
 // Denco
-type dencoHandler struct {
-	routerMap map[string]*denco.Router
-	params    []denco.Param
-}
+func dencoHandler(w http.ResponseWriter, r *http.Request, params denco.Params) {}
 
-func (h *dencoHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	router, found := h.routerMap[r.Method]
-	if !found {
-		panic("Unknown HTTP method: " + r.Method)
-	}
-	meth, params, found := router.Lookup(r.URL.Path)
-	if !found {
-		panic("Router not found: " + r.URL.Path)
-	}
-	h.params = params
-	meth.(http.HandlerFunc).ServeHTTP(w, r)
-}
-
-func (h *dencoHandler) Get(w http.ResponseWriter, r *http.Request)    {}
-func (h *dencoHandler) Post(w http.ResponseWriter, r *http.Request)   {}
-func (h *dencoHandler) Put(w http.ResponseWriter, r *http.Request)    {}
-func (h *dencoHandler) Patch(w http.ResponseWriter, r *http.Request)  {}
-func (h *dencoHandler) Delete(w http.ResponseWriter, r *http.Request) {}
-func (h *dencoHandler) dencoHandlerWrite(w http.ResponseWriter, r *http.Request) {
+func dencoHandlerWrite(w http.ResponseWriter, r *http.Request, params denco.Params) {
 	var name string
-	for _, param := range h.params {
+	for _, param := range params {
 		if param.Name == "name" {
 			name = param.Value
 			break
@@ -238,49 +253,48 @@ func (h *dencoHandler) dencoHandlerWrite(w http.ResponseWriter, r *http.Request)
 }
 
 func loadDenco(routes []route) http.Handler {
-	handler := &dencoHandler{routerMap: map[string]*denco.Router{
-		"GET":    denco.New(),
-		"POST":   denco.New(),
-		"PUT":    denco.New(),
-		"PATCH":  denco.New(),
-		"DELETE": denco.New(),
-	}}
-	recordMap := make(map[string][]denco.Record)
+	mux := denco.NewMux()
+	handlers := make([]denco.Handler, 0, len(routes))
 	for _, route := range routes {
-		var f http.HandlerFunc
-		switch route.method {
-		case "GET":
-			f = handler.Get
-		case "POST":
-			f = handler.Post
-		case "PUT":
-			f = handler.Put
-		case "PATCH":
-			f = handler.Patch
-		case "DELETE":
-			f = handler.Delete
-		}
-		recordMap[route.method] = append(recordMap[route.method], denco.NewRecord(route.path, f))
+		h := mux.Handler(route.method, route.path, dencoHandler)
+		handlers = append(handlers, h)
 	}
-	for method, records := range recordMap {
-		if err := handler.routerMap[method].Build(records); err != nil {
-			panic(err)
-		}
+	handler, err := mux.Build(handlers)
+	if err != nil {
+		panic(err)
 	}
 	return handler
 }
 
-func loadDencoSingle(method, path string, handler *dencoHandler, hfunc http.HandlerFunc) http.Handler {
-	handler.routerMap = map[string]*denco.Router{
-		method: denco.New(),
-	}
-
-	if err := handler.routerMap[method].Build([]denco.Record{
-		denco.NewRecord(path, hfunc),
-	}); err != nil {
+func loadDencoSingle(method, path string, h denco.HandlerFunc) http.Handler {
+	mux := denco.NewMux()
+	handler, err := mux.Build([]denco.Handler{mux.Handler(method, path, h)})
+	if err != nil {
 		panic(err)
 	}
 	return handler
+}
+
+// Echo
+func echoHandler(*echo.Context) {}
+
+func echoHandlerWrite(c *echo.Context) {
+	io.WriteString(c.Response, c.Param("name"))
+}
+
+func loadEcho(routes []route) http.Handler {
+	router := echo.New().Router
+	for _, r := range routes {
+		router.Add(r.method, r.path, echoHandler, nil)
+	}
+	return router
+}
+
+func loadEchoSingle(method, path string, handler echo.HandlerFunc) http.Handler {
+	e := echo.New()
+	e.MaxParam(20)
+	e.Router.Add(method, path, echoHandler, nil)
+	return e.Router
 }
 
 // Gin
@@ -409,34 +423,32 @@ func goJsonRestHandlerWrite(w rest.ResponseWriter, req *rest.Request) {
 	io.WriteString(w.(io.Writer), req.PathParam("name"))
 }
 
-func newGoJsonRestResourceHandler() *rest.ResourceHandler {
-	handler := rest.ResourceHandler{
-		EnableRelaxedContentType: true,
-		Logger:            nullLogger,
-		ErrorLogger:       nullLogger,
-		DisableXPoweredBy: true,
-	}
-	return &handler
-}
-
 func loadGoJsonRest(routes []route) http.Handler {
-	handler := newGoJsonRestResourceHandler()
+	api := rest.NewApi()
 	restRoutes := make([]*rest.Route, 0, len(routes))
 	for _, route := range routes {
 		restRoutes = append(restRoutes,
 			&rest.Route{route.method, route.path, goJsonRestHandler},
 		)
 	}
-	handler.SetRoutes(restRoutes...)
-	return handler
+	router, err := rest.MakeRouter(restRoutes...)
+	if err != nil {
+		log.Fatal(err)
+	}
+	api.SetApp(router)
+	return api.MakeHandler()
 }
 
 func loadGoJsonRestSingle(method, path string, hfunc rest.HandlerFunc) http.Handler {
-	handler := newGoJsonRestResourceHandler()
-	handler.SetRoutes(
+	api := rest.NewApi()
+	router, err := rest.MakeRouter(
 		&rest.Route{method, path, hfunc},
 	)
-	return handler
+	if err != nil {
+		log.Fatal(err)
+	}
+	api.SetApp(router)
+	return api.MakeHandler()
 }
 
 // go-restful
@@ -632,6 +644,53 @@ func loadKochaSingle(method, path string, handler *kochaHandler, hfunc http.Hand
 		panic(err)
 	}
 	return handler
+}
+
+// Macaron
+func macaronHandler(_ *macaron.Context) {}
+
+func macaronHandlerWrite(c *macaron.Context) string {
+	return c.Params("name")
+}
+
+func loadMacaron(routes []route) http.Handler {
+	m := macaron.New()
+	for _, route := range routes {
+		switch route.method {
+		case "GET":
+			m.Get(route.path, martiniHandler)
+		case "POST":
+			m.Post(route.path, martiniHandler)
+		case "PUT":
+			m.Put(route.path, martiniHandler)
+		case "PATCH":
+			m.Patch(route.path, martiniHandler)
+		case "DELETE":
+			m.Delete(route.path, martiniHandler)
+		default:
+			panic("Unknow HTTP method: " + route.method)
+		}
+	}
+	return m
+}
+
+func loadMacaronSingle(method, path string, handler interface{}) http.Handler {
+	m := macaron.New()
+	switch method {
+	case "GET":
+		m.Get(path, handler)
+	case "POST":
+		m.Post(path, handler)
+	case "PUT":
+		m.Put(path, handler)
+	case "PATCH":
+		m.Patch(path, handler)
+	case "DELETE":
+		m.Delete(path, handler)
+	default:
+		panic("Unknow HTTP method: " + method)
+	}
+	return m
 }
 
 // Martini
@@ -862,6 +921,33 @@ func loadRivetSingle(method, path string, handler interface{}) http.Handler {
 	return router
 }
 
+// Tango
+func tangoHandler(ctx *tango.Context) {
+}
+func tangoHandlerWrite(ctx *tango.Context) {
+	ctx.Write([]byte(ctx.Params().Get(":name")))
+}
+
+func initTango() {
+	tango.Env = tango.Prod
+	llog.SetOutput(new(mockResponseWriter))
+	llog.SetOutputLevel(llog.Lnone)
+}
+
+func loadTango(routes []route) http.Handler {
+	tg := tango.NewWithLog(llog.Std)
+	for _, route := range routes {
+		tg.Route(route.method, route.path, tangoHandler)
+	}
+	return tg
+}
+
+func loadTangoSingle(method, path string, handler func(*tango.Context)) http.Handler {
+	tg := tango.NewWithLog(llog.Std)
+	tg.Route(method, path, handler)
+	return tg
+}
+
 // Tiger Tonic
 func tigerTonicHandlerWrite(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, r.URL.Query().Get("name"))
@@ -930,6 +1016,74 @@ func loadTrafficSingle(method, path string, handler traffic.HttpHandleFunc) http
 		panic("Unknow HTTP method: " + method)
 	}
 	return router
+}
+
+// Mailgun Vulcan
+func vulcanHandler(w http.ResponseWriter, r *http.Request) {}
+
+func vulcanHandlerWrite(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, r.URL.Query().Get("name"))
+}
+
+func loadVulcan(routes []route) http.Handler {
+	re := regexp.MustCompile(":([^/]*)")
+	mux := vulcan.NewMux()
+	for _, route := range routes {
+		path := re.ReplaceAllString(route.path, "<$1>")
+		expr := fmt.Sprintf(`Method("%s") && Path("%s")`, route.method, path)
+		if err := mux.HandleFunc(expr, httpHandlerFunc); err != nil {
+			panic(err)
+		}
+	}
+	return mux
+}
+
+func loadVulcanSingle(method, path string, handler http.HandlerFunc) http.Handler {
+	re := regexp.MustCompile(":([^/]*)")
+	mux := vulcan.NewMux()
+	path = re.ReplaceAllString(path, "<$1>")
+	expr := fmt.Sprintf(`Method("%s") && Path("%s")`, method, path)
+	if err := mux.HandleFunc(expr, httpHandlerFunc); err != nil {
+		panic(err)
+	}
+	return mux
+}
+
+// Zeus
+func loadZeus(routes []route) http.Handler {
+	m := zeus.New()
+	for _, route := range routes {
+		switch route.method {
+		case "GET":
+			m.GET(route.path, http.HandlerFunc(httpHandlerFunc))
+		case "POST":
+			m.POST(route.path, http.HandlerFunc(httpHandlerFunc))
+		case "PUT":
+			m.PUT(route.path, http.HandlerFunc(httpHandlerFunc))
+		case "DELETE":
+			m.DELETE(route.path, http.HandlerFunc(httpHandlerFunc))
+		default:
+			panic("Unknow HTTP method: " + route.method)
+		}
+	}
+	return m
+}
+
+func loadZeusSingle(method, path string, handler http.HandlerFunc) http.Handler {
+	m := zeus.New()
+	switch method {
+	case "GET":
+		m.GET(path, handler)
+	case "POST":
+		m.POST(path, handler)
+	case "PUT":
+		m.PUT(path, handler)
+	case "DELETE":
+		m.DELETE(path, handler)
+	default:
+		panic("Unknow HTTP method: " + method)
+	}
+	return m
 }
 
 // Usage notice
