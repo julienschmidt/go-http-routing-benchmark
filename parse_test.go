@@ -74,6 +74,7 @@ var (
 	parseMacaron     http.Handler
 	parseMartini     http.Handler
 	parsePat         http.Handler
+	parseR2router    http.Handler
 	parseRevel       http.Handler
 	parseRivet       http.Handler
 	parseTango       http.Handler
@@ -139,6 +140,9 @@ func init() {
 	})
 	calcMem("Pat", func() {
 		parsePat = loadPat(parseAPI)
+	})
+	calcMem("R2router", func() {
+		parseR2router = loadR2router(parseAPI)
 	})
 	calcMem("Revel", func() {
 		parseRevel = loadRevel(parseAPI)
@@ -237,6 +241,10 @@ func BenchmarkMartini_ParseStatic(b *testing.B) {
 func BenchmarkPat_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parsePat, req)
+}
+func BenchmarkR2router_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseR2router, req)
 }
 func BenchmarkRevel_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
@@ -340,6 +348,10 @@ func BenchmarkPat_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parsePat, req)
 }
+func BenchmarkR2router_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseR2router, req)
+}
 func BenchmarkRevel_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseRevel, req)
@@ -442,6 +454,10 @@ func BenchmarkPat_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parsePat, req)
 }
+func BenchmarkR2router_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseR2router, req)
+}
 func BenchmarkRevel_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseRevel, req)
@@ -525,6 +541,9 @@ func BenchmarkMartini_ParseAll(b *testing.B) {
 }
 func BenchmarkPat_ParseAll(b *testing.B) {
 	benchRoutes(b, parsePat, parseAPI)
+}
+func BenchmarkR2router_ParseAll(b *testing.B) {
+	benchRoutes(b, parseR2router, parseAPI)
 }
 func BenchmarkRevel_ParseAll(b *testing.B) {
 	benchRoutes(b, parseRevel, parseAPI)

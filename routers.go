@@ -46,6 +46,7 @@ import (
 	"github.com/typepress/rivet"
 	"github.com/ursiform/bear"
 	goji "github.com/zenazn/goji/web"
+	"github.com/vanng822/r2router"
 )
 
 type route struct {
@@ -788,6 +789,26 @@ func loadPatSingle(method, path string, handler http.Handler) http.Handler {
 		panic("Unknow HTTP method: " + method)
 	}
 	return m
+}
+
+// R2router
+func r2routerHandler(w http.ResponseWriter, req *http.Request, _ r2router.Params) {}
+func r2routerHandleWrite(w http.ResponseWriter, req *http.Request, params r2router.Params) {
+	io.WriteString(w, params.Get("name"))
+}
+
+func loadR2router(routes []route) http.Handler {
+	router := r2router.NewRouter()
+	for _, r := range routes {
+		router.AddHandler(r.method, r.path, r2routerHandler)
+	}
+	return router
+}
+
+func loadR2routerSingle(method, path string, handler r2router.HandlerFunc) http.Handler {
+	router := r2router.NewRouter()
+	router.AddHandler(method, path, handler)
+	return router
 }
 
 // Revel (Router only)
