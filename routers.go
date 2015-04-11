@@ -45,8 +45,8 @@ import (
 	"github.com/robfig/pathtree"
 	"github.com/typepress/rivet"
 	"github.com/ursiform/bear"
-	goji "github.com/zenazn/goji/web"
 	"github.com/vanng822/r2router"
+	goji "github.com/zenazn/goji/web"
 )
 
 type route struct {
@@ -950,7 +950,6 @@ func tangoHandlerWrite(ctx *tango.Context) {
 }
 
 func initTango() {
-	tango.Env = tango.Prod
 	llog.SetOutput(new(mockResponseWriter))
 	llog.SetOutputLevel(llog.Lnone)
 }
