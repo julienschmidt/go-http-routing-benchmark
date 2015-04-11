@@ -6,11 +6,42 @@ package main
 
 import (
 	"net/http"
+	"os"
+	"regexp"
 	"runtime"
+	"strings"
 	"testing"
 )
 
+var benchRe *regexp.Regexp
+
+func isTested(name string) bool {
+	if benchRe == nil {
+		// Get -test.bench flag value (not accessible via flag package)
+		bench := ""
+		for _, arg := range os.Args {
+			if strings.HasPrefix(arg, "-test.bench=") {
+				// ignore the benchmark name after an underscore
+				bench = strings.SplitN(arg[12:], "_", 2)[0]
+				break
+			}
+		}
+
+		// Compile RegExp to match Benchmark names
+		var err error
+		benchRe, err = regexp.Compile(bench)
+		if err != nil {
+			panic(err.Error())
+		}
+	}
+	return benchRe.MatchString(name)
+}
+
 func calcMem(name string, load func()) {
+	if !isTested(name) {
+		return
+	}
+
 	m := new(runtime.MemStats)
 
 	// before
