@@ -277,10 +277,11 @@ func loadDencoSingle(method, path string, h denco.HandlerFunc) http.Handler {
 }
 
 // Echo
-func echoHandler(*echo.Context) {}
+func echoHandler(*echo.Context) error { return nil }
 
-func echoHandlerWrite(c *echo.Context) {
+func echoHandlerWrite(c *echo.Context) error {
 	io.WriteString(c.Response, c.Param("name"))
+	return nil
 }
 
 func loadEcho(routes []route) http.Handler {
