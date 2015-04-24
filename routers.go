@@ -96,7 +96,7 @@ func httpHandlerFunc(w http.ResponseWriter, r *http.Request) {}
 func aceHandle(_ *ace.C) {}
 
 func aceHandleWrite(c *ace.C) {
-	io.WriteString(c.Writer, c.Params.ByName("name"))
+	io.WriteString(c.Writer, c.Param("name"))
 }
 
 func loadAce(routes []route) http.Handler {
