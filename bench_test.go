@@ -157,7 +157,7 @@ func BenchmarkGoJsonRest_Param(b *testing.B) {
 	benchRequest(b, router, r)
 }
 func BenchmarkGoRestful_Param(b *testing.B) {
-	router := loadGoRestfulSingle("GET", "/user/:name", goRestfulHandler)
+	router := loadGoRestfulSingle("GET", "/user/{name}", goRestfulHandler)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
@@ -325,7 +325,7 @@ func BenchmarkGoJsonRest_Param5(b *testing.B) {
 	benchRequest(b, handler, r)
 }
 func BenchmarkGoRestful_Param5(b *testing.B) {
-	router := loadGoRestfulSingle("GET", fiveColon, goRestfulHandler)
+	router := loadGoRestfulSingle("GET", fiveBrace, goRestfulHandler)
 
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
@@ -493,7 +493,7 @@ func BenchmarkGoJsonRest_Param20(b *testing.B) {
 	benchRequest(b, handler, r)
 }
 func BenchmarkGoRestful_Param20(b *testing.B) {
-	handler := loadGoRestfulSingle("GET", twentyColon, goRestfulHandler)
+	handler := loadGoRestfulSingle("GET", twentyBrace, goRestfulHandler)
 
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, handler, r)
@@ -657,7 +657,7 @@ func BenchmarkGoJsonRest_ParamWrite(b *testing.B) {
 	benchRequest(b, handler, r)
 }
 func BenchmarkGoRestful_ParamWrite(b *testing.B) {
-	handler := loadGoRestfulSingle("GET", "/user/:name", goRestfulHandlerWrite)
+	handler := loadGoRestfulSingle("GET", "/user/{name}", goRestfulHandlerWrite)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, handler, r)

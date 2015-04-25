@@ -459,27 +459,31 @@ func loadGoJsonRestSingle(method, path string, hfunc rest.HandlerFunc) http.Hand
 
 // go-restful
 func goRestfulHandlerWrite(r *restful.Request, w *restful.Response) {
-	io.WriteString(w, r.Request.URL.Query().Get("name"))
+	io.WriteString(w, r.PathParameter("name"))
 }
 
 func goRestfulHandler(r *restful.Request, w *restful.Response) {}
 
 func loadGoRestful(routes []route) http.Handler {
+	re := regexp.MustCompile(":([^/]*)")
+
 	wsContainer := restful.NewContainer()
 	ws := new(restful.WebService)
 
 	for _, route := range routes {
+		path := re.ReplaceAllString(route.path, "{$1}")
+
 		switch route.method {
 		case "GET":
-			ws.Route(ws.GET(route.path).To(goRestfulHandler))
+			ws.Route(ws.GET(path).To(goRestfulHandler))
 		case "POST":
-			ws.Route(ws.POST(route.path).To(goRestfulHandler))
+			ws.Route(ws.POST(path).To(goRestfulHandler))
 		case "PUT":
-			ws.Route(ws.PUT(route.path).To(goRestfulHandler))
+			ws.Route(ws.PUT(path).To(goRestfulHandler))
 		case "PATCH":
-			ws.Route(ws.PATCH(route.path).To(goRestfulHandler))
+			ws.Route(ws.PATCH(path).To(goRestfulHandler))
 		case "DELETE":
-			ws.Route(ws.DELETE(route.path).To(goRestfulHandler))
+			ws.Route(ws.DELETE(path).To(goRestfulHandler))
 		default:
 			panic("Unknow HTTP method: " + route.method)
 		}
