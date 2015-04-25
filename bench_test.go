@@ -615,7 +615,7 @@ func BenchmarkBeego_ParamWrite(b *testing.B) {
 	benchRequest(b, router, r)
 }
 func BenchmarkBone_ParamWrite(b *testing.B) {
-	router := loadBoneSingle("GET", "/user/:name", http.HandlerFunc(patHandlerWrite))
+	router := loadBoneSingle("GET", "/user/:name", http.HandlerFunc(boneHandlerWrite))
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)

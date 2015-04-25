@@ -199,6 +199,10 @@ func loadBeegoSingle(method, path string, handler beego.FilterFunc) http.Handler
 }
 
 // bone
+func boneHandlerWrite(rw http.ResponseWriter, req *http.Request) {
+	io.WriteString(rw, bone.GetValue(req, "name"))
+}
+
 func loadBone(routes []route) http.Handler {
 	router := bone.New()
 	for _, route := range routes {
