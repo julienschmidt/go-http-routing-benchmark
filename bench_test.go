@@ -756,7 +756,7 @@ func BenchmarkVulcan_ParamWrite(b *testing.B) {
 	benchRequest(b, router, r)
 }
 func BenchmarkZeus_ParamWrite(b *testing.B) {
-	router := loadZeusSingle("GET", "/user/:name", http.HandlerFunc(patHandlerWrite))
+	router := loadZeusSingle("GET", "/user/:name", zeusHandlerWrite)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)

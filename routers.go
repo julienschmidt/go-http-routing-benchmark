@@ -1079,6 +1079,10 @@ func loadVulcanSingle(method, path string, handler http.HandlerFunc) http.Handle
 }
 
 // Zeus
+func zeusHandlerWrite(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, zeus.Var(r, "name"))
+}
+
 func loadZeus(routes []route) http.Handler {
 	m := zeus.New()
 	for _, route := range routes {
