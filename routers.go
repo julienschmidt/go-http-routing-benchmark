@@ -929,7 +929,6 @@ func tangoHandlerWrite(ctx *tango.Context) {
 }
 
 func initTango() {
-	tango.Env = tango.Prod
 	llog.SetOutput(new(mockResponseWriter))
 	llog.SetOutputLevel(llog.Lnone)
 }
