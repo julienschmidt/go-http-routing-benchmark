@@ -281,7 +281,9 @@ func loadDencoSingle(method, path string, h denco.HandlerFunc) http.Handler {
 }
 
 // Echo
-func echoHandler(*echo.Context) error { return nil }
+func echoHandler(c *echo.Context) error {
+	return nil
+}
 
 func echoHandlerWrite(c *echo.Context) error {
 	io.WriteString(c.Response, c.Param("name"))
@@ -289,17 +291,43 @@ func echoHandlerWrite(c *echo.Context) error {
 }
 
 func loadEcho(routes []route) http.Handler {
-	router := echo.New().Router
+	e := echo.New()
 	for _, r := range routes {
-		router.Add(r.method, r.path, echoHandler, nil)
+		switch r.method {
+		case "GET":
+			e.Get(r.path, echoHandler)
+		case "POST":
+			e.Post(r.path, echoHandler)
+		case "PUT":
+			e.Put(r.path, echoHandler)
+		case "PATCH":
+			e.Patch(r.path, echoHandler)
+		case "DELETE":
+			e.Delete(r.path, echoHandler)
+		default:
+			panic("Unknow HTTP method: " + r.method)
+		}
 	}
-	return router
+	return e
 }
 
-func loadEchoSingle(method, path string, handler echo.HandlerFunc) http.Handler {
+func loadEchoSingle(method, path string, h interface{}) http.Handler {
 	e := echo.New()
-	e.MaxParam(20)
-	e.Router.Add(method, path, echoHandler, nil)
+	e.MaxParam(20) // TODO: technically illegal!
+	switch method {
+	case "GET":
+		e.Get(path, h)
+	case "POST":
+		e.Post(path, h)
+	case "PUT":
+		e.Put(path, h)
+	case "PATCH":
+		e.Patch(path, h)
+	case "DELETE":
+		e.Delete(path, h)
+	default:
+		panic("Unknow HTTP method: " + method)
+	}
 	return e.Router
 }
 
