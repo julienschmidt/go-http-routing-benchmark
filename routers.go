@@ -323,16 +323,16 @@ func loadDencoSingle(method, path string, h denco.HandlerFunc) http.Handler {
 }
 
 // Echo
-func echoHandler(c *echo.Context) error {
+func echoHandler(c *echo.Context) *echo.HTTPError {
 	return nil
 }
 
-func echoHandlerWrite(c *echo.Context) error {
+func echoHandlerWrite(c *echo.Context) *echo.HTTPError {
 	io.WriteString(c.Response, c.Param("name"))
 	return nil
 }
 
-func echoHandlerTest(c *echo.Context) error {
+func echoHandlerTest(c *echo.Context) *echo.HTTPError {
 	io.WriteString(c.Response, c.Request.RequestURI)
 	return nil
 }
