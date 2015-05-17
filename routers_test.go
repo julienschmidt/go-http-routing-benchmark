@@ -30,6 +30,7 @@ var (
 		{"Macaron", loadMacaron},
 		{"Martini", loadMartini},
 		{"Pat", loadPat},
+		{"Possum", loadPossum},
 		{"R2router", loadR2router},
 		{"Revel", loadRevel},
 		{"Rivet", loadRivet},
@@ -70,7 +71,6 @@ func TestRouters(t *testing.T) {
 				u.Path = route.path
 				u.RawQuery = rq
 				r.ServeHTTP(w, req)
-
 				if w.Code != 200 || w.Body.String() != route.path {
 					t.Errorf(
 						"%s in API %s: %d - %s; expected %s %s\n",

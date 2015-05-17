@@ -21,6 +21,7 @@ Of course the tested routers can be used for any kind of HTTP request → handle
  * [Kocha-urlrouter](https://github.com/naoina/kocha-urlrouter)
  * [Martini](https://github.com/go-martini/martini)
  * [Pat](https://github.com/bmizerany/pat)
+ * [Possum](https://github.com/mikespook/possum)
  * [R2router](https://github.com/vanng822/r2router)
  * [TigerTonic](https://github.com/rcrowley/go-tigertonic)
  * [Traffic](https://github.com/pilu/traffic)
