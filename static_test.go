@@ -381,5 +381,5 @@ func BenchmarkVulcan_StaticAll(b *testing.B) {
 	benchRoutes(b, staticVulcan, staticRoutes)
 }
 func BenchmarkZeus_StaticAll(b *testing.B) {
-	//	benchRoutes(b, staticZeus, staticRoutes)
+	benchRoutes(b, staticZeus, staticRoutes)
 }

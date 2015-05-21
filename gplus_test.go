@@ -563,5 +563,5 @@ func BenchmarkVulcan_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusVulcan, gplusAPI)
 }
 func BenchmarkZeus_GPlusAll(b *testing.B) {
-//	benchRoutes(b, gplusZeus, gplusAPI)
+	benchRoutes(b, gplusZeus, gplusAPI)
 }

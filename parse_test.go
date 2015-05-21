@@ -583,5 +583,5 @@ func BenchmarkVulcan_ParseAll(b *testing.B) {
 	benchRoutes(b, parseVulcan, parseAPI)
 }
 func BenchmarkZeus_ParseAll(b *testing.B) {
-//	benchRoutes(b, parseZeus, parseAPI)
+	benchRoutes(b, parseZeus, parseAPI)
 }
