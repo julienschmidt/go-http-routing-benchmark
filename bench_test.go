@@ -209,6 +209,12 @@ func BenchmarkPat_Param(b *testing.B) {
 	benchRequest(b, router, r)
 }
 
+func BenchmarkPossum_Param(b *testing.B) {
+	router := loadPossumSingle("GET", "/user/:name", possumHandler)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkR2router_Param(b *testing.B) {
 	router := loadR2routerSingle("GET", "/user/:name", r2routerHandler)
 
@@ -376,7 +382,12 @@ func BenchmarkPat_Param5(b *testing.B) {
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkPossum_Param5(b *testing.B) {
+	router := loadPossumSingle("GET", fiveColon, possumHandler)
 
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkR2router_Param5(b *testing.B) {
 	router := loadR2routerSingle("GET", fiveColon, r2routerHandler)
 
@@ -544,7 +555,12 @@ func BenchmarkPat_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkPossum_Param20(b *testing.B) {
+	router := loadPossumSingle("GET", twentyColon, possumHandler)
 
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkR2router_Param20(b *testing.B) {
 	router := loadR2routerSingle("GET", twentyColon, r2routerHandler)
 
@@ -708,7 +724,12 @@ func BenchmarkPat_ParamWrite(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkPossum_ParamWrite(b *testing.B) {
+	router := loadPossumSingle("GET", "/user/:name", possumHandlerWrite)
 
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkR2router_ParamWrite(b *testing.B) {
 	router := loadR2routerSingle("GET", "/user/:name", r2routerHandleWrite)
 
@@ -755,6 +776,7 @@ func BenchmarkVulcan_ParamWrite(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+
 func BenchmarkZeus_ParamWrite(b *testing.B) {
 	router := loadZeusSingle("GET", "/user/:name", zeusHandlerWrite)
 

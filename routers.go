@@ -35,6 +35,9 @@ import (
 	llog "github.com/lunny/log"
 	"github.com/lunny/tango"
 	vulcan "github.com/mailgun/route"
+	"github.com/mikespook/possum"
+	possumrouter "github.com/mikespook/possum/router"
+	possumview "github.com/mikespook/possum/view"
 	"github.com/naoina/denco"
 	"github.com/naoina/kocha-urlrouter"
 	_ "github.com/naoina/kocha-urlrouter/doublearray"
@@ -940,6 +943,40 @@ func loadPatSingle(method, path string, handler http.Handler) http.Handler {
 		panic("Unknow HTTP method: " + method)
 	}
 	return m
+}
+
+// Possum
+func possumHandler(c *possum.Context) error {
+	return nil
+}
+
+func possumHandlerWrite(c *possum.Context) error {
+	io.WriteString(c.Response, c.Request.URL.Query().Get("name"))
+	return nil
+}
+
+func possumHandlerTest(c *possum.Context) error {
+	io.WriteString(c.Response, c.Request.RequestURI)
+	return nil
+}
+
+func loadPossum(routes []route) http.Handler {
+	h := possumHandler
+	if loadTestHandler {
+		h = possumHandlerTest
+	}
+
+	router := possum.NewServerMux()
+	for _, route := range routes {
+		router.HandleFunc(possumrouter.Simple(route.path), h, possumview.Simple("text/html", "utf-8"))
+	}
+	return router
+}
+
+func loadPossumSingle(method, path string, handler possum.HandlerFunc) http.Handler {
+	router := possum.NewServerMux()
+	router.HandleFunc(possumrouter.Simple(path), handler, possumview.Simple("text/html", "utf-8"))
+	return router
 }
 
 // R2router
