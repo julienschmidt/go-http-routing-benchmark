@@ -398,7 +398,7 @@ func ginHandleTest(c *gin.Context) {
 }
 
 func initGin() {
-	gin.SetMode("release")
+	gin.SetMode(gin.ReleaseMode)
 }
 
 func loadGin(routes []route) http.Handler {
@@ -409,14 +409,14 @@ func loadGin(routes []route) http.Handler {
 
 	router := gin.New()
 	for _, route := range routes {
-		router.Handle(route.method, route.path, []gin.HandlerFunc{h})
+		router.Handle(route.method, route.path, h)
 	}
 	return router
 }
 
 func loadGinSingle(method, path string, handle gin.HandlerFunc) http.Handler {
 	router := gin.New()
-	router.Handle(method, path, []gin.HandlerFunc{handle})
+	router.Handle(method, path, handle)
 	return router
 }
 
