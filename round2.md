@@ -2,11 +2,11 @@
 
 May 23, 2015.
 
-After one year of development we released [Gin v1.0rc1](https://github.com/gin-gonic/gin/releases/tag/v1.0rc1) and we wanted to run the tests one more time.
+After one year of development we have released [Gin v1.0rc1](https://github.com/gin-gonic/gin/releases/tag/v1.0rc1) and we wanted to run the benchmark tests one more time.
 
-**Tested in:** intel i7 ivy bridge quad-core. 8GB RAM.  
+**Machine:** intel i7 ivy bridge quad-core. 8GB RAM.  
 **Notes:**
-	1. echo and zeus when removed because they continuously crashed.
+	1. echo and zeus where removed in some tests because they continuously crashed.
 
 ##Test Frameworks
 
