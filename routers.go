@@ -331,20 +331,20 @@ func echoHandler(c *echo.Context) *echo.HTTPError {
 }
 
 func echoHandlerWrite(c *echo.Context) *echo.HTTPError {
-	io.WriteString(c.Response, c.Param("name"))
+	io.WriteString(c.Response(), c.Param("name"))
 	return nil
 }
 
 func echoHandlerTest(c *echo.Context) *echo.HTTPError {
-	io.WriteString(c.Response, c.Request.RequestURI)
+	io.WriteString(c.Response(), c.Request().RequestURI)
 	return nil
 }
 
 func loadEcho(routes []route) http.Handler {
-	var h interface{} = echoHandler
-	if loadTestHandler {
-		h = echoHandlerTest
-	}
+	// var h interface{} = echoHandler
+	// if loadTestHandler {
+	// 	h = echoHandlerTest
+	// }
 
 	e := echo.New()
 	for _, r := range routes {
@@ -383,7 +383,7 @@ func loadEchoSingle(method, path string, h interface{}) http.Handler {
 	default:
 		panic("Unknow HTTP method: " + method)
 	}
-	return e.Router
+	return e
 }
 
 // Gin
@@ -398,7 +398,7 @@ func ginHandleTest(c *gin.Context) {
 }
 
 func initGin() {
-	gin.SetMode("release")
+	gin.SetMode(gin.ReleaseMode)
 }
 
 func loadGin(routes []route) http.Handler {
@@ -409,14 +409,14 @@ func loadGin(routes []route) http.Handler {
 
 	router := gin.New()
 	for _, route := range routes {
-		router.Handle(route.method, route.path, []gin.HandlerFunc{h})
+		router.Handle(route.method, route.path, h)
 	}
 	return router
 }
 
 func loadGinSingle(method, path string, handle gin.HandlerFunc) http.Handler {
 	router := gin.New()
-	router.Handle(method, path, []gin.HandlerFunc{handle})
+	router.Handle(method, path, handle)
 	return router
 }
 
@@ -549,7 +549,11 @@ func loadGoJsonRest(routes []route) http.Handler {
 	restRoutes := make([]*rest.Route, 0, len(routes))
 	for _, route := range routes {
 		restRoutes = append(restRoutes,
-			&rest.Route{route.method, route.path, h},
+			&rest.Route{
+				HttpMethod: route.method,
+				PathExp:    route.path,
+				Func:       h,
+			},
 		)
 	}
 	router, err := rest.MakeRouter(restRoutes...)
@@ -563,7 +567,11 @@ func loadGoJsonRest(routes []route) http.Handler {
 func loadGoJsonRestSingle(method, path string, hfunc rest.HandlerFunc) http.Handler {
 	api := rest.NewApi()
 	router, err := rest.MakeRouter(
-		&rest.Route{method, path, hfunc},
+		&rest.Route{
+			HttpMethod: method,
+			PathExp:    path,
+			Func:       hfunc,
+		},
 	)
 	if err != nil {
 		log.Fatal(err)
