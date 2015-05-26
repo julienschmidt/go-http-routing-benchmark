@@ -331,12 +331,12 @@ func echoHandler(c *echo.Context) *echo.HTTPError {
 }
 
 func echoHandlerWrite(c *echo.Context) *echo.HTTPError {
-	io.WriteString(c.Response, c.Param("name"))
+	io.WriteString(c.Response(), c.Param("name"))
 	return nil
 }
 
 func echoHandlerTest(c *echo.Context) *echo.HTTPError {
-	io.WriteString(c.Response, c.Request.RequestURI)
+	io.WriteString(c.Response(), c.Request().RequestURI)
 	return nil
 }
 
@@ -383,7 +383,7 @@ func loadEchoSingle(method, path string, h interface{}) http.Handler {
 	default:
 		panic("Unknow HTTP method: " + method)
 	}
-	return e.Router
+	return e.Router()
 }
 
 // Gin
