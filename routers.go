@@ -368,7 +368,6 @@ func loadEcho(routes []route) http.Handler {
 
 func loadEchoSingle(method, path string, h interface{}) http.Handler {
 	e := echo.New()
-	e.SetMaxParam(20) // TODO: technically illegal!
 	switch method {
 	case "GET":
 		e.Get(path, h)
