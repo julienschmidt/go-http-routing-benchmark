@@ -288,7 +288,7 @@ func init() {
 		staticTraffic = loadTraffic(staticRoutes)
 	})
 	calcMem("Vulcan", func() {
-		staticVulcan = loadTraffic(staticRoutes)
+		staticVulcan = loadVulcan(staticRoutes)
 	})
 	calcMem("Zeus", func() {
 		staticZeus = loadZeus(staticRoutes)
