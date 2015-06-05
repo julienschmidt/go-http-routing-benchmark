@@ -363,7 +363,7 @@ func loadEcho(routes []route) http.Handler {
 			panic("Unknow HTTP method: " + r.method)
 		}
 	}
-	return e
+	return e.Router()
 }
 
 func loadEchoSingle(method, path string, h interface{}) http.Handler {
