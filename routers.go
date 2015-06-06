@@ -382,7 +382,7 @@ func loadEchoSingle(method, path string, h interface{}) http.Handler {
 	default:
 		panic("Unknow HTTP method: " + method)
 	}
-	return e.Router()
+	return e
 }
 
 // Gin
