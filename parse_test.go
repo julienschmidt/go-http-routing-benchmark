@@ -82,7 +82,7 @@ var (
 	parseTigerTonic  http.Handler
 	parseTraffic     http.Handler
 	parseVulcan      http.Handler
-	parseZeus        http.Handler
+	// parseZeus        http.Handler
 )
 
 func init() {
@@ -166,9 +166,9 @@ func init() {
 	calcMem("Vulcan", func() {
 		parseVulcan = loadVulcan(parseAPI)
 	})
-	calcMem("Zeus", func() {
-		parseZeus = loadZeus(parseAPI)
-	})
+	// calcMem("Zeus", func() {
+	// 	parseZeus = loadZeus(parseAPI)
+	// })
 
 	println()
 }
@@ -278,10 +278,11 @@ func BenchmarkVulcan_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseVulcan, req)
 }
-func BenchmarkZeus_ParseStatic(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/1/users", nil)
-	benchRequest(b, parseZeus, req)
-}
+
+// func BenchmarkZeus_ParseStatic(b *testing.B) {
+// 	req, _ := http.NewRequest("GET", "/1/users", nil)
+// 	benchRequest(b, parseZeus, req)
+// }
 
 // One Param
 func BenchmarkAce_ParseParam(b *testing.B) {
@@ -388,10 +389,11 @@ func BenchmarkVulcan_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseVulcan, req)
 }
-func BenchmarkZeus_ParseParam(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
-	benchRequest(b, parseZeus, req)
-}
+
+// func BenchmarkZeus_ParseParam(b *testing.B) {
+// 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+// 	benchRequest(b, parseZeus, req)
+// }
 
 // Two Params
 func BenchmarkAce_Parse2Params(b *testing.B) {
@@ -498,10 +500,11 @@ func BenchmarkVulcan_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseVulcan, req)
 }
-func BenchmarkZeus_Parse2Params(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
-	benchRequest(b, parseZeus, req)
-}
+
+// func BenchmarkZeus_Parse2Params(b *testing.B) {
+// 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+// 	benchRequest(b, parseZeus, req)
+// }
 
 // All Routes
 func BenchmarkAce_ParseAll(b *testing.B) {
@@ -582,6 +585,7 @@ func BenchmarkTraffic_ParseAll(b *testing.B) {
 func BenchmarkVulcan_ParseAll(b *testing.B) {
 	benchRoutes(b, parseVulcan, parseAPI)
 }
-func BenchmarkZeus_ParseAll(b *testing.B) {
-	benchRoutes(b, parseZeus, parseAPI)
-}
+
+// func BenchmarkZeus_ParseAll(b *testing.B) {
+// 	benchRoutes(b, parseZeus, parseAPI)
+// }

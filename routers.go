@@ -22,7 +22,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
 	"github.com/bmizerany/pat"
-	"github.com/daryl/zeus"
+	// "github.com/daryl/zeus"
 	"github.com/dimfeld/httptreemux"
 	"github.com/emicklei/go-restful"
 	"github.com/gin-gonic/gin"
@@ -1318,50 +1318,50 @@ func loadVulcanSingle(method, path string, handler http.HandlerFunc) http.Handle
 }
 
 // Zeus
-func zeusHandlerWrite(w http.ResponseWriter, r *http.Request) {
-	io.WriteString(w, zeus.Var(r, "name"))
-}
+// func zeusHandlerWrite(w http.ResponseWriter, r *http.Request) {
+// 	io.WriteString(w, zeus.Var(r, "name"))
+// }
 
-func loadZeus(routes []route) http.Handler {
-	h := http.HandlerFunc(httpHandlerFunc)
-	if loadTestHandler {
-		h = http.HandlerFunc(httpHandlerFuncTest)
-	}
+// func loadZeus(routes []route) http.Handler {
+// 	h := http.HandlerFunc(httpHandlerFunc)
+// 	if loadTestHandler {
+// 		h = http.HandlerFunc(httpHandlerFuncTest)
+// 	}
 
-	m := zeus.New()
-	for _, route := range routes {
-		switch route.method {
-		case "GET":
-			m.GET(route.path, h)
-		case "POST":
-			m.POST(route.path, h)
-		case "PUT":
-			m.PUT(route.path, h)
-		case "DELETE":
-			m.DELETE(route.path, h)
-		default:
-			panic("Unknow HTTP method: " + route.method)
-		}
-	}
-	return m
-}
+// 	m := zeus.New()
+// 	for _, route := range routes {
+// 		switch route.method {
+// 		case "GET":
+// 			m.GET(route.path, h)
+// 		case "POST":
+// 			m.POST(route.path, h)
+// 		case "PUT":
+// 			m.PUT(route.path, h)
+// 		case "DELETE":
+// 			m.DELETE(route.path, h)
+// 		default:
+// 			panic("Unknow HTTP method: " + route.method)
+// 		}
+// 	}
+// 	return m
+// }
 
-func loadZeusSingle(method, path string, handler http.HandlerFunc) http.Handler {
-	m := zeus.New()
-	switch method {
-	case "GET":
-		m.GET(path, handler)
-	case "POST":
-		m.POST(path, handler)
-	case "PUT":
-		m.PUT(path, handler)
-	case "DELETE":
-		m.DELETE(path, handler)
-	default:
-		panic("Unknow HTTP method: " + method)
-	}
-	return m
-}
+// func loadZeusSingle(method, path string, handler http.HandlerFunc) http.Handler {
+// 	m := zeus.New()
+// 	switch method {
+// 	case "GET":
+// 		m.GET(path, handler)
+// 	case "POST":
+// 		m.POST(path, handler)
+// 	case "PUT":
+// 		m.PUT(path, handler)
+// 	case "DELETE":
+// 		m.DELETE(path, handler)
+// 	default:
+// 		panic("Unknow HTTP method: " + method)
+// 	}
+// 	return m
+// }
 
 // Usage notice
 func main() {

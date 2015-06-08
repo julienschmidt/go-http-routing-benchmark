@@ -258,12 +258,13 @@ func BenchmarkVulcan_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
-func BenchmarkZeus_Param(b *testing.B) {
-	router := loadZeusSingle("GET", "/user/:name", http.HandlerFunc(httpHandlerFunc))
 
-	r, _ := http.NewRequest("GET", "/user/gordon", nil)
-	benchRequest(b, router, r)
-}
+// func BenchmarkZeus_Param(b *testing.B) {
+// 	router := loadZeusSingle("GET", "/user/:name", http.HandlerFunc(httpHandlerFunc))
+
+// 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+// 	benchRequest(b, router, r)
+// }
 
 // Route with 5 Params (no write)
 const fiveColon = "/:a/:b/:c/:d/:e"
@@ -431,12 +432,13 @@ func BenchmarkVulcan_Param5(b *testing.B) {
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
 }
-func BenchmarkZeus_Param5(b *testing.B) {
-	router := loadZeusSingle("GET", fiveColon, http.HandlerFunc(httpHandlerFunc))
 
-	r, _ := http.NewRequest("GET", fiveRoute, nil)
-	benchRequest(b, router, r)
-}
+// func BenchmarkZeus_Param5(b *testing.B) {
+// 	router := loadZeusSingle("GET", fiveColon, http.HandlerFunc(httpHandlerFunc))
+
+// 	r, _ := http.NewRequest("GET", fiveRoute, nil)
+// 	benchRequest(b, router, r)
+// }
 
 // Route with 20 Params (no write)
 const twentyColon = "/:a/:b/:c/:d/:e/:f/:g/:h/:i/:j/:k/:l/:m/:n/:o/:p/:q/:r/:s/:t"
@@ -604,12 +606,13 @@ func BenchmarkVulcan_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
-func BenchmarkZeus_Param20(b *testing.B) {
-	router := loadZeusSingle("GET", twentyColon, http.HandlerFunc(httpHandlerFunc))
 
-	r, _ := http.NewRequest("GET", twentyRoute, nil)
-	benchRequest(b, router, r)
-}
+// func BenchmarkZeus_Param20(b *testing.B) {
+// 	router := loadZeusSingle("GET", twentyColon, http.HandlerFunc(httpHandlerFunc))
+
+// 	r, _ := http.NewRequest("GET", twentyRoute, nil)
+// 	benchRequest(b, router, r)
+// }
 
 // Route with Param and write
 func BenchmarkAce_ParamWrite(b *testing.B) {
@@ -777,9 +780,9 @@ func BenchmarkVulcan_ParamWrite(b *testing.B) {
 	benchRequest(b, router, r)
 }
 
-func BenchmarkZeus_ParamWrite(b *testing.B) {
-	router := loadZeusSingle("GET", "/user/:name", zeusHandlerWrite)
+// func BenchmarkZeus_ParamWrite(b *testing.B) {
+// 	router := loadZeusSingle("GET", "/user/:name", zeusHandlerWrite)
 
-	r, _ := http.NewRequest("GET", "/user/gordon", nil)
-	benchRequest(b, router, r)
-}
+// 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+// 	benchRequest(b, router, r)
+// }
