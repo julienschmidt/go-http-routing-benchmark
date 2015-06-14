@@ -511,7 +511,7 @@ func BenchmarkAce_ParseAll(b *testing.B) {
 	benchRoutes(b, parseAce, parseAPI)
 }
 func BenchmarkBear_ParseAll(b *testing.B) {
-	benchRoutes(b, parseBeego, parseAPI)
+	benchRoutes(b, parseBear, parseAPI)
 }
 func BenchmarkBeego_ParseAll(b *testing.B) {
 	benchRoutes(b, parseBeego, parseAPI)
