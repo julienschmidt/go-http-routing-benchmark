@@ -371,3 +371,17 @@ Denco and its predecessor Kocha-urlrouter seem to have great performance, but ar
 Currently no router can beat the performance of the [HttpRouter](https://github.com/julienschmidt/httprouter) package, which currently dominates nearly all benchmarks.
 
 In the end, performance can not be the (only) criterion for choosing a router. Play around a bit with some of the routers, and choose the one you like best.
+
+## Usage
+
+If you'd like to run these benchmarks locally, you'll need to install the packge first:
+
+```bash
+go get github.com/julienschmidt/go-http-routing-benchmark
+```
+This may take a while due to the large number of dependencies that need to be downloaded. Once that command completes, you can run the full set of benchmarks like this:
+
+```bash
+cd $GOPATH/src/github.com/julienschmidt/go-http-routing-benchmark
+go test -bench=.
+```
