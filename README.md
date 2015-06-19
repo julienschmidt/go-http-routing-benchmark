@@ -385,3 +385,8 @@ This may take a while due to the large number of dependencies that need to be do
 cd $GOPATH/src/github.com/julienschmidt/go-http-routing-benchmark
 go test -bench=.
 ```
+
+You can bench specific frameworks only by using a regular expression as the value of the `bench` parameter:
+```bash
+go test -bench="Martini|Gin|HttpMux"
+```
