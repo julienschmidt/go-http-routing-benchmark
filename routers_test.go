@@ -37,6 +37,7 @@ var (
 		{"Tango", loadTango},
 		{"TigerTonic", loadTigerTonic},
 		{"Traffic", loadTraffic},
+		{"Vanilla", loadVanilla},
 		{"Vulcan", loadVulcan},
 		// {"Zeus", loadZeus},
 	}

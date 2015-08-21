@@ -17,6 +17,8 @@ import (
 	// - Keep the benchmark functions etc. alphabetically sorted
 	// - Make a pull request (without benchmark results) at
 	//   https://github.com/julienschmidt/go-http-routing-benchmark
+
+	"github.com/DATA-DOG/vanilla"
 	"github.com/Unknwon/macaron"
 	"github.com/ant0ine/go-json-rest/rest"
 	"github.com/astaxie/beego"
@@ -1279,6 +1281,34 @@ func loadTrafficSingle(method, path string, handler traffic.HttpHandleFunc) http
 		panic("Unknow HTTP method: " + method)
 	}
 	return router
+}
+
+// vanilla
+func vanillaHandlerWrite(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, vanilla.Parameters(r).ByName("name"))
+}
+
+func vanillaHandlerTest(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, r.RequestURI)
+}
+
+func loadVanilla(routes []route) http.Handler {
+	h := vanillaHandlerWrite
+	if loadTestHandler {
+		h = vanillaHandlerTest
+	}
+
+	m := vanilla.New()
+	for _, route := range routes {
+		m.Handle(route.method, route.path, http.HandlerFunc(h))
+	}
+	return m
+}
+
+func loadVanillaSingle(method, path string, handler http.HandlerFunc) http.Handler {
+	m := vanilla.New()
+	m.Handle(method, path, handler)
+	return m
 }
 
 // Mailgun Vulcan
