@@ -24,7 +24,6 @@ import (
 	"github.com/bmizerany/pat"
 	// "github.com/daryl/zeus"
 	"github.com/dimfeld/httptreemux"
-	"github.com/emicklei/go-restful"
 	"github.com/gin-gonic/gin"
 	"github.com/go-martini/martini"
 	"github.com/go-zoo/bone"
@@ -39,11 +38,9 @@ import (
 	possumrouter "github.com/mikespook/possum/router"
 	possumview "github.com/mikespook/possum/view"
 	"github.com/naoina/denco"
-	"github.com/naoina/kocha-urlrouter"
 	_ "github.com/naoina/kocha-urlrouter/doublearray"
 	"github.com/pilu/traffic"
 	"github.com/plimble/ace"
-	"github.com/rcrowley/go-tigertonic"
 	"github.com/revel/revel"
 	"github.com/robfig/pathtree"
 	"github.com/typepress/rivet"
@@ -185,7 +182,7 @@ func beegoHandlerTest(ctx *context.Context) {
 }
 
 func initBeego() {
-	beego.RunMode = "prod"
+	beego.BConfig.RunMode = beego.PROD
 	beego.BeeLogger.Close()
 }
 
