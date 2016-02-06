@@ -386,6 +386,13 @@ cd $GOPATH/src/github.com/julienschmidt/go-http-routing-benchmark
 go test -bench=.
 ```
 
+> **Note:** If you run the tests and it SIGQUIT's make the go test timeout longer (#44)
+>
+>```
+go test -timeout=2h -bench=.
+```
+
+
 You can bench specific frameworks only by using a regular expression as the value of the `bench` parameter:
 ```bash
 go test -bench="Martini|Gin|HttpMux"
