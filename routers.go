@@ -185,7 +185,7 @@ func beegoHandlerTest(ctx *context.Context) {
 }
 
 func initBeego() {
-	beego.RunMode = "prod"
+	beego.BConfig.RunMode = beego.PROD
 	beego.BeeLogger.Close()
 }
 
