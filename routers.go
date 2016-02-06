@@ -1133,11 +1133,11 @@ func loadRevelSingle(method, path, action string) http.Handler {
 func rivetHandler() {}
 
 func rivetHandlerWrite(c rivet.Context) {
-	c.WriteString(c.GetParams().Get("name"))
+	c.WriteString(c.Get("name"))
 }
 
 func rivetHandlerTest(c rivet.Context) {
-	c.WriteString(c.Request().RequestURI)
+	c.WriteString(c.Req.RequestURI)
 }
 
 func loadRivet(routes []route) http.Handler {
@@ -1146,7 +1146,7 @@ func loadRivet(routes []route) http.Handler {
 		h = rivetHandlerTest
 	}
 
-	router := rivet.NewRouter(nil)
+	router := rivet.New()
 	for _, route := range routes {
 		router.Handle(route.method, route.path, h)
 	}
@@ -1154,7 +1154,7 @@ func loadRivet(routes []route) http.Handler {
 }
 
 func loadRivetSingle(method, path string, handler interface{}) http.Handler {
-	router := rivet.NewRouter(nil)
+	router := rivet.New()
 
 	router.Handle(method, path, handler)
 
