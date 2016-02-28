@@ -72,9 +72,9 @@ func init() {
 	calcMem("Ace", func() {
 		gplusAce = loadAce(gplusAPI)
 	})
-	 calcMem("Baa", func() {
-	 	gplusBaa = loadBaa(gplusAPI)
-	 })
+	calcMem("Baa", func() {
+		gplusBaa = loadBaa(gplusAPI)
+	})
 	calcMem("Bear", func() {
 		gplusBear = loadBear(gplusAPI)
 	})
