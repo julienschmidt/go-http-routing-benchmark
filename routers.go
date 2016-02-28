@@ -26,6 +26,7 @@ import (
 	"github.com/dimfeld/httptreemux"
 	"github.com/emicklei/go-restful"
 	"github.com/gin-gonic/gin"
+	"github.com/go-baa/baa"
 	"github.com/go-martini/martini"
 	"github.com/go-zoo/bone"
 	"github.com/gocraft/web"
@@ -130,6 +131,63 @@ func loadAceSingle(method, path string, handle ace.HandlerFunc) http.Handler {
 	router := ace.New()
 	router.Handle(method, path, []ace.HandlerFunc{handle})
 	return router
+}
+
+// Baa
+func baaHandler(c *baa.Context) {
+}
+
+func baaHandlerWrite(c *baa.Context) {
+	io.WriteString(c.Resp, c.Param("name"))
+}
+
+func baaHandlerTest(c *baa.Context) {
+	io.WriteString(c.Resp, c.Req.RequestURI)
+}
+
+func loadBaa(routes []route) http.Handler {
+	var h baa.HandlerFunc = baaHandler
+	if loadTestHandler {
+		h = baaHandlerTest
+	}
+
+	b := baa.New()
+	for _, r := range routes {
+		switch r.method {
+		case "GET":
+			b.Get(r.path, h)
+		case "POST":
+			b.Post(r.path, h)
+		case "PUT":
+			b.Put(r.path, h)
+		case "PATCH":
+			b.Patch(r.path, h)
+		case "DELETE":
+			b.Delete(r.path, h)
+		default:
+			panic("Unknow HTTP method: " + r.method)
+		}
+	}
+	return b
+}
+
+func loadBaaSingle(method, path string, h baa.HandlerFunc) http.Handler {
+	b := baa.New()
+	switch method {
+	case "GET":
+		b.Get(path, h)
+	case "POST":
+		b.Post(path, h)
+	case "PUT":
+		b.Put(path, h)
+	case "PATCH":
+		b.Patch(path, h)
+	case "DELETE":
+		b.Delete(path, h)
+	default:
+		panic("Unknow HTTP method: " + method)
+	}
+	return b
 }
 
 // bear

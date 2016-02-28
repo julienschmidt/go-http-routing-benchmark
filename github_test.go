@@ -275,6 +275,7 @@ var githubAPI = []route{
 
 var (
 	githubAce         http.Handler
+	githubBaa         http.Handler
 	githubBear        http.Handler
 	githubBeego       http.Handler
 	githubBone        http.Handler
@@ -308,6 +309,9 @@ func init() {
 
 	calcMem("Ace", func() {
 		githubAce = loadAce(githubAPI)
+	})
+	calcMem("Baa", func() {
+		githubBaa = loadBaa(githubAPI)
 	})
 	calcMem("Bear", func() {
 		githubBear = loadBear(githubAPI)
@@ -395,6 +399,10 @@ func init() {
 func BenchmarkAce_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
 	benchRequest(b, githubAce, req)
+}
+func BenchmarkBaa_GithubStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/user/repos", nil)
+	benchRequest(b, githubBaa, req)
 }
 func BenchmarkBear_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
@@ -507,6 +515,10 @@ func BenchmarkAce_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubAce, req)
 }
+func BenchmarkBaa_GithubParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
+	benchRequest(b, githubBaa, req)
+}
 func BenchmarkBear_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubBear, req)
@@ -616,6 +628,9 @@ func BenchmarkVulcan_GithubParam(b *testing.B) {
 // All routes
 func BenchmarkAce_GithubAll(b *testing.B) {
 	benchRoutes(b, githubAce, githubAPI)
+}
+func BenchmarkBaa_GithubAll(b *testing.B) {
+	benchRoutes(b, githubBaa, githubAPI)
 }
 func BenchmarkBear_GithubAll(b *testing.B) {
 	benchRoutes(b, githubBear, githubAPI)
