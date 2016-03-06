@@ -45,6 +45,7 @@ var (
 	gplusGin         http.Handler
 	gplusGocraftWeb  http.Handler
 	gplusGoji        http.Handler
+	gplusGojiv2      http.Handler
 	gplusGoJsonRest  http.Handler
 	gplusGoRestful   http.Handler
 	gplusGorillaMux  http.Handler
@@ -94,6 +95,9 @@ func init() {
 	})
 	calcMem("Goji", func() {
 		gplusGoji = loadGoji(gplusAPI)
+	})
+	calcMem("Gojiv2", func() {
+		gplusGojiv2 = loadGojiv2(gplusAPI)
 	})
 	calcMem("GoJsonRest", func() {
 		gplusGoJsonRest = loadGoJsonRest(gplusAPI)
@@ -189,6 +193,10 @@ func BenchmarkGocraftWeb_GPlusStatic(b *testing.B) {
 func BenchmarkGoji_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusGoji, req)
+}
+func BenchmarkGojiv2_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	benchRequest(b, gplusGojiv2, req)
 }
 func BenchmarkGoJsonRest_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
@@ -301,6 +309,10 @@ func BenchmarkGoji_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusGoji, req)
 }
+func BenchmarkGojiv2_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	benchRequest(b, gplusGojiv2, req)
+}
 func BenchmarkGoJsonRest_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusGoJsonRest, req)
@@ -412,6 +424,10 @@ func BenchmarkGoji_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusGoji, req)
 }
+func BenchmarkGojiv2_GPlus2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	benchRequest(b, gplusGojiv2, req)
+}
 func BenchmarkGoJsonRest_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusGoJsonRest, req)
@@ -513,6 +529,9 @@ func BenchmarkGocraftWeb_GPlusAll(b *testing.B) {
 }
 func BenchmarkGoji_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusGoji, gplusAPI)
+}
+func BenchmarkGojiv2_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusGojiv2, gplusAPI)
 }
 func BenchmarkGoJsonRest_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusGoJsonRest, gplusAPI)

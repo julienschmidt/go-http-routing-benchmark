@@ -50,6 +50,9 @@ import (
 	"github.com/ursiform/bear"
 	"github.com/vanng822/r2router"
 	goji "github.com/zenazn/goji/web"
+	gojiv2 "goji.io"
+	gojiv2pat "goji.io/pat"
+	gcontext "golang.org/x/net/context"
 )
 
 type route struct {
@@ -521,6 +524,62 @@ func loadGojiSingle(method, path string, handler interface{}) http.Handler {
 		mux.Patch(path, handler)
 	case "DELETE":
 		mux.Delete(path, handler)
+	default:
+		panic("Unknow HTTP method: " + method)
+	}
+	return mux
+}
+
+// goji v2 (github.com/goji/goji)
+func gojiv2Handler(ctx gcontext.Context, w http.ResponseWriter, r *http.Request) {}
+
+func gojiv2HandlerWrite(ctx gcontext.Context, w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, gojiv2pat.Param(ctx, "name"))
+}
+
+func gojiv2HandlerTest(ctx gcontext.Context, w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, r.RequestURI)
+}
+
+func loadGojiv2(routes []route) http.Handler {
+	h := gojiv2Handler
+	if loadTestHandler {
+		h = gojiv2HandlerTest
+	}
+
+	mux := gojiv2.NewMux()
+	for _, route := range routes {
+		switch route.method {
+		case "GET":
+			mux.HandleFuncC(gojiv2pat.Get(route.path), h)
+		case "POST":
+			mux.HandleFuncC(gojiv2pat.Post(route.path), h)
+		case "PUT":
+			mux.HandleFuncC(gojiv2pat.Put(route.path), h)
+		case "PATCH":
+			mux.HandleFuncC(gojiv2pat.Patch(route.path), h)
+		case "DELETE":
+			mux.HandleFuncC(gojiv2pat.Delete(route.path), h)
+		default:
+			panic("Unknown HTTP method: " + route.method)
+		}
+	}
+	return mux
+}
+
+func loadGojiv2Single(method, path string, handler gojiv2.HandlerFunc) http.Handler {
+	mux := gojiv2.NewMux()
+	switch method {
+	case "GET":
+		mux.HandleFuncC(gojiv2pat.Get(path), handler)
+	case "POST":
+		mux.HandleFuncC(gojiv2pat.Post(path), handler)
+	case "PUT":
+		mux.HandleFuncC(gojiv2pat.Put(path), handler)
+	case "PATCH":
+		mux.HandleFuncC(gojiv2pat.Patch(path), handler)
+	case "DELETE":
+		mux.HandleFuncC(gojiv2pat.Delete(path), handler)
 	default:
 		panic("Unknow HTTP method: " + method)
 	}

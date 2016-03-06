@@ -21,6 +21,7 @@ var (
 		{"Gin", loadGin},
 		{"GocraftWeb", loadGocraftWeb},
 		{"Goji", loadGoji},
+		{"Gojiv2", loadGojiv2},
 		{"GoJsonRest", loadGoJsonRest},
 		{"GoRestful", loadGoRestful},
 		{"GorillaMux", loadGorillaMux},

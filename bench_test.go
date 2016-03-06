@@ -150,6 +150,12 @@ func BenchmarkGoji_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkGojiv2_Param(b *testing.B) {
+	router := loadGojiv2Single("GET", "/user/:name", gojiv2Handler)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkGoJsonRest_Param(b *testing.B) {
 	router := loadGoJsonRestSingle("GET", "/user/:name", goJsonRestHandler)
 
@@ -321,6 +327,12 @@ func BenchmarkGocraftWeb_Param5(b *testing.B) {
 }
 func BenchmarkGoji_Param5(b *testing.B) {
 	router := loadGojiSingle("GET", fiveColon, httpHandlerFunc)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkGojiv2_Param5(b *testing.B) {
+	router := loadGojiv2Single("GET", fiveColon, gojiv2Handler)
 
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
@@ -499,6 +511,12 @@ func BenchmarkGoji_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkGojiv2_Param20(b *testing.B) {
+	router := loadGojiv2Single("GET", twentyColon, gojiv2Handler)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkGoJsonRest_Param20(b *testing.B) {
 	handler := loadGoJsonRestSingle("GET", twentyColon, goJsonRestHandler)
 
@@ -665,6 +683,12 @@ func BenchmarkGocraftWeb_ParamWrite(b *testing.B) {
 }
 func BenchmarkGoji_ParamWrite(b *testing.B) {
 	router := loadGojiSingle("GET", "/user/:name", gojiFuncWrite)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkGojiv2_ParamWrite(b *testing.B) {
+	router := loadGojiv2Single("GET", "/user/:name", gojiv2HandlerWrite)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
