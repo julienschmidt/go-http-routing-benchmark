@@ -289,6 +289,7 @@ var (
 	githubHttpRouter  http.Handler
 	githubHttpTreeMux http.Handler
 	githubKocha       http.Handler
+	githubLARS        http.Handler
 	githubMacaron     http.Handler
 	githubMartini     http.Handler
 	githubPat         http.Handler
@@ -350,6 +351,9 @@ func init() {
 	})
 	calcMem("Kocha", func() {
 		githubKocha = loadKocha(githubAPI)
+	})
+	calcMem("LARS", func() {
+		githubLARS = loadLARS(githubAPI)
 	})
 	calcMem("Macaron", func() {
 		githubMacaron = loadMacaron(githubAPI)
@@ -451,6 +455,10 @@ func BenchmarkHttpTreeMux_GithubStatic(b *testing.B) {
 func BenchmarkKocha_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
 	benchRequest(b, githubKocha, req)
+}
+func BenchmarkLARS_GithubStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/user/repos", nil)
+	benchRequest(b, githubLARS, req)
 }
 func BenchmarkMacaron_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
@@ -563,6 +571,10 @@ func BenchmarkKocha_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubKocha, req)
 }
+func BenchmarkLARS_GithubParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
+	benchRequest(b, githubLARS, req)
+}
 func BenchmarkMacaron_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubMacaron, req)
@@ -658,6 +670,9 @@ func BenchmarkHttpTreeMux_GithubAll(b *testing.B) {
 }
 func BenchmarkKocha_GithubAll(b *testing.B) {
 	benchRoutes(b, githubKocha, githubAPI)
+}
+func BenchmarkLARS_GithubAll(b *testing.B) {
+	benchRoutes(b, githubLARS, githubAPI)
 }
 func BenchmarkMacaron_GithubAll(b *testing.B) {
 	benchRoutes(b, githubMacaron, githubAPI)
