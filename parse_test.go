@@ -71,6 +71,7 @@ var (
 	parseHttpRouter  http.Handler
 	parseHttpTreeMux http.Handler
 	parseKocha       http.Handler
+	parseLARS        http.Handler
 	parseMacaron     http.Handler
 	parseMartini     http.Handler
 	parsePat         http.Handler
@@ -132,6 +133,9 @@ func init() {
 	})
 	calcMem("Kocha", func() {
 		parseKocha = loadKocha(parseAPI)
+	})
+	calcMem("LARS", func() {
+		parseLARS = loadLARS(parseAPI)
 	})
 	calcMem("Macaron", func() {
 		parseMacaron = loadMacaron(parseAPI)
@@ -233,6 +237,10 @@ func BenchmarkHttpTreeMux_ParseStatic(b *testing.B) {
 func BenchmarkKocha_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseKocha, req)
+}
+func BenchmarkLARS_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseLARS, req)
 }
 func BenchmarkMacaron_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
@@ -345,6 +353,10 @@ func BenchmarkKocha_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseKocha, req)
 }
+func BenchmarkLARS_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseLARS, req)
+}
 func BenchmarkMacaron_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseMacaron, req)
@@ -456,6 +468,10 @@ func BenchmarkKocha_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseKocha, req)
 }
+func BenchmarkLARS_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseLARS, req)
+}
 func BenchmarkMacaron_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseMacaron, req)
@@ -551,6 +567,9 @@ func BenchmarkHttpTreeMux_ParseAll(b *testing.B) {
 }
 func BenchmarkKocha_ParseAll(b *testing.B) {
 	benchRoutes(b, parseKocha, parseAPI)
+}
+func BenchmarkLARS_ParseAll(b *testing.B) {
+	benchRoutes(b, parseLARS, parseAPI)
 }
 func BenchmarkMacaron_ParseAll(b *testing.B) {
 	benchRoutes(b, parseMacaron, parseAPI)

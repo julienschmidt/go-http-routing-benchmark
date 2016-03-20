@@ -27,6 +27,7 @@ var (
 		{"HttpRouter", loadHttpRouter},
 		{"HttpTreeMux", loadHttpTreeMux},
 		//{"Kocha", loadKocha},
+		{"LARS", loadLARS},
 		{"Macaron", loadMacaron},
 		{"Martini", loadMartini},
 		{"Pat", loadPat},

@@ -22,6 +22,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
 	"github.com/bmizerany/pat"
+	"github.com/go-playground/lars"
 	// "github.com/daryl/zeus"
 	"github.com/dimfeld/httptreemux"
 	"github.com/emicklei/go-restful"
@@ -807,6 +808,69 @@ func loadKochaSingle(method, path string, handler *kochaHandler, hfunc http.Hand
 	return handler
 }
 
+// LARS
+func larsHandler(c lars.Context) {
+}
+
+func larsHandlerWrite(c lars.Context) {
+	io.WriteString(c.Response(), c.Param("name"))
+}
+
+func larsHandlerTest(c lars.Context) {
+	io.WriteString(c.Response(), c.Request().RequestURI)
+}
+
+func larsNativeHandlerTest(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, r.RequestURI)
+}
+
+func loadLARS(routes []route) http.Handler {
+	var h interface{} = echoHandler
+	if loadTestHandler {
+		h = larsHandlerTest
+	}
+
+	l := lars.New()
+
+	for _, r := range routes {
+		switch r.method {
+		case "GET":
+			l.Get(r.path, h)
+		case "POST":
+			l.Post(r.path, h)
+		case "PUT":
+			l.Put(r.path, h)
+		case "PATCH":
+			l.Patch(r.path, h)
+		case "DELETE":
+			l.Delete(r.path, h)
+		default:
+			panic("Unknow HTTP method: " + r.method)
+		}
+	}
+	return l
+}
+
+func loadLARSSingle(method, path string, h interface{}) http.Handler {
+	l := lars.New()
+
+	switch method {
+	case "GET":
+		l.Get(path, h)
+	case "POST":
+		l.Post(path, h)
+	case "PUT":
+		l.Put(path, h)
+	case "PATCH":
+		l.Patch(path, h)
+	case "DELETE":
+		l.Delete(path, h)
+	default:
+		panic("Unknow HTTP method: " + method)
+	}
+	return l
+}
+
 // Macaron
 func macaronHandler() {}
 
@@ -1070,13 +1134,13 @@ func initRevel() {
 
 	revel.RegisterController((*RevelController)(nil),
 		[]*revel.MethodType{
-			&revel.MethodType{
+			{
 				Name: "Handle",
 			},
-			&revel.MethodType{
+			{
 				Name: "HandleWrite",
 			},
-			&revel.MethodType{
+			{
 				Name: "HandleTest",
 			},
 		})
