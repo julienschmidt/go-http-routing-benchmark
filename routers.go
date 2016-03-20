@@ -825,7 +825,7 @@ func larsNativeHandlerTest(w http.ResponseWriter, r *http.Request) {
 }
 
 func loadLARS(routes []route) http.Handler {
-	var h interface{} = echoHandler
+	var h interface{} = larsHandler
 	if loadTestHandler {
 		h = larsHandlerTest
 	}
@@ -848,7 +848,7 @@ func loadLARS(routes []route) http.Handler {
 			panic("Unknow HTTP method: " + r.method)
 		}
 	}
-	return l
+	return l.Serve()
 }
 
 func loadLARSSingle(method, path string, h interface{}) http.Handler {
@@ -868,7 +868,7 @@ func loadLARSSingle(method, path string, h interface{}) http.Handler {
 	default:
 		panic("Unknow HTTP method: " + method)
 	}
-	return l
+	return l.Serve()
 }
 
 // Macaron
