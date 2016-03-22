@@ -32,6 +32,7 @@ import (
 	"github.com/gocraft/web"
 	"github.com/gorilla/mux"
 	"github.com/julienschmidt/httprouter"
+	"github.com/kataras/iris"
 	"github.com/labstack/echo"
 	llog "github.com/lunny/log"
 	"github.com/lunny/tango"
@@ -783,6 +784,36 @@ func loadHttpTreeMuxSingle(method, path string, handler httptreemux.HandlerFunc)
 	router := httptreemux.New()
 	router.Handle(method, path, handler)
 	return router
+}
+
+// Iris
+func irisHandler(_ *iris.Context) {}
+
+func irisHandlerWrite(c *iris.Context) {
+	io.WriteString(c.ResponseWriter, c.Param("name"))
+}
+
+func irisHandlerTest(c *iris.Context) {
+	io.WriteString(c.ResponseWriter, c.Request.RequestURI)
+}
+
+func loadIris(routes []route) http.Handler {
+	h := irisHandler
+	if loadTestHandler {
+		h = irisHandlerTest
+	}
+
+	router := iris.New()
+	for _, route := range routes {
+		router.HandleFunc(route.method, route.path, h)
+	}
+	return router.Serve()
+}
+
+func loadIrisSingle(method, path string, handle iris.HandlerFunc) http.Handler {
+	router := iris.New()
+	router.HandleFunc(method, path, handle)
+	return router.Serve()
 }
 
 // Kocha-urlrouter

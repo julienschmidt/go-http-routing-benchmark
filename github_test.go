@@ -289,6 +289,7 @@ var (
 	githubGorillaMux  http.Handler
 	githubHttpRouter  http.Handler
 	githubHttpTreeMux http.Handler
+	githubIris        http.Handler
 	githubKocha       http.Handler
 	githubLARS        http.Handler
 	githubMacaron     http.Handler
@@ -352,6 +353,9 @@ func init() {
 	})
 	calcMem("HttpTreeMux", func() {
 		githubHttpTreeMux = loadHttpTreeMux(githubAPI)
+	})
+	calcMem("Iris", func() {
+		githubIris = loadIris(githubAPI)
 	})
 	calcMem("Kocha", func() {
 		githubKocha = loadKocha(githubAPI)
@@ -459,6 +463,10 @@ func BenchmarkHttpRouter_GithubStatic(b *testing.B) {
 func BenchmarkHttpTreeMux_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
 	benchRequest(b, githubHttpTreeMux, req)
+}
+func BenchmarkIris_GithubStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/user/repos", nil)
+	benchRequest(b, githubIris, req)
 }
 func BenchmarkKocha_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
@@ -579,6 +587,10 @@ func BenchmarkHttpTreeMux_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubHttpTreeMux, req)
 }
+func BenchmarkIris_GithubParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
+	benchRequest(b, githubIris, req)
+}
 func BenchmarkKocha_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubKocha, req)
@@ -682,6 +694,9 @@ func BenchmarkHttpRouter_GithubAll(b *testing.B) {
 }
 func BenchmarkHttpTreeMux_GithubAll(b *testing.B) {
 	benchRoutes(b, githubHttpTreeMux, githubAPI)
+}
+func BenchmarkIris_GithubAll(b *testing.B) {
+	benchRoutes(b, githubIris, githubAPI)
 }
 func BenchmarkKocha_GithubAll(b *testing.B) {
 	benchRoutes(b, githubKocha, githubAPI)

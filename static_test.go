@@ -187,6 +187,7 @@ var (
 	staticGorillaMux  http.Handler
 	staticHttpRouter  http.Handler
 	staticHttpTreeMux http.Handler
+	staticIris        http.Handler
 	staticKocha       http.Handler
 	staticLARS        http.Handler
 	staticMacaron     http.Handler
@@ -258,6 +259,9 @@ func init() {
 	})
 	calcMem("HttpTreeMux", func() {
 		staticHttpTreeMux = loadHttpTreeMux(staticRoutes)
+	})
+	calcMem("Iris", func() {
+		staticIris = loadIris(staticRoutes)
 	})
 	calcMem("Kocha", func() {
 		staticKocha = loadKocha(staticRoutes)
@@ -354,6 +358,9 @@ func BenchmarkHttpRouter_StaticAll(b *testing.B) {
 }
 func BenchmarkHttpTreeMux_StaticAll(b *testing.B) {
 	benchRoutes(b, staticHttpRouter, staticRoutes)
+}
+func BenchmarkIris_StaticAll(b *testing.B) {
+	benchRoutes(b, staticIris, staticRoutes)
 }
 func BenchmarkKocha_StaticAll(b *testing.B) {
 	benchRoutes(b, staticKocha, staticRoutes)

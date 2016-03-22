@@ -71,6 +71,7 @@ var (
 	parseGorillaMux  http.Handler
 	parseHttpRouter  http.Handler
 	parseHttpTreeMux http.Handler
+	parseIris        http.Handler
 	parseKocha       http.Handler
 	parseLARS        http.Handler
 	parseMacaron     http.Handler
@@ -134,6 +135,9 @@ func init() {
 	})
 	calcMem("HttpTreeMux", func() {
 		parseHttpTreeMux = loadHttpTreeMux(parseAPI)
+	})
+	calcMem("Iris", func() {
+		parseIris = loadIris(parseAPI)
 	})
 	calcMem("Kocha", func() {
 		parseKocha = loadKocha(parseAPI)
@@ -241,6 +245,10 @@ func BenchmarkHttpRouter_ParseStatic(b *testing.B) {
 func BenchmarkHttpTreeMux_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseHttpTreeMux, req)
+}
+func BenchmarkIris_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseIris, req)
 }
 func BenchmarkKocha_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
@@ -361,6 +369,10 @@ func BenchmarkHttpTreeMux_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseHttpTreeMux, req)
 }
+func BenchmarkIris_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseIris, req)
+}
 func BenchmarkKocha_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseKocha, req)
@@ -480,6 +492,10 @@ func BenchmarkHttpTreeMux_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseHttpTreeMux, req)
 }
+func BenchmarkIris_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseIris, req)
+}
 func BenchmarkKocha_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseKocha, req)
@@ -583,6 +599,9 @@ func BenchmarkHttpRouter_ParseAll(b *testing.B) {
 }
 func BenchmarkHttpTreeMux_ParseAll(b *testing.B) {
 	benchRoutes(b, parseHttpTreeMux, parseAPI)
+}
+func BenchmarkIris_ParseAll(b *testing.B) {
+	benchRoutes(b, parseIris, parseAPI)
 }
 func BenchmarkKocha_ParseAll(b *testing.B) {
 	benchRoutes(b, parseKocha, parseAPI)
