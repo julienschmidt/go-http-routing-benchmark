@@ -33,7 +33,7 @@ import (
 	"github.com/gorilla/mux"
 	"github.com/julienschmidt/httprouter"
 	"github.com/kataras/iris"
-	"github.com/labstack/echo"
+	"gopkg.in/labstack/echo.v1"
 	llog "github.com/lunny/log"
 	"github.com/lunny/tango"
 	vulcan "github.com/mailgun/route"
