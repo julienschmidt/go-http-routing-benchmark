@@ -1,7 +1,7 @@
 Go HTTP Router Benchmark
 ========================
 
-> Note that this repository is just an updated version (24 March 2016) of the Julien's repo: (https://github.com/julienschmidt/go-http-routing-benchmark/)[https://github.com/julienschmidt/go-http-routing-benchmark/],  all repository's copyrights goes to him!
+> Note that this repository is just an updated version (24 March 2016) of the Julien's repo: [https://github.com/julienschmidt/go-http-routing-benchmark/](https://github.com/julienschmidt/go-http-routing-benchmark/) ,  all repository's copyrights goes to him!
 
 This benchmark suite aims to compare the performance of HTTP request routers for [Go](https://golang.org) by implementing the routing structure of some real world APIs.
 Some of the APIs are slightly adapted, since they can not be implemented 1:1 in some of the routers.
