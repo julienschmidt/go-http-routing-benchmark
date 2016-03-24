@@ -1,3 +1,4 @@
+```
 BenchmarkAce_GithubStatic               10000000               223 ns/op               0 B/op          0 allocs/op
 BenchmarkBear_GithubStatic               2000000               613 ns/op             120 B/op          3 allocs/op
 BenchmarkBeego_GithubStatic              1000000              1173 ns/op              64 B/op          4 allocs/op
@@ -27,3 +28,4 @@ BenchmarkTango_GithubStatic              1000000              1620 ns/op        
 BenchmarkTigerTonic_GithubStatic         5000000               350 ns/op              48 B/op          1 allocs/op
 BenchmarkTraffic_GithubStatic              30000             55736 ns/op           18904 B/op        148 allocs/op
 BenchmarkVulcan_GithubStatic             1000000              1266 ns/op              98 B/op          3 allocs/op
+```

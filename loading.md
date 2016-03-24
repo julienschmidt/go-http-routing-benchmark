@@ -1,3 +1,4 @@
+```
 D:\Projects\Golang\mygopath\src\github.com\kataras\go-http-routing-benchmark>go test -bench=. -timeout=60m
 #GithubAPI Routes: 203
    Ace: 48992 Bytes
@@ -123,3 +124,4 @@ D:\Projects\Golang\mygopath\src\github.com\kataras\go-http-routing-benchmark>go 
    TigerTonic: 80320 Bytes
    Traffic: 624432 Bytes
    Vulcan: 369144 Bytes
+```

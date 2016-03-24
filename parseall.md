@@ -1,3 +1,4 @@
+```
 BenchmarkAce_ParseAll                     200000              9285 ns/op             640 B/op         16 allocs/op
 BenchmarkBear_ParseAll                     50000             27281 ns/op            8928 B/op        110 allocs/op
 BenchmarkBeego_ParseAll                   100000             23191 ns/op             800 B/op         36 allocs/op
@@ -27,3 +28,4 @@ BenchmarkTango_ParseAll                    50000             38662 ns/op        
 BenchmarkTigerTonic_ParseAll               20000             72554 ns/op           19424 B/op        360 allocs/op
 BenchmarkTraffic_ParseAll                  10000            147408 ns/op           57776 B/op        642 allocs/op
 BenchmarkVulcan_ParseAll                   50000             28641 ns/op            2548 B/op         78 allocs/op
+```

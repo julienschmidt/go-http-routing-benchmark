@@ -1,3 +1,4 @@
+```
 BenchmarkAce_Parse2Params                5000000               421 ns/op              64 B/op          1 allocs/op
 BenchmarkBear_Parse2Params               1000000              1250 ns/op             496 B/op          5 allocs/op
 BenchmarkBeego_Parse2Params              1000000              1436 ns/op             128 B/op          4 allocs/op
@@ -27,3 +28,4 @@ BenchmarkTango_Parse2Params              1000000              1832 ns/op        
 BenchmarkTigerTonic_Parse2Params          500000              5286 ns/op            1376 B/op         22 allocs/op
 BenchmarkTraffic_Parse2Params             300000              5793 ns/op            2040 B/op         22 allocs/op
 BenchmarkVulcan_Parse2Params             1000000              1059 ns/op              98 B/op          3 allocs/op
+```

@@ -1,3 +1,4 @@
+```
 BenchmarkAce_ParamWrite                  3000000               447 ns/op              40 B/op          2 allocs/op
 BenchmarkBear_ParamWrite                 1000000              1370 ns/op             456 B/op          5 allocs/op
 BenchmarkBeego_ParamWrite                1000000              1298 ns/op              72 B/op          5 allocs/op
@@ -27,3 +28,4 @@ BenchmarkTango_ParamWrite                2000000               775 ns/op        
 BenchmarkTigerTonic_ParamWrite            300000              5723 ns/op            1408 B/op         22 allocs/op
 BenchmarkTraffic_ParamWrite               300000              7230 ns/op            2384 B/op         25 allocs/op
 BenchmarkVulcan_ParamWrite               2000000               854 ns/op              98 B/op          3 allocs/op
+```

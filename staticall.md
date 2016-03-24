@@ -1,3 +1,4 @@
+```
 BenchmarkAce_StaticAll                     30000             45069 ns/op               0 B/op          0 allocs/op
 BenchmarkHttpServeMux_StaticAll             2000            749542 ns/op              96 B/op          8 allocs/op
 BenchmarkBeego_StaticAll                   10000            229913 ns/op           15744 B/op        628 allocs/op
@@ -28,3 +29,4 @@ BenchmarkTango_StaticAll                   10000            268015 ns/op        
 BenchmarkTigerTonic_StaticAll              20000             63353 ns/op            7504 B/op        157 allocs/op
 BenchmarkTraffic_StaticAll                  1000           1976113 ns/op          729736 B/op      14287 allocs/op
 BenchmarkVulcan_StaticAll                  10000            198611 ns/op           15386 B/op        471 allocs/op
+```

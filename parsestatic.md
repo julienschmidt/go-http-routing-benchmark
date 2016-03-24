@@ -1,3 +1,4 @@
+```
 BenchmarkAce_ParseStatic                10000000               199 ns/op               0 B/op          0 allocs/op
 BenchmarkBear_ParseStatic                3000000               497 ns/op             120 B/op          3 allocs/op
 BenchmarkBeego_ParseStatic               1000000              1010 ns/op              32 B/op          4 allocs/op
@@ -27,3 +28,4 @@ BenchmarkTango_ParseStatic               1000000              1284 ns/op        
 BenchmarkTigerTonic_ParseStatic          5000000               306 ns/op              48 B/op          1 allocs/op
 BenchmarkTraffic_ParseStatic              500000              4098 ns/op            1816 B/op         20 allocs/op
 BenchmarkVulcan_ParseStatic              2000000               832 ns/op              98 B/op          3 allocs/op
+```
