@@ -32,7 +32,6 @@ import (
 	"github.com/gocraft/web"
 	"github.com/gorilla/mux"
 	"github.com/julienschmidt/httprouter"
-	"github.com/labstack/echo"
 	llog "github.com/lunny/log"
 	"github.com/lunny/tango"
 	vulcan "github.com/mailgun/route"
@@ -54,6 +53,7 @@ import (
 	gojiv2 "goji.io"
 	gojiv2pat "goji.io/pat"
 	gcontext "golang.org/x/net/context"
+	echo "gopkg.in/labstack/echo.v1"
 )
 
 type route struct {
