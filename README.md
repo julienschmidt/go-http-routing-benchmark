@@ -25,7 +25,7 @@ If you care about performance, this benchmark can maybe help you find the right 
 ## Results
 
 Benchmark System:
- * Intel Core i7-4710HQ CPU @ 2.50Ghz, CPU-governor: performance
+ * Intel Core i7-4710HQ CPU @ 2.50Ghz
  * 2x 4 GiB DDR3-1333 RAM, dual-channel
  * go version go1.6 windows/amd64
  * Windows 7 Ultimate
@@ -196,9 +196,9 @@ BenchmarkAce_ParseStatic                10000000               199 ns/op        
 BenchmarkBear_ParseStatic                3000000               497 ns/op             120 B/op          3 allocs/op
 BenchmarkBeego_ParseStatic               1000000              1010 ns/op              32 B/op          4 allocs/op
 BenchmarkBone_ParseStatic                2000000               685 ns/op             144 B/op          3 allocs/op
-BenchmarkDenco_ParseStatic              30000000                47.2 ns/op             0 B/op          0 allocs/op
-BenchmarkEcho_ParseStatic               20000000                92.5 ns/op             0 B/op          0 allocs/op
-BenchmarkGin_ParseStatic                20000000                91.5 ns/op             0 B/op          0 allocs/op
+BenchmarkDenco_ParseStatic              30000000              47.2 ns/op               0 B/op          0 allocs/op
+BenchmarkEcho_ParseStatic               20000000              92.5 ns/op               0 B/op          0 allocs/op
+BenchmarkGin_ParseStatic                20000000              91.5 ns/op               0 B/op          0 allocs/op
 BenchmarkGocraftWeb_ParseStatic          2000000               944 ns/op             296 B/op          5 allocs/op
 BenchmarkGoji_ParseStatic                5000000               251 ns/op               0 B/op          0 allocs/op
 BenchmarkGojiv2_ParseStatic              2000000               638 ns/op             160 B/op          4 allocs/op
@@ -216,7 +216,7 @@ BenchmarkPat_ParseStatic                 2000000               820 ns/op        
 BenchmarkPossum_ParseStatic              1000000              1178 ns/op             416 B/op          3 allocs/op
 BenchmarkR2router_ParseStatic            2000000               608 ns/op             144 B/op          4 allocs/op
 BenchmarkRevel_ParseStatic                500000              4662 ns/op            1248 B/op         23 allocs/op
-BenchmarkRivet_ParseStatic              20000000                85.7 ns/op             0 B/op          0 allocs/op
+BenchmarkRivet_ParseStatic              20000000              85.7 ns/op               0 B/op          0 allocs/op
 BenchmarkTango_ParseStatic               1000000              1284 ns/op             256 B/op          9 allocs/op
 BenchmarkTigerTonic_ParseStatic          5000000               306 ns/op              48 B/op          1 allocs/op
 BenchmarkTraffic_ParseStatic              500000              4098 ns/op            1816 B/op         20 allocs/op
@@ -229,7 +229,7 @@ BenchmarkBeego_ParseParam                1000000              1171 ns/op        
 BenchmarkBone_ParseParam                 1000000              1320 ns/op             464 B/op          4 allocs/op
 BenchmarkDenco_ParseParam                5000000               316 ns/op              64 B/op          1 allocs/op
 BenchmarkEcho_ParseParam                20000000               106 ns/op               0 B/op          0 allocs/op
-BenchmarkGin_ParseParam                 20000000                97.3 ns/op             0 B/op          0 allocs/op
+BenchmarkGin_ParseParam                 20000000              97.3 ns/op               0 B/op          0 allocs/op
 BenchmarkGocraftWeb_ParseParam           1000000              1634 ns/op             664 B/op          8 allocs/op
 BenchmarkGoji_ParseParam                 2000000               928 ns/op             336 B/op          2 allocs/op
 BenchmarkGojiv2_ParseParam               2000000               986 ns/op             208 B/op          6 allocs/op
@@ -545,7 +545,6 @@ BenchmarkTraffic_GPlusAll                  10000            108306 ns/op        
 BenchmarkVulcan_GPlusAll                  100000             15290 ns/op            1274 B/op         39 allocs/op
 
 ```
-
 ## Usage
 
 If you'd like to run these benchmarks locally, you'll need to install the packge first:
