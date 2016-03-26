@@ -546,29 +546,17 @@ BenchmarkVulcan_GPlusAll                  100000             15290 ns/op        
 
 ```
 
-
-## Conclusions
-First of all, there is no reason to use net/http's default [ServeMux](http://golang.org/pkg/net/http/#ServeMux), which is very limited and does not have especially good performance. There are enough alternatives coming in every flavor, choose the one you like best.
-
-Secondly, the broad range of functions of some of the frameworks comes at a high price in terms of performance. For example Martini has great flexibility, but very bad performance. Martini has the worst performance of all tested routers in a lot of the benchmarks. Beego seems to have some scalability problems and easily defeats Martini with even worse performance, when the number of parameters or routes is high. I really hope, that the routing of these packages can be optimized. I think the Go-ecosystem needs great feature-rich frameworks like these.
-
-Last but not least, we have to determine the performance champion.
-
-Currently no framework can beat the performance of the [Iris](https://github.com/kataras/iris) package, which currently dominates all benchmarks.
-
-In the end, performance can not be the (only) criterion for choosing a router. Play around a bit with some of the routers, and choose the one you like best.
-
 ## Usage
 
 If you'd like to run these benchmarks locally, you'll need to install the packge first:
 
 ```bash
-go get github.com/kataras/go-http-routing-benchmark
+go get github.com/iris-contrib/go-http-routing-benchmark
 ```
 This may take a while due to the large number of dependencies that need to be downloaded. Once that command completes, you can run the full set of benchmarks like this:
 
 ```bash
-cd $GOPATH/src/github.com/kataras/go-http-routing-benchmark
+cd $GOPATH/src/github.com/iris-contrib/go-http-routing-benchmark
 go test -bench=.
 ```
 
