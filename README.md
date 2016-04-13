@@ -1,3 +1,6 @@
+## News 13 April 2016
+These benchmarks was from previous version of Iris (v1). To see the new benchmark results you have to [click here](https://github.com/smallnest/go-web-framework-benchmark), it's external source I didn't create these benchmarks but they are seem  better and far more realistic than julien's.
+
 Go HTTP Router Benchmark
 ========================
 
