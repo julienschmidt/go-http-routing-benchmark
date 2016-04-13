@@ -1,0 +1,31 @@
+```
+BenchmarkAce_Param                       5000000               347 ns/op              32 B/op          1 allocs/op
+BenchmarkBear_Param                      1000000              1313 ns/op             456 B/op          5 allocs/op
+BenchmarkBeego_Param                     1000000              1173 ns/op              64 B/op          4 allocs/op
+BenchmarkBone_Param                      1000000              1255 ns/op             384 B/op          3 allocs/op
+BenchmarkDenco_Param                    10000000               230 ns/op              32 B/op          1 allocs/op
+BenchmarkEcho_Param                     20000000                91.8 ns/op             0 B/op          0 allocs/op
+BenchmarkGin_Param                      20000000                87.0 ns/op             0 B/op          0 allocs/op
+BenchmarkGocraftWeb_Param                1000000              1961 ns/op             648 B/op          8 allocs/op
+BenchmarkGoji_Param                      2000000               979 ns/op             336 B/op          2 allocs/op
+BenchmarkGojiv2_Param                    2000000               837 ns/op             176 B/op          5 allocs/op
+BenchmarkGoJsonRest_Param                1000000              2129 ns/op             649 B/op         13 allocs/op
+BenchmarkGoRestful_Param                  200000              8860 ns/op            2696 B/op         27 allocs/op
+BenchmarkGorillaMux_Param                1000000              3152 ns/op             752 B/op          8 allocs/op
+BenchmarkHttpRouter_Param               10000000               156 ns/op              32 B/op          1 allocs/op
+BenchmarkHttpTreeMux_Param               2000000               901 ns/op             352 B/op          3 allocs/op
+BenchmarkIris_Param                     30000000                49.7 ns/op             0 B/op          0 allocs/op
+BenchmarkKocha_Param                     3000000               411 ns/op              56 B/op          3 allocs/op
+BenchmarkLARS_Param                     20000000                92.3 ns/op             0 B/op          0 allocs/op
+BenchmarkMacaron_Param                   1000000              3269 ns/op            1040 B/op          9 allocs/op
+BenchmarkMartini_Param                    500000              5216 ns/op            1104 B/op         11 allocs/op
+BenchmarkPat_Param                       1000000              2203 ns/op             648 B/op         12 allocs/op
+BenchmarkPossum_Param                    1000000              1988 ns/op             560 B/op          6 allocs/op
+BenchmarkR2router_Param                  1000000              1235 ns/op             432 B/op          5 allocs/op
+BenchmarkRevel_Param                      300000              6060 ns/op            1632 B/op         26 allocs/op
+BenchmarkRivet_Param                     5000000               263 ns/op              48 B/op          1 allocs/op
+BenchmarkTango_Param                     1000000              1436 ns/op             256 B/op          9 allocs/op
+BenchmarkTigerTonic_Param                1000000              3699 ns/op             976 B/op         16 allocs/op
+BenchmarkTraffic_Param                    300000              5837 ns/op            1960 B/op         21 allocs/op
+BenchmarkVulcan_Param                    2000000               859 ns/op              98 B/op          3 allocs/op
+```

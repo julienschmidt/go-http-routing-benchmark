@@ -186,6 +186,14 @@ func BenchmarkHttpTreeMux_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+
+func BenchmarkIris_Param(b *testing.B) {
+	router := loadIrisSingle("GET", "/user/:name", irisHandler)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+
 func BenchmarkKocha_Param(b *testing.B) {
 	handler := new(kochaHandler)
 	router := loadKochaSingle(
@@ -369,6 +377,12 @@ func BenchmarkHttpRouter_Param5(b *testing.B) {
 }
 func BenchmarkHttpTreeMux_Param5(b *testing.B) {
 	router := loadHttpTreeMuxSingle("GET", fiveColon, httpTreeMuxHandler)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkIris_Param5(b *testing.B) {
+	router := loadIrisSingle("GET", fiveColon, irisHandler)
 
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
@@ -559,6 +573,12 @@ func BenchmarkHttpTreeMux_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarIris_Param20(b *testing.B) {
+	router := loadIrisSingle("GET", twentyColon, irisHandler)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkKocha_Param20(b *testing.B) {
 	handler := new(kochaHandler)
 	router := loadKochaSingle(
@@ -741,6 +761,13 @@ func BenchmarkHttpTreeMux_ParamWrite(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkIris_ParamWrite(b *testing.B) {
+	router := loadIrisSingle("GET", "/user/:name", irisHandlerWrite)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+
 func BenchmarkKocha_ParamWrite(b *testing.B) {
 	handler := new(kochaHandler)
 	router := loadKochaSingle(

@@ -51,6 +51,7 @@ var (
 	gplusGorillaMux  http.Handler
 	gplusHttpRouter  http.Handler
 	gplusHttpTreeMux http.Handler
+	gplusIris        http.Handler
 	gplusKocha       http.Handler
 	gplusLARS        http.Handler
 	gplusMacaron     http.Handler
@@ -114,6 +115,9 @@ func init() {
 	})
 	calcMem("HttpTreeMux", func() {
 		gplusHttpTreeMux = loadHttpTreeMux(gplusAPI)
+	})
+	calcMem("Iris", func() {
+		gplusIris = loadIris(gplusAPI)
 	})
 	calcMem("Kocha", func() {
 		gplusKocha = loadKocha(gplusAPI)
@@ -221,6 +225,10 @@ func BenchmarkHttpRouter_GPlusStatic(b *testing.B) {
 func BenchmarkHttpTreeMux_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusHttpTreeMux, req)
+}
+func BenchmarkIris_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	benchRequest(b, gplusIris, req)
 }
 func BenchmarkKocha_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
@@ -341,6 +349,10 @@ func BenchmarkHttpTreeMux_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusHttpTreeMux, req)
 }
+func BenchmarkIris_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	benchRequest(b, gplusIris, req)
+}
 func BenchmarkKocha_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusKocha, req)
@@ -460,6 +472,10 @@ func BenchmarkHttpTreeMux_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusHttpTreeMux, req)
 }
+func BenchmarkIris_GPlus2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	benchRequest(b, gplusIris, req)
+}
 func BenchmarkKocha_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusKocha, req)
@@ -563,6 +579,9 @@ func BenchmarkHttpRouter_GPlusAll(b *testing.B) {
 }
 func BenchmarkHttpTreeMux_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusHttpTreeMux, gplusAPI)
+}
+func BenchmarkIris_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusIris, gplusAPI)
 }
 func BenchmarkKocha_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusKocha, gplusAPI)

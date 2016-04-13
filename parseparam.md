@@ -1,0 +1,31 @@
+```
+BenchmarkAce_ParseParam                  5000000               397 ns/op              64 B/op          1 allocs/op
+BenchmarkBear_ParseParam                 1000000              1084 ns/op             467 B/op          5 allocs/op
+BenchmarkBeego_ParseParam                1000000              1171 ns/op              64 B/op          4 allocs/op
+BenchmarkBone_ParseParam                 1000000              1320 ns/op             464 B/op          4 allocs/op
+BenchmarkDenco_ParseParam                5000000               316 ns/op              64 B/op          1 allocs/op
+BenchmarkEcho_ParseParam                20000000               106 ns/op               0 B/op          0 allocs/op
+BenchmarkGin_ParseParam                 20000000                97.3 ns/op             0 B/op          0 allocs/op
+BenchmarkGocraftWeb_ParseParam           1000000              1634 ns/op             664 B/op          8 allocs/op
+BenchmarkGoji_ParseParam                 2000000               928 ns/op             336 B/op          2 allocs/op
+BenchmarkGojiv2_ParseParam               2000000               986 ns/op             208 B/op          6 allocs/op
+BenchmarkGoJsonRest_ParseParam           1000000              1816 ns/op             649 B/op         13 allocs/op
+BenchmarkGoRestful_ParseParam             100000             13360 ns/op            4024 B/op         31 allocs/op
+BenchmarkGorillaMux_ParseParam            500000              3366 ns/op             752 B/op          8 allocs/op
+BenchmarkHttpRouter_ParseParam          10000000               225 ns/op              64 B/op          1 allocs/op
+BenchmarkHttpTreeMux_ParseParam          2000000               706 ns/op             352 B/op          3 allocs/op
+BenchmarkIris_ParseParam                30000000                50.8 ns/op             0 B/op          0 allocs/op
+BenchmarkKocha_ParseParam                5000000               406 ns/op              56 B/op          3 allocs/op
+BenchmarkLARS_ParseParam                20000000               101 ns/op               0 B/op          0 allocs/op
+BenchmarkMacaron_ParseParam              1000000              2744 ns/op            1040 B/op          9 allocs/op
+BenchmarkMartini_ParseParam               300000              5056 ns/op            1104 B/op         11 allocs/op
+BenchmarkPat_ParseParam                  1000000              2871 ns/op            1120 B/op         17 allocs/op
+BenchmarkPossum_ParseParam               1000000              1701 ns/op             560 B/op          6 allocs/op
+BenchmarkR2router_ParseParam             1000000              1033 ns/op             432 B/op          5 allocs/op
+BenchmarkRevel_ParseParam                 500000              5266 ns/op            1664 B/op         26 allocs/op
+BenchmarkRivet_ParseParam                5000000               264 ns/op              48 B/op          1 allocs/op
+BenchmarkTango_ParseParam                1000000              1387 ns/op             288 B/op          9 allocs/op
+BenchmarkTigerTonic_ParseParam           1000000              3236 ns/op             992 B/op         16 allocs/op
+BenchmarkTraffic_ParseParam               500000              5372 ns/op            2248 B/op         23 allocs/op
+BenchmarkVulcan_ParseParam               2000000               949 ns/op              98 B/op          3 allocs/op
+```

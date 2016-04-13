@@ -1,0 +1,31 @@
+```
+BenchmarkAce_GPlusAll                     300000              5583 ns/op             640 B/op         11 allocs/op
+BenchmarkBear_GPlusAll                    100000             15530 ns/op            5488 B/op         61 allocs/op
+BenchmarkBeego_GPlusAll                   100000             17470 ns/op            1440 B/op         44 allocs/op
+BenchmarkBone_GPlusAll                    100000             19361 ns/op            4912 B/op         61 allocs/op
+BenchmarkDenco_GPlusAll                   500000              4558 ns/op             672 B/op         11 allocs/op
+BenchmarkEcho_GPlusAll                   1000000              2290 ns/op               0 B/op          0 allocs/op
+BenchmarkGin_GPlusAll                    1000000              1951 ns/op               0 B/op          0 allocs/op
+BenchmarkGocraftWeb_GPlusAll              100000             23171 ns/op            8040 B/op        103 allocs/op
+BenchmarkGoji_GPlusAll                    200000             12025 ns/op            3696 B/op         22 allocs/op
+BenchmarkGojiv2_GPlusAll                  100000             15520 ns/op            2640 B/op         76 allocs/op
+BenchmarkGoJsonRest_GPlusAll               50000             28341 ns/op            8117 B/op        170 allocs/op
+BenchmarkGoRestful_GPlusAll                10000            168209 ns/op           38664 B/op        389 allocs/op
+BenchmarkGorillaMux_GPlusAll               20000             63253 ns/op            9248 B/op        102 allocs/op
+BenchmarkHttpRouter_GPlusAll              500000              3066 ns/op             640 B/op         11 allocs/op
+BenchmarkHttpTreeMux_GPlusAll             200000             10690 ns/op            4032 B/op         38 allocs/op
+BenchmarkIris_GPlusAll                   1000000              1155 ns/op               0 B/op          0 allocs/op
+BenchmarkKocha_GPlusAll                   200000              7400 ns/op             976 B/op         43 allocs/op
+BenchmarkLARS_GPlusAll                   1000000              2024 ns/op               0 B/op          0 allocs/op
+BenchmarkMacaron_GPlusAll                  50000             36762 ns/op           12944 B/op        115 allocs/op
+BenchmarkMartini_GPlusAll                  20000             88555 ns/op           14448 B/op        165 allocs/op
+BenchmarkPat_GPlusAll                      30000             48602 ns/op           16576 B/op        298 allocs/op
+BenchmarkPossum_GPlusAll                  100000             15940 ns/op            5408 B/op         39 allocs/op
+BenchmarkR2router_GPlusAll                100000             13560 ns/op            5040 B/op         63 allocs/op
+BenchmarkRevel_GPlusAll                    20000             71154 ns/op           21136 B/op        342 allocs/op
+BenchmarkRivet_GPlusAll                   300000              4613 ns/op             768 B/op         11 allocs/op
+BenchmarkTango_GPlusAll                   100000             21081 ns/op            4304 B/op        129 allocs/op
+BenchmarkTigerTonic_GPlusAll               30000             55203 ns/op           14256 B/op        272 allocs/op
+BenchmarkTraffic_GPlusAll                  10000            108306 ns/op           37360 B/op        392 allocs/op
+BenchmarkVulcan_GPlusAll                  100000             15290 ns/op            1274 B/op         39 allocs/op
+```

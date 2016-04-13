@@ -1,0 +1,31 @@
+```
+BenchmarkAce_ParseAll                     200000              9285 ns/op             640 B/op         16 allocs/op
+BenchmarkBear_ParseAll                     50000             27281 ns/op            8928 B/op        110 allocs/op
+BenchmarkBeego_ParseAll                   100000             23191 ns/op             800 B/op         36 allocs/op
+BenchmarkBone_ParseAll                     50000             29121 ns/op            8048 B/op         90 allocs/op
+BenchmarkDenco_ParseAll                   300000              6850 ns/op             928 B/op         16 allocs/op
+BenchmarkEcho_ParseAll                    300000              4143 ns/op               0 B/op          0 allocs/op
+BenchmarkGin_ParseAll                     500000              3680 ns/op               0 B/op          0 allocs/op
+BenchmarkGocraftWeb_ParseAll               30000             41269 ns/op           13728 B/op        181 allocs/op
+BenchmarkGoji_ParseAll                    100000             19371 ns/op            5376 B/op         32 allocs/op
+BenchmarkGojiv2_ParseAll                  100000             22791 ns/op            4496 B/op        121 allocs/op
+BenchmarkGoJsonRest_ParseAll               30000             48336 ns/op           13866 B/op        321 allocs/op
+BenchmarkGoRestful_ParseAll                 5000            447025 ns/op          125600 B/op        868 allocs/op
+BenchmarkGorillaMux_ParseAll               10000            126807 ns/op           16560 B/op        198 allocs/op
+BenchmarkHttpRouter_ParseAll              500000              4346 ns/op             640 B/op         16 allocs/op
+BenchmarkHttpTreeMux_ParseAll             100000             15080 ns/op            5728 B/op         51 allocs/op
+BenchmarkIris_ParseAll                   1000000              2233 ns/op               0 B/op          0 allocs/op
+BenchmarkKocha_ParseAll                   200000             10095 ns/op            1112 B/op         54 allocs/op
+BenchmarkLARS_ParseAll                    500000              3672 ns/op               0 B/op          0 allocs/op
+BenchmarkMacaron_ParseAll                  20000             72204 ns/op           24160 B/op        224 allocs/op
+BenchmarkMartini_ParseAll                  10000            134707 ns/op           25600 B/op        276 allocs/op
+BenchmarkPat_ParseAll                      30000             55703 ns/op           17264 B/op        343 allocs/op
+BenchmarkPossum_ParseAll                   50000             31801 ns/op           10816 B/op         78 allocs/op
+BenchmarkR2router_ParseAll                100000             25061 ns/op            8352 B/op        120 allocs/op
+BenchmarkRevel_ParseAll                    10000            132607 ns/op           39424 B/op        652 allocs/op
+BenchmarkRivet_ParseAll                   300000              6797 ns/op             912 B/op         16 allocs/op
+BenchmarkTango_ParseAll                    50000             38662 ns/op            7664 B/op        240 allocs/op
+BenchmarkTigerTonic_ParseAll               20000             72554 ns/op           19424 B/op        360 allocs/op
+BenchmarkTraffic_ParseAll                  10000            147408 ns/op           57776 B/op        642 allocs/op
+BenchmarkVulcan_ParseAll                   50000             28641 ns/op            2548 B/op         78 allocs/op
+```

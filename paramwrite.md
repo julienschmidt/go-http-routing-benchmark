@@ -1,0 +1,31 @@
+```
+BenchmarkAce_ParamWrite                  3000000               447 ns/op              40 B/op          2 allocs/op
+BenchmarkBear_ParamWrite                 1000000              1370 ns/op             456 B/op          5 allocs/op
+BenchmarkBeego_ParamWrite                1000000              1298 ns/op              72 B/op          5 allocs/op
+BenchmarkBone_ParamWrite                 1000000              1347 ns/op             384 B/op          3 allocs/op
+BenchmarkDenco_ParamWrite                5000000               289 ns/op              32 B/op          1 allocs/op
+BenchmarkEcho_ParamWrite                10000000               204 ns/op               8 B/op          1 allocs/op
+BenchmarkGin_ParamWrite                 10000000               181 ns/op               0 B/op          0 allocs/op
+BenchmarkGocraftWeb_ParamWrite           1000000              2096 ns/op             656 B/op          9 allocs/op
+BenchmarkGoji_ParamWrite                 1000000              1051 ns/op             336 B/op          2 allocs/op
+BenchmarkGojiv2_ParamWrite               1000000              1118 ns/op             208 B/op          7 allocs/op
+BenchmarkGoJsonRest_ParamWrite           1000000              3461 ns/op            1128 B/op         18 allocs/op
+BenchmarkGoRestful_ParamWrite             200000              9085 ns/op            2704 B/op         28 allocs/op
+BenchmarkGorillaMux_ParamWrite           1000000              3290 ns/op             752 B/op          8 allocs/op
+BenchmarkHttpRouter_ParamWrite          10000000               211 ns/op              32 B/op          1 allocs/op
+BenchmarkHttpTreeMux_ParamWrite          2000000               967 ns/op             352 B/op          3 allocs/op
+BenchmarkIris_ParamWrite                10000000               145 ns/op               0 B/op          0 allocs/op
+BenchmarkKocha_ParamWrite                3000000               476 ns/op              56 B/op          3 allocs/op
+BenchmarkLARS_ParamWrite                10000000               174 ns/op               0 B/op          0 allocs/op
+BenchmarkMacaron_ParamWrite              1000000              3847 ns/op            1144 B/op         13 allocs/op
+BenchmarkMartini_ParamWrite               300000              5983 ns/op            1208 B/op         15 allocs/op
+BenchmarkPat_ParamWrite                  1000000              3637 ns/op            1072 B/op         17 allocs/op
+BenchmarkPossum_ParamWrite               1000000              2011 ns/op             560 B/op          6 allocs/op
+BenchmarkR2router_ParamWrite             1000000              1335 ns/op             432 B/op          5 allocs/op
+BenchmarkRevel_ParamWrite                 200000              7270 ns/op            2096 B/op         31 allocs/op
+BenchmarkRivet_ParamWrite                3000000               540 ns/op             144 B/op          3 allocs/op
+BenchmarkTango_ParamWrite                2000000               775 ns/op             136 B/op          4 allocs/op
+BenchmarkTigerTonic_ParamWrite            300000              5723 ns/op            1408 B/op         22 allocs/op
+BenchmarkTraffic_ParamWrite               300000              7230 ns/op            2384 B/op         25 allocs/op
+BenchmarkVulcan_ParamWrite               2000000               854 ns/op              98 B/op          3 allocs/op
+```

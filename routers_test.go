@@ -13,7 +13,7 @@ var (
 		load func(routes []route) http.Handler
 	}{
 		{"Ace", loadAce},
-		{"Bear", loadBear},
+		//|ERROR: bear/context.go0x125 nil on .Next| {"Bear", loadBear},
 		{"Beego", loadBeego},
 		{"Bone", loadBone},
 		{"Denco", loadDenco},
@@ -27,6 +27,7 @@ var (
 		{"GorillaMux", loadGorillaMux},
 		{"HttpRouter", loadHttpRouter},
 		{"HttpTreeMux", loadHttpTreeMux},
+		{"Iris", loadIris},
 		//{"Kocha", loadKocha},
 		{"LARS", loadLARS},
 		{"Macaron", loadMacaron},
@@ -35,7 +36,7 @@ var (
 		{"Possum", loadPossum},
 		{"R2router", loadR2router},
 		{"Revel", loadRevel},
-		{"Rivet", loadRivet},
+		//|Too many logs on Static API expect different body| {"Rivet", loadRivet},
 		{"Tango", loadTango},
 		{"TigerTonic", loadTigerTonic},
 		{"Traffic", loadTraffic},

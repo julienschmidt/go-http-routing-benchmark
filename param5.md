@@ -1,0 +1,31 @@
+```
+BenchmarkAce_Param5                      2000000               661 ns/op             160 B/op          1 allocs/op
+BenchmarkBear_Param5                     1000000              1770 ns/op             501 B/op          5 allocs/op
+BenchmarkBeego_Param5                    1000000              1668 ns/op             128 B/op          4 allocs/op
+BenchmarkBone_Param5                     1000000              1687 ns/op             432 B/op          3 allocs/op
+BenchmarkDenco_Param5                    2000000               636 ns/op             160 B/op          1 allocs/op
+BenchmarkEcho_Param5                    10000000               163 ns/op               0 B/op          0 allocs/op
+BenchmarkGin_Param5                     10000000               147 ns/op               0 B/op          0 allocs/op
+BenchmarkGocraftWeb_Param5               1000000              3091 ns/op             920 B/op         11 allocs/op
+BenchmarkGoji_Param5                     1000000              1294 ns/op             336 B/op          2 allocs/op
+BenchmarkGojiv2_Param5                   1000000              1175 ns/op             240 B/op          5 allocs/op
+BenchmarkGoJsonRest_Param5               1000000              3989 ns/op            1097 B/op         16 allocs/op
+BenchmarkGoRestful_Param5                 200000             10665 ns/op            2872 B/op         27 allocs/op
+BenchmarkGorillaMux_Param5                500000              4872 ns/op             816 B/op          8 allocs/op
+BenchmarkHttpRouter_Param5               3000000               499 ns/op             160 B/op          1 allocs/op
+BenchmarkHttpTreeMux_Param5              1000000              2133 ns/op             576 B/op          6 allocs/op
+BenchmarkIris_Param5                    30000000                49.3 ns/op             0 B/op          0 allocs/op
+BenchmarkKocha_Param5                    1000000              1917 ns/op             440 B/op         10 allocs/op
+BenchmarkLARS_Param5                    10000000               155 ns/op               0 B/op          0 allocs/op
+BenchmarkMacaron_Param5                  1000000              3742 ns/op            1040 B/op          9 allocs/op
+BenchmarkMartini_Param5                   300000              7177 ns/op            1232 B/op         11 allocs/op
+BenchmarkPat_Param5                       300000              5273 ns/op             964 B/op         32 allocs/op
+BenchmarkPossum_Param5                   1000000              2037 ns/op             560 B/op          6 allocs/op
+BenchmarkR2router_Param5                 1000000              1569 ns/op             432 B/op          5 allocs/op
+BenchmarkRevel_Param5                     200000              7785 ns/op            1984 B/op         33 allocs/op
+BenchmarkRivet_Param5                    2000000               867 ns/op             240 B/op          1 allocs/op
+BenchmarkTango_Param5                    1000000              3771 ns/op             944 B/op         17 allocs/op
+BenchmarkTigerTonic_Param5                200000             11565 ns/op            2471 B/op         38 allocs/op
+BenchmarkTraffic_Param5                   200000              8700 ns/op            2248 B/op         25 allocs/op
+BenchmarkVulcan_Param5                   1000000              1122 ns/op              98 B/op          3 allocs/op
+```
