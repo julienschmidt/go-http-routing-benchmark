@@ -208,6 +208,13 @@ func BenchmarkMartini_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+
+func BenchmarkOzzo_Param(b *testing.B) {
+	router := loadOzzoSingle("GET", "/user/:name", ozzoHandler)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkPat_Param(b *testing.B) {
 	router := loadPatSingle("GET", "/user/:name", http.HandlerFunc(httpHandlerFunc))
 
@@ -569,6 +576,12 @@ func BenchmarkMartini_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkOzzo_Param20(b *testing.B) {
+	router := loadOzzoSingle("GET", twentyColon, ozzoHandler)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkPat_Param20(b *testing.B) {
 	router := loadPatSingle("GET", twentyColon, http.HandlerFunc(httpHandlerFunc))
 
@@ -741,6 +754,12 @@ func BenchmarkMacaron_ParamWrite(b *testing.B) {
 }
 func BenchmarkMartini_ParamWrite(b *testing.B) {
 	router := loadMartiniSingle("GET", "/user/:name", martiniHandlerWrite)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkOzzo_ParamWrite(b *testing.B) {
+	router := loadOzzoSingle("GET", "/user/:name", ozzoHandlerWrite)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)

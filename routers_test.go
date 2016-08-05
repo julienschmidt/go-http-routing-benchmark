@@ -30,6 +30,7 @@ var (
 		//{"Kocha", loadKocha},
 		{"Macaron", loadMacaron},
 		{"Martini", loadMartini},
+		{"Ozzo", loadOzzo},
 		{"Pat", loadPat},
 		{"Possum", loadPossum},
 		{"R2router", loadR2router},

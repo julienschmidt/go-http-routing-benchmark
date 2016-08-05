@@ -190,6 +190,7 @@ var (
 	staticKocha       http.Handler
 	staticMacaron     http.Handler
 	staticMartini     http.Handler
+	staticOzzo        http.Handler
 	staticPat         http.Handler
 	staticPossum      http.Handler
 	staticR2router    http.Handler
@@ -266,6 +267,9 @@ func init() {
 	})
 	calcMem("Martini", func() {
 		staticMartini = loadMartini(staticRoutes)
+	})
+	calcMem("Ozzo", func() {
+		staticOzzo = loadOzzo(staticRoutes)
 	})
 	calcMem("Pat", func() {
 		staticPat = loadPat(staticRoutes)
@@ -359,6 +363,9 @@ func BenchmarkMacaron_StaticAll(b *testing.B) {
 }
 func BenchmarkMartini_StaticAll(b *testing.B) {
 	benchRoutes(b, staticMartini, staticRoutes)
+}
+func BenchmarkOzzo_StaticAll(b *testing.B) {
+	benchRoutes(b, staticOzzo, staticRoutes)
 }
 func BenchmarkPat_StaticAll(b *testing.B) {
 	benchRoutes(b, staticPat, staticRoutes)

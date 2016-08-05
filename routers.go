@@ -27,7 +27,9 @@ import (
 	"github.com/emicklei/go-restful"
 	"github.com/gin-gonic/gin"
 	"github.com/go-baa/baa"
+	baarouter "github.com/go-baa/baa/router"
 	"github.com/go-martini/martini"
+	ozzo "github.com/go-ozzo/ozzo-routing"
 	"github.com/go-zoo/bone"
 	"github.com/gocraft/web"
 	"github.com/gorilla/mux"
@@ -152,6 +154,7 @@ func loadBaa(routes []route) http.Handler {
 	}
 
 	b := baa.New()
+	b.SetDI("router", baarouter.NewRegexp(b))
 	for _, r := range routes {
 		switch r.method {
 		case "GET":
@@ -173,6 +176,7 @@ func loadBaa(routes []route) http.Handler {
 
 func loadBaaSingle(method, path string, h baa.HandlerFunc) http.Handler {
 	b := baa.New()
+	b.SetDI("router", baarouter.NewRegexp(b))
 	switch method {
 	case "GET":
 		b.Get(path, h)
@@ -243,7 +247,7 @@ func beegoHandlerTest(ctx *context.Context) {
 }
 
 func initBeego() {
-	beego.BConfig.RunMode = beego.PROD
+	beego.RunMode = "prod"
 	beego.BeeLogger.Close()
 }
 
@@ -954,6 +958,73 @@ func loadMartiniSingle(method, path string, handler interface{}) http.Handler {
 	martini := martini.New()
 	martini.Action(router.Handle)
 	return martini
+}
+
+// Ozzo
+var ozzoHandler = func(*ozzo.Context) error { return nil }
+
+func ozzoHandlerFuncTest(c *ozzo.Context) error {
+	io.WriteString(c.Response, c.Request.RequestURI)
+	return nil
+}
+func ozzoHandlerWrite(c *ozzo.Context) error {
+	io.WriteString(c.Response, c.Param("name"))
+	return nil
+}
+
+func loadOzzo(routes []route) http.Handler {
+	var h ozzo.Handler = ozzoHandler
+	if loadTestHandler {
+		h = ozzoHandlerFuncTest
+	}
+
+	router := ozzo.New()
+	for _, route := range routes {
+		path := convertOzzoPath(route.path)
+		switch route.method {
+		case "GET":
+			router.Get(path, h)
+		case "POST":
+			router.Post(path, h)
+		case "PUT":
+			router.Put(path, h)
+		case "PATCH":
+			router.Patch(path, h)
+		case "DELETE":
+			router.Delete(path, h)
+		default:
+			panic("Unknow HTTP method: " + route.method)
+		}
+	}
+	return router
+}
+
+var paramRegex = regexp.MustCompile(`:\w+`)
+
+func convertOzzoPath(path string) string {
+	return paramRegex.ReplaceAllStringFunc(path, func(m string) string {
+		return "<" + m[1:] + ">"
+	})
+}
+
+func loadOzzoSingle(method, path string, handler ozzo.Handler) http.Handler {
+	router := ozzo.New()
+	path = convertOzzoPath(path)
+	switch method {
+	case "GET":
+		router.Get(path, handler)
+	case "POST":
+		router.Post(path, handler)
+	case "PUT":
+		router.Put(path, handler)
+	case "PATCH":
+		router.Patch(path, handler)
+	case "DELETE":
+		router.Delete(path, handler)
+	default:
+		panic("Unknow HTTP method: " + method)
+	}
+	return router
 }
 
 // pat
