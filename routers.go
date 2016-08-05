@@ -28,7 +28,7 @@ import (
 	"github.com/emicklei/go-restful"
 	"github.com/gin-gonic/gin"
 	"github.com/go-baa/baa"
-	baarouter "github.com/go-baa/baa/router"
+	// baarouter "github.com/go-baa/baa/router"
 	"github.com/go-martini/martini"
 	ozzo "github.com/go-ozzo/ozzo-routing"
 	"github.com/go-zoo/bone"
@@ -154,7 +154,7 @@ func loadBaa(routes []route) http.Handler {
 	}
 
 	b := baa.New()
-	b.SetDI("router", baarouter.NewRegexp(b))
+	// b.SetDI("router", baarouter.NewRegexp(b))
 	for _, r := range routes {
 		switch r.method {
 		case "GET":
@@ -176,7 +176,7 @@ func loadBaa(routes []route) http.Handler {
 
 func loadBaaSingle(method, path string, h baa.HandlerFunc) http.Handler {
 	b := baa.New()
-	b.SetDI("router", baarouter.NewRegexp(b))
+	// b.SetDI("router", baarouter.NewRegexp(b))
 	switch method {
 	case "GET":
 		b.Get(path, h)

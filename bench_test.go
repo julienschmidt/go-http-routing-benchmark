@@ -396,6 +396,12 @@ func BenchmarkMartini_Param5(b *testing.B) {
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkOzzo_Param5(b *testing.B) {
+	router := loadOzzoSingle("GET", fiveColon, ozzoHandler)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkPat_Param5(b *testing.B) {
 	router := loadPatSingle("GET", fiveColon, http.HandlerFunc(httpHandlerFunc))
 
