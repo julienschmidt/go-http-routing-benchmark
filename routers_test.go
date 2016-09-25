@@ -17,7 +17,7 @@ var (
 		{"Beego", loadBeego},
 		{"Bone", loadBone},
 		{"Denco", loadDenco},
-		{"Echo", loadEcho},
+		// {"Echo", loadEcho},
 		{"Gin", loadGin},
 		{"GocraftWeb", loadGocraftWeb},
 		{"Goji", loadGoji},
