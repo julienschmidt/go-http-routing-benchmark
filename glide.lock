@@ -1,0 +1,165 @@
+hash: 58ae86606e17b8ba617eeda130177a3b153ed08dd3c8749df52445c886501cd8
+updated: 2016-09-25T05:55:37.309795783-07:00
+imports:
+- name: github.com/agtorre/gocolorize
+  version: f42b554bf7f006936130c9bb4f971afd2d87f671
+- name: github.com/ant0ine/go-json-rest
+  version: 4f1814e6e38174c46a6cccdda906987d04b735f6
+  subpackages:
+  - rest
+  - rest/trie
+- name: github.com/astaxie/beego
+  version: 2d87d4feafeea0a133d217a82e6e02df0348fed5
+  subpackages:
+  - config
+  - context
+  - grace
+  - logs
+  - session
+  - toolbox
+  - utils
+- name: github.com/bmizerany/pat
+  version: c068ca2f0aacee5ac3681d68e4d0a003b7d1fd2c
+- name: github.com/codegangsta/inject
+  version: 33e0aa1cb7c019ccc3fbe049a8262a6403d30504
+- name: github.com/dimfeld/httppath
+  version: c8e499c3ef3c3e272ed8bdcc1ccf39f73c88debc
+- name: github.com/dimfeld/httptreemux
+  version: 96acf0909c0b45ebf4a25a816cedc6d317e63679
+- name: github.com/emicklei/go-restful
+  version: 3d66f886316ac990eb502aaa89ea38546420b8b7
+  subpackages:
+  - log
+- name: github.com/gin-gonic/gin
+  version: f931d1ea80ae95a6fc739213cdd9399bd2967fb6
+  subpackages:
+  - binding
+  - render
+- name: github.com/go-martini/martini
+  version: fe605b5cd210047ae3bb73d2b69a5b912a9b423d
+- name: github.com/go-playground/form
+  version: d18f24949d2fcf4b367cff1424a9e1a60dd5507f
+- name: github.com/go-playground/lars
+  version: afe609a03836b0ee3e82610609c8e6e50443b725
+- name: github.com/go-zoo/bone
+  version: ab498accda34adf6103219275fd01a50b0ffe68c
+- name: github.com/gocraft/web
+  version: c8ca29bc8a1cec97abe95c662e29dd8d31aff6e3
+- name: github.com/golang/protobuf
+  version: 2402d76f3d41f928c7902a765dfc872356dd3aad
+  subpackages:
+  - proto
+- name: github.com/gorilla/context
+  version: 08b5f424b9271eedf6f9f0ce86cb9396ed337a42
+- name: github.com/gorilla/mux
+  version: 757bef944d0f21880861c2dd9c871ca543023cba
+- name: github.com/gorilla/websocket
+  version: 2d1e4548da234d9cb742cc3628556fef86aafbac
+- name: github.com/julienschmidt/httprouter
+  version: d8ff598a019f2c7bad0980917a588193cf26666e
+- name: github.com/klauspost/compress
+  version: d0763f13d86e630f5d3ea9fa848a6ecc68255297
+  subpackages:
+  - flate
+  - gzip
+  - zlib
+- name: github.com/klauspost/cpuid
+  version: 09cded8978dc9e80714c4d85b0322337b0a1e5e0
+- name: github.com/klauspost/crc32
+  version: 19b0b332c9e4516a6370a0456e6182c3b5036720
+- name: github.com/labstack/echo
+  version: 54a4d3140722793aa1cc430bd8a4a73aedff2783
+- name: github.com/lunny/log
+  version: 7887c61bf0de75586961948b286be6f7d05d9f58
+- name: github.com/lunny/tango
+  version: 2c5931858d843e7a54cb8cf56a567a66bee28882
+- name: github.com/mailgun/route
+  version: 61904570391bdf22252f8e376b49a57593d9124c
+- name: github.com/manucorporat/sse
+  version: ee05b128a739a0fb76c7ebd3ae4810c1de808d6d
+- name: github.com/mikespook/possum
+  version: 159dc6eacda42af0ce776cab22cb37e6e6e75aec
+  subpackages:
+  - router
+  - session
+  - view
+- name: github.com/naoina/denco
+  version: 9af2ba0e24214bac003821f4a501b131b2e04c75
+- name: github.com/naoina/kocha-urlrouter
+  version: ad3a6f079210b998b69308c37d7a9b10ba4a477d
+  subpackages:
+  - doublearray
+- name: github.com/oxtoacart/bpool
+  version: 4e1c5567d7c2dd59fa4c7c83d34c2f3528b025d6
+- name: github.com/philhofer/fwd
+  version: 98c11a7a6ec829d672b03833c3d69a7fae1ca972
+- name: github.com/pilu/config
+  version: 3eb99e6c0b9a2dae0f56f05552c06ca5a643919b
+- name: github.com/pilu/traffic
+  version: bccecb6def5c1d1eea8514b3e1cb7f2371571d8e
+- name: github.com/plimble/ace
+  version: 8ece619a879d9795f046003428a0940dc8152829
+- name: github.com/plimble/sessions
+  version: 9b87d5a817e27cd53d02ea97c30603626a9c579b
+- name: github.com/plimble/utils
+  version: fe08d46675cd09e170c0fb6b7b4e4587e14d0451
+  subpackages:
+  - pool
+- name: github.com/rcrowley/go-metrics
+  version: ab2277b1c5d15c3cba104e9cbddbdfc622df5ad8
+- name: github.com/rcrowley/go-tigertonic
+  version: 1199db5ea2f29309e20f6c70009b21e7e8810d6e
+- name: github.com/revel/config
+  version: 75f5ee659b5338d1ce823536fe9b9e50b4de01b4
+- name: github.com/revel/revel
+  version: 8d01a054f6bca9430b3e497fe7b4f20ec8f054ce
+- name: github.com/robfig/pathtree
+  version: 41257a1839e945fce74afd070e02bab2ea2c776a
+- name: github.com/satori/go.uuid
+  version: 0aa62d5ddceb50dbcb909d790b5345affd3669b6
+- name: github.com/tinylib/msgp
+  version: ad0ff2e232ad2e37faf67087fb24bf8d04a8ce20
+  subpackages:
+  - msgp
+- name: github.com/typepress/rivet
+  version: d62b4fcaf6b9766638d1eb0c41d8a3af7813fc48
+- name: github.com/Unknwon/com
+  version: 28b053d5a2923b87ce8c5a08f3af779894a72758
+- name: github.com/Unknwon/macaron
+  version: 9b82b0372a4edf52f66fbc8feaa6aafe0123001d
+  subpackages:
+  - inject
+- name: github.com/ursiform/bear
+  version: 00ea7058124d03e239c5446a6cce4f9cf6f5bb0e
+- name: github.com/vanng822/r2router
+  version: 1023140a4f309480a35668e695deda550100f502
+- name: github.com/vulcand/predicate
+  version: 19b9dde14240d94c804ae5736ad0e1de10bf8fe6
+- name: github.com/zenazn/goji
+  version: 4d7077956293261309684d3cf1af673f773c6819
+  subpackages:
+  - web
+- name: goji.io
+  version: bc2e9e7dc2769805d1b6ce4dc48ec23a03ae82ec
+  subpackages:
+  - internal
+  - pat
+  - pattern
+- name: golang.org/x/net
+  version: f315505cf3349909cdf013ea56690da34e96a451
+  subpackages:
+  - context
+  - websocket
+- name: golang.org/x/sys
+  version: 8f0908ab3b2457e2e15403d3697c9ef5cb4b57a9
+  subpackages:
+  - unix
+- name: gopkg.in/fsnotify.v1
+  version: a8a77c9133d2d6fd8334f3260d06f60e8d80a5fb
+- name: gopkg.in/go-playground/validator.v8
+  version: c193cecd124b5cc722d7ee5538e945bdb3348435
+- name: gopkg.in/ini.v1
+  version: 6e4869b434bd001f6983749881c7ead3545887d8
+- name: gopkg.in/yaml.v2
+  version: 31c299268d302dd0aa9a0dcf765a3d58971ac83f
+testImports: []

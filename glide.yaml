@@ -1,0 +1,48 @@
+package: github.com/julienschmidt/go-http-routing-benchmark
+import:
+- package: github.com/Unknwon/macaron
+- package: github.com/ant0ine/go-json-rest
+  subpackages:
+  - rest
+- package: github.com/astaxie/beego
+  subpackages:
+  - context
+- package: github.com/bmizerany/pat
+- package: github.com/dimfeld/httptreemux
+- package: github.com/emicklei/go-restful
+- package: github.com/gin-gonic/gin
+- package: github.com/go-martini/martini
+- package: github.com/go-playground/lars
+- package: github.com/go-zoo/bone
+- package: github.com/gocraft/web
+- package: github.com/gorilla/mux
+- package: github.com/julienschmidt/httprouter
+- package: github.com/labstack/echo
+- package: github.com/lunny/log
+- package: github.com/lunny/tango
+- package: github.com/mailgun/route
+- package: github.com/mikespook/possum
+  subpackages:
+  - router
+  - view
+- package: github.com/naoina/denco
+- package: github.com/naoina/kocha-urlrouter
+  subpackages:
+  - doublearray
+- package: github.com/pilu/traffic
+- package: github.com/plimble/ace
+- package: github.com/rcrowley/go-tigertonic
+- package: github.com/revel/revel
+- package: github.com/robfig/pathtree
+- package: github.com/typepress/rivet
+- package: github.com/ursiform/bear
+- package: github.com/vanng822/r2router
+- package: github.com/zenazn/goji
+  subpackages:
+  - web
+- package: goji.io
+  subpackages:
+  - pat
+- package: golang.org/x/net
+  subpackages:
+  - context
