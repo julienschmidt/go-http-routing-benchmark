@@ -194,12 +194,12 @@ var (
 	staticPossum      http.Handler
 	staticR2router    http.Handler
 	staticRevel       http.Handler
-	staticRivet       http.Handler
 	staticTango       http.Handler
 	staticTigerTonic  http.Handler
 	staticTraffic     http.Handler
 	staticVulcan      http.Handler
 	// staticEcho        http.Handler
+	// staticRivet       http.Handler
 	// staticZeus        http.Handler
 )
 
@@ -283,9 +283,9 @@ func init() {
 	calcMem("Revel", func() {
 		staticRevel = loadRevel(staticRoutes)
 	})
-	calcMem("Rivet", func() {
-		staticRivet = loadRivet(staticRoutes)
-	})
+	// calcMem("Rivet", func() {
+	// 	staticRivet = loadRivet(staticRoutes)
+	// })
 	calcMem("Tango", func() {
 		staticTango = loadTango(staticRoutes)
 	})
@@ -380,9 +380,10 @@ func BenchmarkR2router_StaticAll(b *testing.B) {
 func BenchmarkRevel_StaticAll(b *testing.B) {
 	benchRoutes(b, staticRevel, staticRoutes)
 }
-func BenchmarkRivet_StaticAll(b *testing.B) {
-	benchRoutes(b, staticRivet, staticRoutes)
-}
+
+// func BenchmarkRivet_StaticAll(b *testing.B) {
+// 	benchRoutes(b, staticRivet, staticRoutes)
+// }
 func BenchmarkTango_StaticAll(b *testing.B) {
 	benchRoutes(b, staticTango, staticRoutes)
 }

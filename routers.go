@@ -46,7 +46,6 @@ import (
 	"github.com/rcrowley/go-tigertonic"
 	"github.com/revel/revel"
 	"github.com/robfig/pathtree"
-	"github.com/typepress/rivet"
 	"github.com/ursiform/bear"
 	"github.com/vanng822/r2router"
 	goji "github.com/zenazn/goji/web"
@@ -1252,36 +1251,36 @@ func loadRevelSingle(method, path, action string) http.Handler {
 }
 
 // Rivet
-func rivetHandler() {}
+// func rivetHandler() {}
 
-func rivetHandlerWrite(c rivet.Context) {
-	c.WriteString(c.Get("name"))
-}
+// func rivetHandlerWrite(c rivet.Context) {
+// 	c.WriteString(c.Get("name"))
+// }
 
-func rivetHandlerTest(c rivet.Context) {
-	c.WriteString(c.Req.RequestURI)
-}
+// func rivetHandlerTest(c rivet.Context) {
+// 	c.WriteString(c.Req.URL.RequestURI())
+// }
 
-func loadRivet(routes []route) http.Handler {
-	var h interface{} = rivetHandler
-	if loadTestHandler {
-		h = rivetHandlerTest
-	}
+// func loadRivet(routes []route) http.Handler {
+// 	var h interface{} = rivetHandler
+// 	if loadTestHandler {
+// 		h = rivetHandlerTest
+// 	}
 
-	router := rivet.New()
-	for _, route := range routes {
-		router.Handle(route.method, route.path, h)
-	}
-	return router
-}
+// 	router := rivet.New()
+// 	for _, route := range routes {
+// 		router.Handle(route.method, route.path, h)
+// 	}
+// 	return router
+// }
 
-func loadRivetSingle(method, path string, handler interface{}) http.Handler {
-	router := rivet.New()
+// func loadRivetSingle(method, path string, handler interface{}) http.Handler {
+// 	router := rivet.New()
 
-	router.Handle(method, path, handler)
+// 	router.Handle(method, path, handler)
 
-	return router
-}
+// 	return router
+// }
 
 // Tango
 func tangoHandler(ctx *tango.Context) {}
