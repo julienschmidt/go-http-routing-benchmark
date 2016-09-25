@@ -1,5 +1,12 @@
 sudo: false
 language: go
+before_install:
+  - 'mkdir -p $GOPATH/bin'
+  - 'curl https://glide.sh/get | /bin/bash'
+install:
+  - 'glide install'
+script:
+  - 'go test -v $(glide novendor)'
 go:
-  - 1.4
+  - 1.7.1
   - tip
