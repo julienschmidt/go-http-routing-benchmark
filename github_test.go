@@ -301,6 +301,7 @@ var (
 	githubTango       http.Handler
 	githubTigerTonic  http.Handler
 	githubTraffic     http.Handler
+	githubVanilla     http.Handler
 	githubVulcan      http.Handler
 	// githubZeus        http.Handler
 )
@@ -388,6 +389,9 @@ func init() {
 	})
 	calcMem("Traffic", func() {
 		githubTraffic = loadTraffic(githubAPI)
+	})
+	calcMem("Vanilla", func() {
+		githubVanilla = loadVanilla(githubAPI)
 	})
 	calcMem("Vulcan", func() {
 		githubVulcan = loadVulcan(githubAPI)
@@ -508,6 +512,10 @@ func BenchmarkTraffic_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
 	benchRequest(b, githubTraffic, req)
 }
+func BenchmarkVanilla_GithubStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/user/repos", nil)
+	benchRequest(b, githubVanilla, req)
+}
 func BenchmarkVulcan_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
 	benchRequest(b, githubVulcan, req)
@@ -627,6 +635,10 @@ func BenchmarkTraffic_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubTraffic, req)
 }
+func BenchmarkVanilla_GithubParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
+	benchRequest(b, githubVanilla, req)
+}
 func BenchmarkVulcan_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubVulcan, req)
@@ -718,6 +730,9 @@ func BenchmarkTigerTonic_GithubAll(b *testing.B) {
 }
 func BenchmarkTraffic_GithubAll(b *testing.B) {
 	benchRoutes(b, githubTraffic, githubAPI)
+}
+func BenchmarkVanilla_GithubAll(b *testing.B) {
+	benchRoutes(b, githubVanilla, githubAPI)
 }
 func BenchmarkVulcan_GithubAll(b *testing.B) {
 	benchRoutes(b, githubVulcan, githubAPI)

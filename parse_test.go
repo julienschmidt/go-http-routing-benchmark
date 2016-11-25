@@ -83,6 +83,7 @@ var (
 	parseTango       http.Handler
 	parseTigerTonic  http.Handler
 	parseTraffic     http.Handler
+	parseVanilla     http.Handler
 	parseVulcan      http.Handler
 	// parseZeus        http.Handler
 )
@@ -170,6 +171,9 @@ func init() {
 	})
 	calcMem("Traffic", func() {
 		parseTraffic = loadTraffic(parseAPI)
+	})
+	calcMem("Vanilla", func() {
+		parseVanilla = loadVanilla(parseAPI)
 	})
 	calcMem("Vulcan", func() {
 		parseVulcan = loadVulcan(parseAPI)
@@ -290,6 +294,10 @@ func BenchmarkTraffic_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseTraffic, req)
 }
+func BenchmarkVanilla_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseVanilla, req)
+}
 func BenchmarkVulcan_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseVulcan, req)
@@ -408,6 +416,10 @@ func BenchmarkTigerTonic_ParseParam(b *testing.B) {
 func BenchmarkTraffic_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseTraffic, req)
+}
+func BenchmarkVanilla_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseVanilla, req)
 }
 func BenchmarkVulcan_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
@@ -528,6 +540,10 @@ func BenchmarkTraffic_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseTraffic, req)
 }
+func BenchmarkVanilla_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseVanilla, req)
+}
 func BenchmarkVulcan_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseVulcan, req)
@@ -619,6 +635,9 @@ func BenchmarkTigerTonic_ParseAll(b *testing.B) {
 }
 func BenchmarkTraffic_ParseAll(b *testing.B) {
 	benchRoutes(b, parseTraffic, parseAPI)
+}
+func BenchmarkVanilla_ParseAll(b *testing.B) {
+	benchRoutes(b, parseVanilla, parseAPI)
 }
 func BenchmarkVulcan_ParseAll(b *testing.B) {
 	benchRoutes(b, parseVulcan, parseAPI)

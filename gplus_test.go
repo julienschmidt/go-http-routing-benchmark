@@ -63,6 +63,7 @@ var (
 	gplusTango       http.Handler
 	gplusTigerTonic  http.Handler
 	gplusTraffic     http.Handler
+	gplusVanilla     http.Handler
 	gplusVulcan      http.Handler
 	// gplusZeus        http.Handler
 )
@@ -150,6 +151,9 @@ func init() {
 	})
 	calcMem("Traffic", func() {
 		gplusTraffic = loadTraffic(gplusAPI)
+	})
+	calcMem("Vanilla", func() {
+		gplusVanilla = loadVanilla(gplusAPI)
 	})
 	calcMem("Vulcan", func() {
 		gplusVulcan = loadVulcan(gplusAPI)
@@ -270,6 +274,10 @@ func BenchmarkTraffic_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusTraffic, req)
 }
+func BenchmarkVanilla_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	benchRequest(b, gplusVanilla, req)
+}
 func BenchmarkVulcan_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusVulcan, req)
@@ -388,6 +396,10 @@ func BenchmarkTigerTonic_GPlusParam(b *testing.B) {
 func BenchmarkTraffic_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusTraffic, req)
+}
+func BenchmarkVanilla_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	benchRequest(b, gplusVanilla, req)
 }
 func BenchmarkVulcan_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
@@ -508,6 +520,10 @@ func BenchmarkTraffic_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusTraffic, req)
 }
+func BenchmarkVanilla_GPlus2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	benchRequest(b, gplusVanilla, req)
+}
 func BenchmarkVulcan_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusVulcan, req)
@@ -599,6 +615,9 @@ func BenchmarkTigerTonic_GPlusAll(b *testing.B) {
 }
 func BenchmarkTraffic_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusTraffic, gplusAPI)
+}
+func BenchmarkVanilla_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusVanilla, gplusAPI)
 }
 func BenchmarkVulcan_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusVulcan, gplusAPI)
