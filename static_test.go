@@ -214,11 +214,9 @@ func init() {
 		}
 		staticHttpServeMux = serveMux
 	})
-
 	calcMem("My", func() {
-		staticPat = loadMy(staticRoutes)
+		staticMy = loadMy(staticRoutes)
 	})
-
 	calcMem("Ace", func() {
 		staticAce = loadAce(staticRoutes)
 	})
@@ -312,6 +310,9 @@ func init() {
 
 // All routes
 
+func BenchmarkMy_StaticAll(b *testing.B) {
+	benchRoutes(b, staticMy, staticRoutes)
+}
 func BenchmarkAce_StaticAll(b *testing.B) {
 	benchRoutes(b, staticAce, staticRoutes)
 }
