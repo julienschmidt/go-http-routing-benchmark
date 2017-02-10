@@ -172,16 +172,18 @@ var staticRoutes = []route{
 var (
 	staticHttpServeMux http.Handler
 
-	staticAce         http.Handler
-	staticBear        http.Handler
-	staticBeego       http.Handler
-	staticBone        http.Handler
-	staticDenco       http.Handler
-	staticEcho        http.Handler
-	staticGin         http.Handler
-	staticGocraftWeb  http.Handler
-	staticGoji        http.Handler
-	staticGojiv2      http.Handler
+	staticPat   http.Handler
+	staticMy    http.Handler
+	staticAce   http.Handler
+	staticBear  http.Handler
+	staticBeego http.Handler
+	staticBone  http.Handler
+	staticDenco http.Handler
+	//staticEcho        http.Handler
+	staticGin        http.Handler
+	staticGocraftWeb http.Handler
+	//staticGoji        http.Handler
+	//staticGojiv2      http.Handler
 	staticGoJsonRest  http.Handler
 	staticGoRestful   http.Handler
 	staticGorillaMux  http.Handler
@@ -191,7 +193,6 @@ var (
 	staticLARS        http.Handler
 	staticMacaron     http.Handler
 	staticMartini     http.Handler
-	staticPat         http.Handler
 	staticPossum      http.Handler
 	staticR2router    http.Handler
 	staticRevel       http.Handler
@@ -214,6 +215,10 @@ func init() {
 		staticHttpServeMux = serveMux
 	})
 
+	calcMem("My", func() {
+		staticPat = loadMy(staticRoutes)
+	})
+
 	calcMem("Ace", func() {
 		staticAce = loadAce(staticRoutes)
 	})
@@ -229,21 +234,21 @@ func init() {
 	calcMem("Denco", func() {
 		staticDenco = loadDenco(staticRoutes)
 	})
-	calcMem("Echo", func() {
-		staticEcho = loadEcho(staticRoutes)
-	})
+	//calcMem("Echo", func() {
+	//	staticEcho = loadEcho(staticRoutes)
+	//})
 	calcMem("Gin", func() {
 		staticGin = loadGin(staticRoutes)
 	})
 	calcMem("GocraftWeb", func() {
 		staticGocraftWeb = loadGocraftWeb(staticRoutes)
 	})
-	calcMem("Goji", func() {
-		staticGoji = loadGoji(staticRoutes)
-	})
-	calcMem("Gojiv2", func() {
-		staticGojiv2 = loadGojiv2(staticRoutes)
-	})
+	//calcMem("Goji", func() {
+	//	staticGoji = loadGoji(staticRoutes)
+	//})
+	//calcMem("Gojiv2", func() {
+	//	staticGojiv2 = loadGojiv2(staticRoutes)
+	//})
 	calcMem("GoJsonRest", func() {
 		staticGoJsonRest = loadGoJsonRest(staticRoutes)
 	})
@@ -325,21 +330,23 @@ func BenchmarkBone_StaticAll(b *testing.B) {
 func BenchmarkDenco_StaticAll(b *testing.B) {
 	benchRoutes(b, staticDenco, staticRoutes)
 }
-func BenchmarkEcho_StaticAll(b *testing.B) {
-	benchRoutes(b, staticEcho, staticRoutes)
-}
+
+//func BenchmarkEcho_StaticAll(b *testing.B) {
+//	benchRoutes(b, staticEcho, staticRoutes)
+//}
 func BenchmarkGin_StaticAll(b *testing.B) {
 	benchRoutes(b, staticGin, staticRoutes)
 }
 func BenchmarkGocraftWeb_StaticAll(b *testing.B) {
 	benchRoutes(b, staticGocraftWeb, staticRoutes)
 }
-func BenchmarkGoji_StaticAll(b *testing.B) {
-	benchRoutes(b, staticGoji, staticRoutes)
-}
-func BenchmarkGojiv2_StaticAll(b *testing.B) {
-	benchRoutes(b, staticGojiv2, staticRoutes)
-}
+
+//func BenchmarkGoji_StaticAll(b *testing.B) {
+//	benchRoutes(b, staticGoji, staticRoutes)
+//}
+//func BenchmarkGojiv2_StaticAll(b *testing.B) {
+//	benchRoutes(b, staticGojiv2, staticRoutes)
+//}
 func BenchmarkGoJsonRest_StaticAll(b *testing.B) {
 	benchRoutes(b, staticGoJsonRest, staticRoutes)
 }

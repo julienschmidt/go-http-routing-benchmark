@@ -13,6 +13,8 @@ import (
 	"regexp"
 	"runtime"
 
+	my "github.com/ngc224/mux"
+
 	// If you add new routers please:
 	// - Keep the benchmark functions etc. alphabetically sorted
 	// - Make a pull request (without benchmark results) at
@@ -32,7 +34,7 @@ import (
 	"github.com/gocraft/web"
 	"github.com/gorilla/mux"
 	"github.com/julienschmidt/httprouter"
-	"github.com/labstack/echo"
+	//"github.com/labstack/echo"
 	llog "github.com/lunny/log"
 	"github.com/lunny/tango"
 	vulcan "github.com/mailgun/route"
@@ -50,10 +52,7 @@ import (
 	"github.com/typepress/rivet"
 	"github.com/ursiform/bear"
 	"github.com/vanng822/r2router"
-	goji "github.com/zenazn/goji/web"
-	gojiv2 "goji.io"
-	gojiv2pat "goji.io/pat"
-	gcontext "golang.org/x/net/context"
+	//goji "github.com/zenazn/goji/web"
 )
 
 type route struct {
@@ -97,6 +96,55 @@ func init() {
 	initRevel()
 	initTango()
 	initTraffic()
+}
+
+// My
+
+func myHandleWrite(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, my.URLParam(r, "name"))
+}
+
+func loadMy(routes []route) http.Handler {
+	h := http.HandlerFunc(httpHandlerFunc)
+	if loadTestHandler {
+		h = http.HandlerFunc(httpHandlerFuncTest)
+	}
+
+	m := my.NewMux()
+	for _, route := range routes {
+		switch route.method {
+		case "GET":
+			m.Entry(my.GET, route.path, h)
+		case "POST":
+			m.Entry(my.POST, route.path, h)
+		case "PUT":
+			m.Entry(my.PUT, route.path, h)
+		case "DELETE":
+			m.Entry(my.DELETE, route.path, h)
+		default:
+			panic("Unknow HTTP method: " + route.method)
+		}
+	}
+	return m
+}
+
+func loadMySingle(method, path string, h http.HandlerFunc) http.Handler {
+	m := my.NewMux()
+	switch method {
+	case "GET":
+		m.Entry(my.GET, path, h)
+	case "POST":
+		m.Entry(my.POST, path, h)
+	case "PUT":
+		m.Entry(my.PUT, path, h)
+	case "PATCH":
+		m.Entry("PATCH", path, h)
+	case "DELETE":
+		m.Entry(my.DELETE, path, h)
+	default:
+		panic("Unknown HTTP method: " + method)
+	}
+	return m
 }
 
 // Common
@@ -329,65 +377,65 @@ func loadDencoSingle(method, path string, h denco.HandlerFunc) http.Handler {
 	return handler
 }
 
-// Echo
-func echoHandler(c *echo.Context) error {
-	return nil
-}
-
-func echoHandlerWrite(c *echo.Context) error {
-	io.WriteString(c.Response(), c.Param("name"))
-	return nil
-}
-
-func echoHandlerTest(c *echo.Context) error {
-	io.WriteString(c.Response(), c.Request().RequestURI)
-	return nil
-}
-
-func loadEcho(routes []route) http.Handler {
-	var h interface{} = echoHandler
-	if loadTestHandler {
-		h = echoHandlerTest
-	}
-
-	e := echo.New()
-	for _, r := range routes {
-		switch r.method {
-		case "GET":
-			e.Get(r.path, h)
-		case "POST":
-			e.Post(r.path, h)
-		case "PUT":
-			e.Put(r.path, h)
-		case "PATCH":
-			e.Patch(r.path, h)
-		case "DELETE":
-			e.Delete(r.path, h)
-		default:
-			panic("Unknow HTTP method: " + r.method)
-		}
-	}
-	return e
-}
-
-func loadEchoSingle(method, path string, h interface{}) http.Handler {
-	e := echo.New()
-	switch method {
-	case "GET":
-		e.Get(path, h)
-	case "POST":
-		e.Post(path, h)
-	case "PUT":
-		e.Put(path, h)
-	case "PATCH":
-		e.Patch(path, h)
-	case "DELETE":
-		e.Delete(path, h)
-	default:
-		panic("Unknow HTTP method: " + method)
-	}
-	return e
-}
+//// Echo
+//func echoHandler(c *echo.Context) error {
+//	return nil
+//}
+//
+//func echoHandlerWrite(c *echo.Context) error {
+//	io.WriteString(c.Response(), c.Param("name"))
+//	return nil
+//}
+//
+//func echoHandlerTest(c *echo.Context) error {
+//	io.WriteString(c.Response(), c.Request().RequestURI)
+//	return nil
+//}
+//
+//func loadEcho(routes []route) http.Handler {
+//	var h interface{} = echoHandler
+//	if loadTestHandler {
+//		h = echoHandlerTest
+//	}
+//
+//	e := echo.New()
+//	for _, r := range routes {
+//		switch r.method {
+//		case "GET":
+//			e.Get(r.path, h)
+//		case "POST":
+//			e.Post(r.path, h)
+//		case "PUT":
+//			e.Put(r.path, h)
+//		case "PATCH":
+//			e.Patch(r.path, h)
+//		case "DELETE":
+//			e.Delete(r.path, h)
+//		default:
+//			panic("Unknow HTTP method: " + r.method)
+//		}
+//	}
+//	return e
+//}
+//
+//func loadEchoSingle(method, path string, h interface{}) http.Handler {
+//	e := echo.New()
+//	switch method {
+//	case "GET":
+//		e.Get(path, h)
+//	case "POST":
+//		e.Post(path, h)
+//	case "PUT":
+//		e.Put(path, h)
+//	case "PATCH":
+//		e.Patch(path, h)
+//	case "DELETE":
+//		e.Delete(path, h)
+//	default:
+//		panic("Unknow HTTP method: " + method)
+//	}
+//	return e
+//}
 
 // Gin
 func ginHandle(_ *gin.Context) {}
@@ -481,111 +529,111 @@ func loadGocraftWebSingle(method, path string, handler interface{}) http.Handler
 	return router
 }
 
-// goji
-func gojiFuncWrite(c goji.C, w http.ResponseWriter, r *http.Request) {
-	io.WriteString(w, c.URLParams["name"])
-}
+//// goji
+//func gojiFuncWrite(c goji.C, w http.ResponseWriter, r *http.Request) {
+//	io.WriteString(w, c.URLParams["name"])
+//}
+//
+//func loadGoji(routes []route) http.Handler {
+//	h := httpHandlerFunc
+//	if loadTestHandler {
+//		h = httpHandlerFuncTest
+//	}
+//
+//	mux := goji.New()
+//	for _, route := range routes {
+//		switch route.method {
+//		case "GET":
+//			mux.Get(route.path, h)
+//		case "POST":
+//			mux.Post(route.path, h)
+//		case "PUT":
+//			mux.Put(route.path, h)
+//		case "PATCH":
+//			mux.Patch(route.path, h)
+//		case "DELETE":
+//			mux.Delete(route.path, h)
+//		default:
+//			panic("Unknown HTTP method: " + route.method)
+//		}
+//	}
+//	return mux
+//}
+//
+//func loadGojiSingle(method, path string, handler interface{}) http.Handler {
+//	mux := goji.New()
+//	switch method {
+//	case "GET":
+//		mux.Get(path, handler)
+//	case "POST":
+//		mux.Post(path, handler)
+//	case "PUT":
+//		mux.Put(path, handler)
+//	case "PATCH":
+//		mux.Patch(path, handler)
+//	case "DELETE":
+//		mux.Delete(path, handler)
+//	default:
+//		panic("Unknow HTTP method: " + method)
+//	}
+//	return mux
+//}
 
-func loadGoji(routes []route) http.Handler {
-	h := httpHandlerFunc
-	if loadTestHandler {
-		h = httpHandlerFuncTest
-	}
-
-	mux := goji.New()
-	for _, route := range routes {
-		switch route.method {
-		case "GET":
-			mux.Get(route.path, h)
-		case "POST":
-			mux.Post(route.path, h)
-		case "PUT":
-			mux.Put(route.path, h)
-		case "PATCH":
-			mux.Patch(route.path, h)
-		case "DELETE":
-			mux.Delete(route.path, h)
-		default:
-			panic("Unknown HTTP method: " + route.method)
-		}
-	}
-	return mux
-}
-
-func loadGojiSingle(method, path string, handler interface{}) http.Handler {
-	mux := goji.New()
-	switch method {
-	case "GET":
-		mux.Get(path, handler)
-	case "POST":
-		mux.Post(path, handler)
-	case "PUT":
-		mux.Put(path, handler)
-	case "PATCH":
-		mux.Patch(path, handler)
-	case "DELETE":
-		mux.Delete(path, handler)
-	default:
-		panic("Unknow HTTP method: " + method)
-	}
-	return mux
-}
-
-// goji v2 (github.com/goji/goji)
-func gojiv2Handler(ctx gcontext.Context, w http.ResponseWriter, r *http.Request) {}
-
-func gojiv2HandlerWrite(ctx gcontext.Context, w http.ResponseWriter, r *http.Request) {
-	io.WriteString(w, gojiv2pat.Param(ctx, "name"))
-}
-
-func gojiv2HandlerTest(ctx gcontext.Context, w http.ResponseWriter, r *http.Request) {
-	io.WriteString(w, r.RequestURI)
-}
-
-func loadGojiv2(routes []route) http.Handler {
-	h := gojiv2Handler
-	if loadTestHandler {
-		h = gojiv2HandlerTest
-	}
-
-	mux := gojiv2.NewMux()
-	for _, route := range routes {
-		switch route.method {
-		case "GET":
-			mux.HandleFuncC(gojiv2pat.Get(route.path), h)
-		case "POST":
-			mux.HandleFuncC(gojiv2pat.Post(route.path), h)
-		case "PUT":
-			mux.HandleFuncC(gojiv2pat.Put(route.path), h)
-		case "PATCH":
-			mux.HandleFuncC(gojiv2pat.Patch(route.path), h)
-		case "DELETE":
-			mux.HandleFuncC(gojiv2pat.Delete(route.path), h)
-		default:
-			panic("Unknown HTTP method: " + route.method)
-		}
-	}
-	return mux
-}
-
-func loadGojiv2Single(method, path string, handler gojiv2.HandlerFunc) http.Handler {
-	mux := gojiv2.NewMux()
-	switch method {
-	case "GET":
-		mux.HandleFuncC(gojiv2pat.Get(path), handler)
-	case "POST":
-		mux.HandleFuncC(gojiv2pat.Post(path), handler)
-	case "PUT":
-		mux.HandleFuncC(gojiv2pat.Put(path), handler)
-	case "PATCH":
-		mux.HandleFuncC(gojiv2pat.Patch(path), handler)
-	case "DELETE":
-		mux.HandleFuncC(gojiv2pat.Delete(path), handler)
-	default:
-		panic("Unknow HTTP method: " + method)
-	}
-	return mux
-}
+//// goji v2 (github.com/goji/goji)
+//func gojiv2Handler(ctx gcontext.Context, w http.ResponseWriter, r *http.Request) {}
+//
+//func gojiv2HandlerWrite(ctx gcontext.Context, w http.ResponseWriter, r *http.Request) {
+//	io.WriteString(w, gojiv2pat.Param(ctx, "name"))
+//}
+//
+//func gojiv2HandlerTest(ctx gcontext.Context, w http.ResponseWriter, r *http.Request) {
+//	io.WriteString(w, r.RequestURI)
+//}
+//
+//func loadGojiv2(routes []route) http.Handler {
+//	h := gojiv2Handler
+//	if loadTestHandler {
+//		h = gojiv2HandlerTest
+//	}
+//
+//	mux := gojiv2.NewMux()
+//	for _, route := range routes {
+//		switch route.method {
+//		case "GET":
+//			mux.HandleFuncC(gojiv2pat.Get(route.path), h)
+//		case "POST":
+//			mux.HandleFuncC(gojiv2pat.Post(route.path), h)
+//		case "PUT":
+//			mux.HandleFuncC(gojiv2pat.Put(route.path), h)
+//		case "PATCH":
+//			mux.HandleFuncC(gojiv2pat.Patch(route.path), h)
+//		case "DELETE":
+//			mux.HandleFuncC(gojiv2pat.Delete(route.path), h)
+//		default:
+//			panic("Unknown HTTP method: " + route.method)
+//		}
+//	}
+//	return mux
+//}
+//
+//func loadGojiv2Single(method, path string, handler gojiv2.HandlerFunc) http.Handler {
+//	mux := gojiv2.NewMux()
+//	switch method {
+//	case "GET":
+//		mux.HandleFuncC(gojiv2pat.Get(path), handler)
+//	case "POST":
+//		mux.HandleFuncC(gojiv2pat.Post(path), handler)
+//	case "PUT":
+//		mux.HandleFuncC(gojiv2pat.Put(path), handler)
+//	case "PATCH":
+//		mux.HandleFuncC(gojiv2pat.Patch(path), handler)
+//	case "DELETE":
+//		mux.HandleFuncC(gojiv2pat.Delete(path), handler)
+//	default:
+//		panic("Unknow HTTP method: " + method)
+//	}
+//	return mux
+//}
 
 // go-json-rest/rest
 func goJsonRestHandler(w rest.ResponseWriter, req *rest.Request) {}
