@@ -56,8 +56,7 @@ var parseAPI = []route{
 }
 
 var (
-	parseMy http.Handler
-
+	parseMy    http.Handler
 	parseAce   http.Handler
 	parseBear  http.Handler
 	parseBeego http.Handler
@@ -95,7 +94,6 @@ func init() {
 	calcMem("My", func() {
 		parseMy = loadMy(parseAPI)
 	})
-
 	calcMem("Ace", func() {
 		parseAce = loadAce(parseAPI)
 	})
@@ -193,7 +191,6 @@ func BenchmarkMy_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseMy, req)
 }
-
 func BenchmarkAce_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseAce, req)
@@ -320,7 +317,6 @@ func BenchmarkMy_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseMy, req)
 }
-
 func BenchmarkAce_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseAce, req)
@@ -447,7 +443,6 @@ func BenchmarkMy_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseMy, req)
 }
-
 func BenchmarkAce_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseAce, req)
@@ -572,7 +567,6 @@ func BenchmarkVulcan_Parse2Params(b *testing.B) {
 func BenchmarkMy_ParseAll(b *testing.B) {
 	benchRoutes(b, parseMy, parseAPI)
 }
-
 func BenchmarkAce_ParseAll(b *testing.B) {
 	benchRoutes(b, parseAce, parseAPI)
 }

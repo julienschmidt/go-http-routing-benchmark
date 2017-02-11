@@ -114,13 +114,13 @@ func loadMy(routes []route) http.Handler {
 	for _, route := range routes {
 		switch route.method {
 		case "GET":
-			m.Entry(my.GET, route.path, h)
+			m.Get(route.path, h)
 		case "POST":
-			m.Entry(my.POST, route.path, h)
+			m.Post(route.path, h)
 		case "PUT":
-			m.Entry(my.PUT, route.path, h)
+			m.Put(route.path, h)
 		case "DELETE":
-			m.Entry(my.DELETE, route.path, h)
+			m.Delete(route.path, h)
 		default:
 			panic("Unknow HTTP method: " + route.method)
 		}
@@ -132,15 +132,15 @@ func loadMySingle(method, path string, h http.HandlerFunc) http.Handler {
 	m := my.NewMux()
 	switch method {
 	case "GET":
-		m.Entry(my.GET, path, h)
+		m.Get(path, h)
 	case "POST":
-		m.Entry(my.POST, path, h)
+		m.Post(path, h)
 	case "PUT":
-		m.Entry(my.PUT, path, h)
+		m.Put(path, h)
 	case "PATCH":
 		m.Entry("PATCH", path, h)
 	case "DELETE":
-		m.Entry(my.DELETE, path, h)
+		m.Delete(path, h)
 	default:
 		panic("Unknown HTTP method: " + method)
 	}

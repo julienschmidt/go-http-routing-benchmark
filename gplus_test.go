@@ -36,6 +36,7 @@ var gplusAPI = []route{
 }
 
 var (
+	gplusMy    http.Handler
 	gplusAce   http.Handler
 	gplusBear  http.Handler
 	gplusBeego http.Handler
@@ -70,6 +71,9 @@ var (
 func init() {
 	println("#GPlusAPI Routes:", len(gplusAPI))
 
+	calcMem("My", func() {
+		gplusMy = loadMy(gplusAPI)
+	})
 	calcMem("Ace", func() {
 		gplusAce = loadAce(gplusAPI)
 	})
@@ -162,6 +166,11 @@ func init() {
 }
 
 // Static
+
+func BenchmarkMy_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	benchRequest(b, gplusMy, req)
+}
 func BenchmarkAce_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusAce, req)
@@ -283,6 +292,11 @@ func BenchmarkVulcan_GPlusStatic(b *testing.B) {
 // }
 
 // One Param
+
+func BenchmarkMy_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	benchRequest(b, gplusMy, req)
+}
 func BenchmarkAce_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusAce, req)
@@ -404,6 +418,10 @@ func BenchmarkVulcan_GPlusParam(b *testing.B) {
 // }
 
 // Two Params
+func BenchmarkMy_GPlus2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	benchRequest(b, gplusMy, req)
+}
 func BenchmarkAce_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusAce, req)
@@ -525,6 +543,9 @@ func BenchmarkVulcan_GPlus2Params(b *testing.B) {
 // }
 
 // All Routes
+func BenchmarkMy_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusMy, gplusAPI)
+}
 func BenchmarkAce_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusAce, gplusAPI)
 }
