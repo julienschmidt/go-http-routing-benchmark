@@ -99,7 +99,6 @@ func init() {
 }
 
 // My
-
 func myHandleWrite(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, my.URLParam(r, "name"))
 }
@@ -119,6 +118,8 @@ func loadMy(routes []route) http.Handler {
 			m.Post(route.path, h)
 		case "PUT":
 			m.Put(route.path, h)
+		case "PATCH":
+			m.Patch(route.path, h)
 		case "DELETE":
 			m.Delete(route.path, h)
 		default:
@@ -138,7 +139,7 @@ func loadMySingle(method, path string, h http.HandlerFunc) http.Handler {
 	case "PUT":
 		m.Put(path, h)
 	case "PATCH":
-		m.Entry("PATCH", path, h)
+		m.Patch(path, h)
 	case "DELETE":
 		m.Delete(path, h)
 	default:
