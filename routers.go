@@ -109,7 +109,7 @@ func loadMy(routes []route) http.Handler {
 		h = http.HandlerFunc(httpHandlerFuncTest)
 	}
 
-	m := my.NewMux()
+	m := my.New()
 	for _, route := range routes {
 		switch route.method {
 		case "GET":
@@ -130,7 +130,7 @@ func loadMy(routes []route) http.Handler {
 }
 
 func loadMySingle(method, path string, h http.HandlerFunc) http.Handler {
-	m := my.NewMux()
+	m := my.New()
 	switch method {
 	case "GET":
 		m.Get(path, h)
