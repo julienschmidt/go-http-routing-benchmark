@@ -58,6 +58,7 @@ var parseAPI = []route{
 var (
 	parseMy         http.Handler
 	parseBeego      http.Handler
+	parseChi        http.Handler
 	parseDenco      http.Handler
 	parseGin        http.Handler
 	parseHttpRouter http.Handler
@@ -76,6 +77,9 @@ func init() {
 	})
 	calcMem("Beego", func() {
 		parseBeego = loadBeego(parseAPI)
+	})
+	calcMem("Chi", func() {
+		parseChi = loadChi(parseAPI)
 	})
 	calcMem("Denco", func() {
 		parseDenco = loadDenco(parseAPI)
@@ -106,7 +110,6 @@ func init() {
 }
 
 // Static
-
 func BenchmarkMy_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseMy, req)
@@ -114,6 +117,10 @@ func BenchmarkMy_ParseStatic(b *testing.B) {
 func BenchmarkBeego_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseBeego, req)
+}
+func BenchmarkChi_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseChi, req)
 }
 func BenchmarkDenco_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
@@ -149,7 +156,6 @@ func BenchmarkVulcan_ParseStatic(b *testing.B) {
 }
 
 // One Param
-
 func BenchmarkMy_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseMy, req)
@@ -157,6 +163,10 @@ func BenchmarkMy_ParseParam(b *testing.B) {
 func BenchmarkBeego_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseBeego, req)
+}
+func BenchmarkChi_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseChi, req)
 }
 func BenchmarkDenco_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
@@ -192,7 +202,6 @@ func BenchmarkVulcan_ParseParam(b *testing.B) {
 }
 
 // Two Params
-
 func BenchmarkMy_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseMy, req)
@@ -200,6 +209,10 @@ func BenchmarkMy_Parse2Params(b *testing.B) {
 func BenchmarkBeego_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseBeego, req)
+}
+func BenchmarkChi_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseChi, req)
 }
 func BenchmarkDenco_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
@@ -240,6 +253,9 @@ func BenchmarkMy_ParseAll(b *testing.B) {
 }
 func BenchmarkBeego_ParseAll(b *testing.B) {
 	benchRoutes(b, parseBeego, parseAPI)
+}
+func BenchmarkChi_ParseAll(b *testing.B) {
+	benchRoutes(b, parseChi, parseAPI)
 }
 func BenchmarkDenco_ParseAll(b *testing.B) {
 	benchRoutes(b, parseDenco, parseAPI)
