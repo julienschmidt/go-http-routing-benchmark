@@ -115,7 +115,7 @@ func loadMy(routes []route) http.Handler {
 }
 
 func loadMySingle(method, path string, h http.HandlerFunc) http.Handler {
-	m := my.NewMux()
+	m := my.NewRouter()
 	switch method {
 	case "GET":
 		m.Get(path, h)
