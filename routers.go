@@ -18,7 +18,7 @@ import (
 	// - Make a pull request (without benchmark results) at
 	//   https://github.com/julienschmidt/go-http-routing-benchmark
 
-	my "github.com/ngc224/mux"
+	my "github.com/ngc224/bon"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
@@ -94,7 +94,7 @@ func loadMy(routes []route) http.Handler {
 		h = http.HandlerFunc(httpHandlerFuncTest)
 	}
 
-	m := my.New()
+	m := my.NewRouter()
 	for _, route := range routes {
 		switch route.method {
 		case "GET":
@@ -115,7 +115,7 @@ func loadMy(routes []route) http.Handler {
 }
 
 func loadMySingle(method, path string, h http.HandlerFunc) http.Handler {
-	m := my.New()
+	m := my.NewMux()
 	switch method {
 	case "GET":
 		m.Get(path, h)
