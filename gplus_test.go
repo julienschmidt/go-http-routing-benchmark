@@ -36,7 +36,7 @@ var gplusAPI = []route{
 }
 
 var (
-	gplusMy         http.Handler
+	gplusBon        http.Handler
 	gplusBeego      http.Handler
 	gplusChi        http.Handler
 	gplusDenco      http.Handler
@@ -52,8 +52,8 @@ var (
 func init() {
 	println("#GPlusAPI Routes:", len(gplusAPI))
 
-	calcMem("My", func() {
-		gplusMy = loadMy(gplusAPI)
+	calcMem("Bon", func() {
+		gplusBon = loadBon(gplusAPI)
 	})
 	calcMem("Beego", func() {
 		gplusBeego = loadBeego(gplusAPI)
@@ -91,9 +91,9 @@ func init() {
 
 // Static
 
-func BenchmarkMy_GPlusStatic(b *testing.B) {
+func BenchmarkBon_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
-	benchRequest(b, gplusMy, req)
+	benchRequest(b, gplusBon, req)
 }
 func BenchmarkBeego_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
@@ -138,9 +138,9 @@ func BenchmarkVulcan_GPlusStatic(b *testing.B) {
 
 // One Param
 
-func BenchmarkMy_GPlusParam(b *testing.B) {
+func BenchmarkBon_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
-	benchRequest(b, gplusMy, req)
+	benchRequest(b, gplusBon, req)
 }
 func BenchmarkBeego_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
@@ -184,9 +184,9 @@ func BenchmarkVulcan_GPlusParam(b *testing.B) {
 }
 
 // Two Params
-func BenchmarkMy_GPlus2Params(b *testing.B) {
+func BenchmarkBon_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
-	benchRequest(b, gplusMy, req)
+	benchRequest(b, gplusBon, req)
 }
 func BenchmarkBeego_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
@@ -230,8 +230,8 @@ func BenchmarkVulcan_GPlus2Params(b *testing.B) {
 }
 
 // All Routes
-func BenchmarkMy_GPlusAll(b *testing.B) {
-	benchRoutes(b, gplusMy, gplusAPI)
+func BenchmarkBon_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusBon, gplusAPI)
 }
 func BenchmarkBeego_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusBeego, gplusAPI)

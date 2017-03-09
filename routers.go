@@ -18,8 +18,6 @@ import (
 	// - Make a pull request (without benchmark results) at
 	//   https://github.com/julienschmidt/go-http-routing-benchmark
 
-	my "github.com/ngc224/bon"
-
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/context"
 	"github.com/gin-gonic/gin"
@@ -32,6 +30,7 @@ import (
 	possumrouter "github.com/mikespook/possum/router"
 	possumview "github.com/mikespook/possum/view"
 	"github.com/naoina/denco"
+	"github.com/ngc224/bon"
 	"github.com/pressly/chi"
 	"github.com/typepress/rivet"
 )
@@ -83,54 +82,54 @@ func httpHandlerFuncTest(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, r.RequestURI)
 }
 
-// My
+// Bon
 func myHandleWrite(w http.ResponseWriter, r *http.Request) {
-	io.WriteString(w, my.URLParam(r, "name"))
+	io.WriteString(w, bon.URLParam(r, "name"))
 }
 
-func loadMy(routes []route) http.Handler {
+func loadBon(routes []route) http.Handler {
 	h := http.HandlerFunc(httpHandlerFunc)
 	if loadTestHandler {
 		h = http.HandlerFunc(httpHandlerFuncTest)
 	}
 
-	m := my.NewRouter()
+	r := bon.NewRouter()
 	for _, route := range routes {
 		switch route.method {
 		case "GET":
-			m.Get(route.path, h)
+			r.Get(route.path, h)
 		case "POST":
-			m.Post(route.path, h)
+			r.Post(route.path, h)
 		case "PUT":
-			m.Put(route.path, h)
+			r.Put(route.path, h)
 		case "PATCH":
-			m.Patch(route.path, h)
+			r.Patch(route.path, h)
 		case "DELETE":
-			m.Delete(route.path, h)
+			r.Delete(route.path, h)
 		default:
 			panic("Unknow HTTP method: " + route.method)
 		}
 	}
-	return m
+	return r
 }
 
-func loadMySingle(method, path string, h http.HandlerFunc) http.Handler {
-	m := my.NewRouter()
+func loadBonSingle(method, path string, h http.HandlerFunc) http.Handler {
+	r := bon.NewRouter()
 	switch method {
 	case "GET":
-		m.Get(path, h)
+		r.Get(path, h)
 	case "POST":
-		m.Post(path, h)
+		r.Post(path, h)
 	case "PUT":
-		m.Put(path, h)
+		r.Put(path, h)
 	case "PATCH":
-		m.Patch(path, h)
+		r.Patch(path, h)
 	case "DELETE":
-		m.Delete(path, h)
+		r.Delete(path, h)
 	default:
 		panic("Unknown HTTP method: " + method)
 	}
-	return m
+	return r
 }
 
 // beego

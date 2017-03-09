@@ -56,7 +56,7 @@ var parseAPI = []route{
 }
 
 var (
-	parseMy         http.Handler
+	parseBon        http.Handler
 	parseBeego      http.Handler
 	parseChi        http.Handler
 	parseDenco      http.Handler
@@ -72,8 +72,8 @@ var (
 func init() {
 	println("#ParseAPI Routes:", len(parseAPI))
 
-	calcMem("My", func() {
-		parseMy = loadMy(parseAPI)
+	calcMem("Bon", func() {
+		parseBon = loadBon(parseAPI)
 	})
 	calcMem("Beego", func() {
 		parseBeego = loadBeego(parseAPI)
@@ -110,9 +110,9 @@ func init() {
 }
 
 // Static
-func BenchmarkMy_ParseStatic(b *testing.B) {
+func BenchmarkBon_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
-	benchRequest(b, parseMy, req)
+	benchRequest(b, parseBon, req)
 }
 func BenchmarkBeego_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
@@ -156,9 +156,9 @@ func BenchmarkVulcan_ParseStatic(b *testing.B) {
 }
 
 // One Param
-func BenchmarkMy_ParseParam(b *testing.B) {
+func BenchmarkBon_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
-	benchRequest(b, parseMy, req)
+	benchRequest(b, parseBon, req)
 }
 func BenchmarkBeego_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
@@ -202,9 +202,9 @@ func BenchmarkVulcan_ParseParam(b *testing.B) {
 }
 
 // Two Params
-func BenchmarkMy_Parse2Params(b *testing.B) {
+func BenchmarkBon_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
-	benchRequest(b, parseMy, req)
+	benchRequest(b, parseBon, req)
 }
 func BenchmarkBeego_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
@@ -248,8 +248,8 @@ func BenchmarkVulcan_Parse2Params(b *testing.B) {
 }
 
 // All Routes
-func BenchmarkMy_ParseAll(b *testing.B) {
-	benchRoutes(b, parseMy, parseAPI)
+func BenchmarkBon_ParseAll(b *testing.B) {
+	benchRoutes(b, parseBon, parseAPI)
 }
 func BenchmarkBeego_ParseAll(b *testing.B) {
 	benchRoutes(b, parseBeego, parseAPI)

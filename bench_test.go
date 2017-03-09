@@ -96,8 +96,8 @@ func benchRoutes(b *testing.B, router http.Handler, routes []route) {
 // Micro Benchmarks
 // Route with Param (no write)
 
-func BenchmarkMy_Param(b *testing.B) {
-	router := loadMySingle("GET", "/user/:name", httpHandlerFunc)
+func BenchmarkBon_Param(b *testing.B) {
+	router := loadBonSingle("GET", "/user/:name", httpHandlerFunc)
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
@@ -152,8 +152,8 @@ const fiveColon = "/:a/:b/:c/:d/:e"
 const fiveBrace = "/{a}/{b}/{c}/{d}/{e}"
 const fiveRoute = "/test/test/test/test/test"
 
-func BenchmarkMy_Param5(b *testing.B) {
-	router := loadMySingle("GET", fiveColon, httpHandlerFunc)
+func BenchmarkBon_Param5(b *testing.B) {
+	router := loadBonSingle("GET", fiveColon, httpHandlerFunc)
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
 }
@@ -208,8 +208,8 @@ const twentyColon = "/:a/:b/:c/:d/:e/:f/:g/:h/:i/:j/:k/:l/:m/:n/:o/:p/:q/:r/:s/:
 const twentyBrace = "/{a}/{b}/{c}/{d}/{e}/{f}/{g}/{h}/{i}/{j}/{k}/{l}/{m}/{n}/{o}/{p}/{q}/{r}/{s}/{t}"
 const twentyRoute = "/a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p/q/r/s/t"
 
-func BenchmarkMy_Param20(b *testing.B) {
-	router := loadMySingle("GET", twentyColon, httpHandlerFunc)
+func BenchmarkBon_Param20(b *testing.B) {
+	router := loadBonSingle("GET", twentyColon, httpHandlerFunc)
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
@@ -261,8 +261,8 @@ func BenchmarkVulcan_Param20(b *testing.B) {
 
 // Route with Param and write
 
-func BenchmarkMy_ParamWrite(b *testing.B) {
-	router := loadMySingle("GET", "/user/:name", myHandleWrite)
+func BenchmarkBon_ParamWrite(b *testing.B) {
+	router := loadBonSingle("GET", "/user/:name", myHandleWrite)
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }

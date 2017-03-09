@@ -171,7 +171,7 @@ var staticRoutes = []route{
 
 var (
 	staticHttpServeMux http.Handler
-	staticMy           http.Handler
+	staticBon          http.Handler
 	staticBeego        http.Handler
 	staticChi          http.Handler
 	staticDenco        http.Handler
@@ -194,8 +194,8 @@ func init() {
 		}
 		staticHttpServeMux = serveMux
 	})
-	calcMem("My", func() {
-		staticMy = loadMy(staticRoutes)
+	calcMem("Bon", func() {
+		staticBon = loadBon(staticRoutes)
 	})
 	calcMem("Beego", func() {
 		staticBeego = loadBeego(staticRoutes)
@@ -233,8 +233,8 @@ func init() {
 
 // All routes
 
-func BenchmarkMy_StaticAll(b *testing.B) {
-	benchRoutes(b, staticMy, staticRoutes)
+func BenchmarkBon_StaticAll(b *testing.B) {
+	benchRoutes(b, staticBon, staticRoutes)
 }
 func BenchmarkHttpServeMux_StaticAll(b *testing.B) {
 	benchRoutes(b, staticHttpServeMux, staticRoutes)

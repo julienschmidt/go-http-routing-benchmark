@@ -274,7 +274,7 @@ var githubAPI = []route{
 }
 
 var (
-	githubMy         http.Handler
+	githubBon        http.Handler
 	githubBeego      http.Handler
 	githubDenco      http.Handler
 	githubChi        http.Handler
@@ -290,8 +290,8 @@ var (
 func init() {
 	println("#GithubAPI Routes:", len(githubAPI))
 
-	calcMem("My", func() {
-		githubMy = loadMy(githubAPI)
+	calcMem("Bon", func() {
+		githubBon = loadBon(githubAPI)
 	})
 	calcMem("Beego", func() {
 		githubBeego = loadBeego(githubAPI)
@@ -328,9 +328,9 @@ func init() {
 }
 
 // Static
-func BenchmarkMy_GithubStatic(b *testing.B) {
+func BenchmarkBon_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
-	benchRequest(b, githubMy, req)
+	benchRequest(b, githubBon, req)
 }
 func BenchmarkBeego_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
@@ -374,9 +374,9 @@ func BenchmarkVulcan_GithubStatic(b *testing.B) {
 }
 
 // Param
-func BenchmarkMy_GithubParam(b *testing.B) {
+func BenchmarkBon_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
-	benchRequest(b, githubMy, req)
+	benchRequest(b, githubBon, req)
 }
 func BenchmarkBeego_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
@@ -420,8 +420,8 @@ func BenchmarkVulcan_GithubParam(b *testing.B) {
 }
 
 // All routes
-func BenchmarkMy_GithubAll(b *testing.B) {
-	benchRoutes(b, githubMy, githubAPI)
+func BenchmarkBon_GithubAll(b *testing.B) {
+	benchRoutes(b, githubBon, githubAPI)
 }
 func BenchmarkBeego_GithubAll(b *testing.B) {
 	benchRoutes(b, githubBeego, githubAPI)
