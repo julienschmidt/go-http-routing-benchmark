@@ -36,7 +36,7 @@ var (
 		{"R2router", loadR2router},
 		{"Revel", loadRevel},
 		{"Rivet", loadRivet},
-		{"Tango", loadTango},
+		//{"Tango", loadTango},
 		{"TigerTonic", loadTigerTonic},
 		{"Traffic", loadTraffic},
 		{"Vulcan", loadVulcan},
