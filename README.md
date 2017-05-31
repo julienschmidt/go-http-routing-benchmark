@@ -35,7 +35,7 @@ Unfortunately, most of the (early) routers use pretty bad routing algorithms. Mo
 
 Lately more and more bloated frameworks pop up, outdoing one another in the number of features. This benchmark tries to measure their overhead.
 
-Beware that we are comparing apples to oranges here, we compare feature-rich frameworks to packages with simple routing functionality only. But since we are only interested in decent request routing, I think this is not entirely unfair. The frameworks are configured to do as little additional work as possible.
+Be aware that we are comparing apples and oranges here. We compare feature-rich frameworks to packages with simple routing functionality only. But since we are only interested in decent request routing, I think this is not entirely unfair. The frameworks are configured to do as little additional work as possible.
 
 If you care about performance, this benchmark can maybe help you find the right router, which scales with your application.
 
@@ -374,12 +374,12 @@ In the end, performance can not be the (only) criterion for choosing a router. P
 
 ## Usage
 
-If you'd like to run these benchmarks locally, you'll need to install the packge first:
+If you'd like to run these benchmarks locally, you'll need to install the package first:
 
 ```bash
 go get github.com/julienschmidt/go-http-routing-benchmark
 ```
-This may take a while due to the large number of dependencies that need to be downloaded. Once that command completes, you can run the full set of benchmarks like this:
+This may take a while due to the large number of dependencies that need to be downloaded. Once that command has finished you can run the full set of benchmarks like this:
 
 ```bash
 cd $GOPATH/src/github.com/julienschmidt/go-http-routing-benchmark
