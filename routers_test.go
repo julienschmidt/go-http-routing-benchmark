@@ -25,6 +25,7 @@ var (
 		{"GoJsonRest", loadGoJsonRest},
 		{"GoRestful", loadGoRestful},
 		{"GorillaMux", loadGorillaMux},
+		{"GoUtilRouter", loadGoUtilRouter},
 		{"HttpRouter", loadHttpRouter},
 		{"HttpTreeMux", loadHttpTreeMux},
 		//{"Kocha", loadKocha},

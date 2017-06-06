@@ -56,34 +56,35 @@ var parseAPI = []route{
 }
 
 var (
-	parseAce         http.Handler
-	parseBear        http.Handler
-	parseBeego       http.Handler
-	parseBone        http.Handler
-	parseDenco       http.Handler
-	parseEcho        http.Handler
-	parseGin         http.Handler
-	parseGocraftWeb  http.Handler
-	parseGoji        http.Handler
-	parseGojiv2      http.Handler
-	parseGoJsonRest  http.Handler
-	parseGoRestful   http.Handler
-	parseGorillaMux  http.Handler
-	parseHttpRouter  http.Handler
-	parseHttpTreeMux http.Handler
-	parseKocha       http.Handler
-	parseLARS        http.Handler
-	parseMacaron     http.Handler
-	parseMartini     http.Handler
-	parsePat         http.Handler
-	parsePossum      http.Handler
-	parseR2router    http.Handler
-	parseRevel       http.Handler
-	parseRivet       http.Handler
-	parseTango       http.Handler
-	parseTigerTonic  http.Handler
-	parseTraffic     http.Handler
-	parseVulcan      http.Handler
+	parseAce          http.Handler
+	parseBear         http.Handler
+	parseBeego        http.Handler
+	parseBone         http.Handler
+	parseDenco        http.Handler
+	parseEcho         http.Handler
+	parseGin          http.Handler
+	parseGocraftWeb   http.Handler
+	parseGoji         http.Handler
+	parseGojiv2       http.Handler
+	parseGoJsonRest   http.Handler
+	parseGoRestful    http.Handler
+	parseGorillaMux   http.Handler
+	parseGoUtilRouter http.Handler
+	parseHttpRouter   http.Handler
+	parseHttpTreeMux  http.Handler
+	parseKocha        http.Handler
+	parseLARS         http.Handler
+	parseMacaron      http.Handler
+	parseMartini      http.Handler
+	parsePat          http.Handler
+	parsePossum       http.Handler
+	parseR2router     http.Handler
+	parseRevel        http.Handler
+	parseRivet        http.Handler
+	parseTango        http.Handler
+	parseTigerTonic   http.Handler
+	parseTraffic      http.Handler
+	parseVulcan       http.Handler
 	// parseZeus        http.Handler
 )
 
@@ -128,6 +129,9 @@ func init() {
 	})
 	calcMem("GorillaMux", func() {
 		parseGorillaMux = loadGorillaMux(parseAPI)
+	})
+	calcMem("GoUtilRouter", func() {
+		parseGoUtilRouter = loadGoUtilRouter(parseAPI)
 	})
 	calcMem("HttpRouter", func() {
 		parseHttpRouter = loadHttpRouter(parseAPI)
@@ -233,6 +237,10 @@ func BenchmarkGoRestful_ParseStatic(b *testing.B) {
 func BenchmarkGorillaMux_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseGorillaMux, req)
+}
+func BenchmarkGoUtilRouter_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseGoUtilRouter, req)
 }
 func BenchmarkHttpRouter_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
@@ -353,6 +361,10 @@ func BenchmarkGorillaMux_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseGorillaMux, req)
 }
+func BenchmarkGoUtilRouter_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseGoUtilRouter, req)
+}
 func BenchmarkHttpRouter_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseHttpRouter, req)
@@ -472,6 +484,10 @@ func BenchmarkGorillaMux_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseGorillaMux, req)
 }
+func BenchmarkGoUtilRouter_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseGoUtilRouter, req)
+}
 func BenchmarkHttpRouter_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseHttpRouter, req)
@@ -577,6 +593,9 @@ func BenchmarkGoRestful_ParseAll(b *testing.B) {
 }
 func BenchmarkGorillaMux_ParseAll(b *testing.B) {
 	benchRoutes(b, parseGorillaMux, parseAPI)
+}
+func BenchmarkGoUtilRouter_ParseAll(b *testing.B) {
+	benchRoutes(b, parseGoUtilRouter, parseAPI)
 }
 func BenchmarkHttpRouter_ParseAll(b *testing.B) {
 	benchRoutes(b, parseHttpRouter, parseAPI)
