@@ -36,34 +36,35 @@ var gplusAPI = []route{
 }
 
 var (
-	gplusAce         http.Handler
-	gplusBear        http.Handler
-	gplusBeego       http.Handler
-	gplusBone        http.Handler
-	gplusDenco       http.Handler
-	gplusEcho        http.Handler
-	gplusGin         http.Handler
-	gplusGocraftWeb  http.Handler
-	gplusGoji        http.Handler
-	gplusGojiv2      http.Handler
-	gplusGoJsonRest  http.Handler
-	gplusGoRestful   http.Handler
-	gplusGorillaMux  http.Handler
-	gplusHttpRouter  http.Handler
-	gplusHttpTreeMux http.Handler
-	gplusKocha       http.Handler
-	gplusLARS        http.Handler
-	gplusMacaron     http.Handler
-	gplusMartini     http.Handler
-	gplusPat         http.Handler
-	gplusPossum      http.Handler
-	gplusR2router    http.Handler
-	gplusRevel       http.Handler
-	gplusRivet       http.Handler
-	gplusTango       http.Handler
-	gplusTigerTonic  http.Handler
-	gplusTraffic     http.Handler
-	gplusVulcan      http.Handler
+	gplusAce          http.Handler
+	gplusBear         http.Handler
+	gplusBeego        http.Handler
+	gplusBone         http.Handler
+	gplusDenco        http.Handler
+	gplusEcho         http.Handler
+	gplusGin          http.Handler
+	gplusGocraftWeb   http.Handler
+	gplusGoji         http.Handler
+	gplusGojiv2       http.Handler
+	gplusGoJsonRest   http.Handler
+	gplusGoRestful    http.Handler
+	gplusGorillaMux   http.Handler
+	gplusGoUtilRouter http.Handler
+	gplusHttpRouter   http.Handler
+	gplusHttpTreeMux  http.Handler
+	gplusKocha        http.Handler
+	gplusLARS         http.Handler
+	gplusMacaron      http.Handler
+	gplusMartini      http.Handler
+	gplusPat          http.Handler
+	gplusPossum       http.Handler
+	gplusR2router     http.Handler
+	gplusRevel        http.Handler
+	gplusRivet        http.Handler
+	gplusTango        http.Handler
+	gplusTigerTonic   http.Handler
+	gplusTraffic      http.Handler
+	gplusVulcan       http.Handler
 	// gplusZeus        http.Handler
 )
 
@@ -108,6 +109,9 @@ func init() {
 	})
 	calcMem("GorillaMux", func() {
 		gplusGorillaMux = loadGorillaMux(gplusAPI)
+	})
+	calcMem("GoUtilRouter", func() {
+		gplusGoUtilRouter = loadGoUtilRouter(gplusAPI)
 	})
 	calcMem("HttpRouter", func() {
 		gplusHttpRouter = loadHttpRouter(gplusAPI)
@@ -213,6 +217,10 @@ func BenchmarkGoRestful_GPlusStatic(b *testing.B) {
 func BenchmarkGorillaMux_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusGorillaMux, req)
+}
+func BenchmarkGoUtilRouter_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	benchRequest(b, gplusGoUtilRouter, req)
 }
 func BenchmarkHttpRouter_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
@@ -333,6 +341,10 @@ func BenchmarkGorillaMux_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusGorillaMux, req)
 }
+func BenchmarkGoUtilRouter_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	benchRequest(b, gplusGoUtilRouter, req)
+}
 func BenchmarkHttpRouter_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusHttpRouter, req)
@@ -452,6 +464,10 @@ func BenchmarkGorillaMux_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusGorillaMux, req)
 }
+func BenchmarkGoUtilRouter_GPlus2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	benchRequest(b, gplusGoUtilRouter, req)
+}
 func BenchmarkHttpRouter_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusHttpRouter, req)
@@ -557,6 +573,9 @@ func BenchmarkGoRestful_GPlusAll(b *testing.B) {
 }
 func BenchmarkGorillaMux_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusGorillaMux, gplusAPI)
+}
+func BenchmarkGoUtilRouter_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusGoUtilRouter, gplusAPI)
 }
 func BenchmarkHttpRouter_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusHttpRouter, gplusAPI)

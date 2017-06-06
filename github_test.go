@@ -274,34 +274,35 @@ var githubAPI = []route{
 }
 
 var (
-	githubAce         http.Handler
-	githubBear        http.Handler
-	githubBeego       http.Handler
-	githubBone        http.Handler
-	githubDenco       http.Handler
-	githubEcho        http.Handler
-	githubGin         http.Handler
-	githubGocraftWeb  http.Handler
-	githubGoji        http.Handler
-	githubGojiv2      http.Handler
-	githubGoJsonRest  http.Handler
-	githubGoRestful   http.Handler
-	githubGorillaMux  http.Handler
-	githubHttpRouter  http.Handler
-	githubHttpTreeMux http.Handler
-	githubKocha       http.Handler
-	githubLARS        http.Handler
-	githubMacaron     http.Handler
-	githubMartini     http.Handler
-	githubPat         http.Handler
-	githubPossum      http.Handler
-	githubR2router    http.Handler
-	githubRevel       http.Handler
-	githubRivet       http.Handler
-	githubTango       http.Handler
-	githubTigerTonic  http.Handler
-	githubTraffic     http.Handler
-	githubVulcan      http.Handler
+	githubAce          http.Handler
+	githubBear         http.Handler
+	githubBeego        http.Handler
+	githubBone         http.Handler
+	githubDenco        http.Handler
+	githubEcho         http.Handler
+	githubGin          http.Handler
+	githubGocraftWeb   http.Handler
+	githubGoji         http.Handler
+	githubGojiv2       http.Handler
+	githubGoJsonRest   http.Handler
+	githubGoRestful    http.Handler
+	githubGorillaMux   http.Handler
+	githubGoUtilRouter http.Handler
+	githubHttpRouter   http.Handler
+	githubHttpTreeMux  http.Handler
+	githubKocha        http.Handler
+	githubLARS         http.Handler
+	githubMacaron      http.Handler
+	githubMartini      http.Handler
+	githubPat          http.Handler
+	githubPossum       http.Handler
+	githubR2router     http.Handler
+	githubRevel        http.Handler
+	githubRivet        http.Handler
+	githubTango        http.Handler
+	githubTigerTonic   http.Handler
+	githubTraffic      http.Handler
+	githubVulcan       http.Handler
 	// githubZeus        http.Handler
 )
 
@@ -346,6 +347,9 @@ func init() {
 	})
 	calcMem("GorillaMux", func() {
 		githubGorillaMux = loadGorillaMux(githubAPI)
+	})
+	calcMem("GoUtilRouter", func() {
+		githubGoUtilRouter = loadGoUtilRouter(githubAPI)
 	})
 	calcMem("HttpRouter", func() {
 		githubHttpRouter = loadHttpRouter(githubAPI)
@@ -451,6 +455,10 @@ func BenchmarkGoJsonRest_GithubStatic(b *testing.B) {
 func BenchmarkGorillaMux_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
 	benchRequest(b, githubGorillaMux, req)
+}
+func BenchmarkGoUtilRouter_GithubStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/user/repos", nil)
+	benchRequest(b, githubGoUtilRouter, req)
 }
 func BenchmarkHttpRouter_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
@@ -571,6 +579,10 @@ func BenchmarkGorillaMux_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubGorillaMux, req)
 }
+func BenchmarkGoUtilRouter_GithubParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
+	benchRequest(b, githubGoUtilRouter, req)
+}
 func BenchmarkHttpRouter_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubHttpRouter, req)
@@ -676,6 +688,9 @@ func BenchmarkGoRestful_GithubAll(b *testing.B) {
 }
 func BenchmarkGorillaMux_GithubAll(b *testing.B) {
 	benchRoutes(b, githubGorillaMux, githubAPI)
+}
+func BenchmarkGoUtilRouter_GithubAll(b *testing.B) {
+	benchRoutes(b, githubGoUtilRouter, githubAPI)
 }
 func BenchmarkHttpRouter_GithubAll(b *testing.B) {
 	benchRoutes(b, githubHttpRouter, githubAPI)

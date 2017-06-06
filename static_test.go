@@ -172,34 +172,35 @@ var staticRoutes = []route{
 var (
 	staticHttpServeMux http.Handler
 
-	staticAce         http.Handler
-	staticBear        http.Handler
-	staticBeego       http.Handler
-	staticBone        http.Handler
-	staticDenco       http.Handler
-	staticEcho        http.Handler
-	staticGin         http.Handler
-	staticGocraftWeb  http.Handler
-	staticGoji        http.Handler
-	staticGojiv2      http.Handler
-	staticGoJsonRest  http.Handler
-	staticGoRestful   http.Handler
-	staticGorillaMux  http.Handler
-	staticHttpRouter  http.Handler
-	staticHttpTreeMux http.Handler
-	staticKocha       http.Handler
-	staticLARS        http.Handler
-	staticMacaron     http.Handler
-	staticMartini     http.Handler
-	staticPat         http.Handler
-	staticPossum      http.Handler
-	staticR2router    http.Handler
-	staticRevel       http.Handler
-	staticRivet       http.Handler
-	staticTango       http.Handler
-	staticTigerTonic  http.Handler
-	staticTraffic     http.Handler
-	staticVulcan      http.Handler
+	staticAce          http.Handler
+	staticBear         http.Handler
+	staticBeego        http.Handler
+	staticBone         http.Handler
+	staticDenco        http.Handler
+	staticEcho         http.Handler
+	staticGin          http.Handler
+	staticGocraftWeb   http.Handler
+	staticGoji         http.Handler
+	staticGojiv2       http.Handler
+	staticGoJsonRest   http.Handler
+	staticGoRestful    http.Handler
+	staticGorillaMux   http.Handler
+	staticGoUtilRouter http.Handler
+	staticHttpRouter   http.Handler
+	staticHttpTreeMux  http.Handler
+	staticKocha        http.Handler
+	staticLARS         http.Handler
+	staticMacaron      http.Handler
+	staticMartini      http.Handler
+	staticPat          http.Handler
+	staticPossum       http.Handler
+	staticR2router     http.Handler
+	staticRevel        http.Handler
+	staticRivet        http.Handler
+	staticTango        http.Handler
+	staticTigerTonic   http.Handler
+	staticTraffic      http.Handler
+	staticVulcan       http.Handler
 	// staticZeus        http.Handler
 )
 
@@ -252,6 +253,9 @@ func init() {
 	})
 	calcMem("GorillaMux", func() {
 		staticGorillaMux = loadGorillaMux(staticRoutes)
+	})
+	calcMem("GoUtilRouter", func() {
+		staticGoUtilRouter = loadGoUtilRouter(staticRoutes)
 	})
 	calcMem("HttpRouter", func() {
 		staticHttpRouter = loadHttpRouter(staticRoutes)
@@ -348,6 +352,9 @@ func BenchmarkGoRestful_StaticAll(b *testing.B) {
 }
 func BenchmarkGorillaMux_StaticAll(b *testing.B) {
 	benchRoutes(b, staticGorillaMux, staticRoutes)
+}
+func BenchmarkGoUtilRouter_StaticAll(b *testing.B) {
+	benchRoutes(b, staticGoUtilRouter, staticRoutes)
 }
 func BenchmarkHttpRouter_StaticAll(b *testing.B) {
 	benchRoutes(b, staticHttpRouter, staticRoutes)

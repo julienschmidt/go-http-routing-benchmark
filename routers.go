@@ -28,6 +28,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-macaron/macaron"
 	"github.com/go-martini/martini"
+	goutilrouter "github.com/go-util/router"
 	"github.com/go-zoo/bone"
 	"github.com/gocraft/web"
 	"github.com/gorilla/mux"
@@ -345,7 +346,7 @@ func echoHandlerTest(c echo.Context) error {
 
 func loadEcho(routes []route) http.Handler {
 	var h echo.HandlerFunc = echoHandler
-	if loadTestHandler { 
+	if loadTestHandler {
 		h = echoHandlerTest
 	}
 
@@ -722,6 +723,31 @@ func loadGorillaMuxSingle(method, path string, handler http.HandlerFunc) http.Ha
 	m := mux.NewRouter()
 	m.HandleFunc(path, handler).Methods(method)
 	return m
+}
+
+// GoUtilRouter
+func GoUtilRouterHandlerWrite(w http.ResponseWriter, r *http.Request) {
+	params := r.URL.Query()
+	io.WriteString(w, params.Get("name"))
+}
+
+func loadGoUtilRouter(routes []route) http.Handler {
+	h := httpHandlerFunc
+	if loadTestHandler {
+		h = httpHandlerFuncTest
+	}
+
+	router := goutilrouter.NewRouter()
+	for _, route := range routes {
+		router.Handle(route.method, route.path, h)
+	}
+	return router
+}
+
+func loadGoUtilRouterSingle(method, path string, handler http.HandlerFunc) http.Handler {
+	router := goutilrouter.NewRouter()
+	router.Handle(method, path, handler)
+	return router
 }
 
 // HttpRouter
