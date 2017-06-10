@@ -174,6 +174,12 @@ func BenchmarkGorillaMux_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkGowwwRouter_Param(b *testing.B) {
+	router := loadGowwwRouterSingle("GET", "/user/:name", http.HandlerFunc(httpHandlerFunc))
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkHttpRouter_Param(b *testing.B) {
 	router := loadHttpRouterSingle("GET", "/user/:name", httpRouterHandle)
 
@@ -357,6 +363,12 @@ func BenchmarkGoRestful_Param5(b *testing.B) {
 }
 func BenchmarkGorillaMux_Param5(b *testing.B) {
 	router := loadGorillaMuxSingle("GET", fiveBrace, httpHandlerFunc)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkGowwwRouter_Param5(b *testing.B) {
+	router := loadGowwwRouterSingle("GET", fiveColon, http.HandlerFunc(httpHandlerFunc))
 
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
@@ -547,6 +559,12 @@ func BenchmarkGorillaMux_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkGowwwRouter_Param20(b *testing.B) {
+	router := loadGowwwRouterSingle("GET", twentyColon, http.HandlerFunc(httpHandlerFunc))
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkHttpRouter_Param20(b *testing.B) {
 	router := loadHttpRouterSingle("GET", twentyColon, httpRouterHandle)
 
@@ -731,6 +749,12 @@ func BenchmarkGorillaMux_ParamWrite(b *testing.B) {
 }
 func BenchmarkHttpRouter_ParamWrite(b *testing.B) {
 	router := loadHttpRouterSingle("GET", "/user/:name", httpRouterHandleWrite)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkGowwwRouter_ParamWrite(b *testing.B) {
+	router := loadGowwwRouterSingle("GET", "/user/:name", http.HandlerFunc(gowwwRouterHandleWrite))
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)

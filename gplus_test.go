@@ -49,6 +49,7 @@ var (
 	gplusGoJsonRest  http.Handler
 	gplusGoRestful   http.Handler
 	gplusGorillaMux  http.Handler
+	gplusGowwwRouter http.Handler
 	gplusHttpRouter  http.Handler
 	gplusHttpTreeMux http.Handler
 	gplusKocha       http.Handler
@@ -108,6 +109,9 @@ func init() {
 	})
 	calcMem("GorillaMux", func() {
 		gplusGorillaMux = loadGorillaMux(gplusAPI)
+	})
+	calcMem("GowwwRouter", func() {
+		gplusGowwwRouter = loadGowwwRouter(gplusAPI)
 	})
 	calcMem("HttpRouter", func() {
 		gplusHttpRouter = loadHttpRouter(gplusAPI)
@@ -213,6 +217,10 @@ func BenchmarkGoRestful_GPlusStatic(b *testing.B) {
 func BenchmarkGorillaMux_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusGorillaMux, req)
+}
+func BenchmarkGowwwRouter_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	benchRequest(b, gplusGowwwRouter, req)
 }
 func BenchmarkHttpRouter_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
@@ -333,6 +341,10 @@ func BenchmarkGorillaMux_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusGorillaMux, req)
 }
+func BenchmarkGowwwRouter_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	benchRequest(b, gplusGowwwRouter, req)
+}
 func BenchmarkHttpRouter_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusHttpRouter, req)
@@ -452,6 +464,10 @@ func BenchmarkGorillaMux_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusGorillaMux, req)
 }
+func BenchmarkGowwwRouter_GPlus2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	benchRequest(b, gplusGowwwRouter, req)
+}
 func BenchmarkHttpRouter_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusHttpRouter, req)
@@ -557,6 +573,9 @@ func BenchmarkGoRestful_GPlusAll(b *testing.B) {
 }
 func BenchmarkGorillaMux_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusGorillaMux, gplusAPI)
+}
+func BenchmarkGowwwRouter_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusGowwwRouter, gplusAPI)
 }
 func BenchmarkHttpRouter_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusHttpRouter, gplusAPI)

@@ -31,6 +31,7 @@ import (
 	"github.com/go-zoo/bone"
 	"github.com/gocraft/web"
 	"github.com/gorilla/mux"
+	gowwwrouter "github.com/gowww/router"
 	"github.com/julienschmidt/httprouter"
 	"github.com/labstack/echo"
 	llog "github.com/lunny/log"
@@ -99,7 +100,7 @@ func init() {
 }
 
 // Common
-func httpHandlerFunc(w http.ResponseWriter, r *http.Request) {}
+func httpHandlerFunc(_ http.ResponseWriter, _ *http.Request) {}
 
 func httpHandlerFuncTest(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, r.RequestURI)
@@ -345,7 +346,7 @@ func echoHandlerTest(c echo.Context) error {
 
 func loadEcho(routes []route) http.Handler {
 	var h echo.HandlerFunc = echoHandler
-	if loadTestHandler { 
+	if loadTestHandler {
 		h = echoHandlerTest
 	}
 
@@ -722,6 +723,30 @@ func loadGorillaMuxSingle(method, path string, handler http.HandlerFunc) http.Ha
 	m := mux.NewRouter()
 	m.HandleFunc(path, handler).Methods(method)
 	return m
+}
+
+// gowww/router
+func gowwwRouterHandleWrite(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, gowwwrouter.Parameter(r, "name"))
+}
+
+func loadGowwwRouter(routes []route) http.Handler {
+	h := httpHandlerFunc
+	if loadTestHandler {
+		h = httpHandlerFuncTest
+	}
+
+	router := gowwwrouter.New()
+	for _, route := range routes {
+		router.Handle(route.method, route.path, http.HandlerFunc(h))
+	}
+	return router
+}
+
+func loadGowwwRouterSingle(method, path string, handler http.Handler) http.Handler {
+	router := gowwwrouter.New()
+	router.Handle(method, path, handler)
+	return router
 }
 
 // HttpRouter
