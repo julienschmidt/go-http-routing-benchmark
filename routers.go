@@ -23,6 +23,7 @@ import (
 	"github.com/bmizerany/pat"
 	"github.com/go-playground/lars"
 	// "github.com/daryl/zeus"
+	cloudykitrouter "github.com/cloudykit/router"
 	"github.com/dimfeld/httptreemux"
 	"github.com/emicklei/go-restful"
 	"github.com/gin-gonic/gin"
@@ -287,6 +288,36 @@ func loadBoneSingle(method, path string, handler http.Handler) http.Handler {
 	default:
 		panic("Unknow HTTP method: " + method)
 	}
+	return router
+}
+
+// CloudyKit Router
+func cloudyKitRouterHandler(_ http.ResponseWriter, _ *http.Request, _ cloudykitrouter.Parameter) {}
+
+func cloudyKitRouterHandlerWrite(w http.ResponseWriter, _ *http.Request, ps cloudykitrouter.Parameter) {
+	io.WriteString(w, ps.ByName("name"))
+}
+
+func cloudyKitRouterHandlerTest(w http.ResponseWriter, r *http.Request, _ cloudykitrouter.Parameter) {
+	io.WriteString(w, r.RequestURI)
+}
+
+func loadCloudyKitRouter(routes []route) http.Handler {
+	h := cloudyKitRouterHandler
+	if loadTestHandler {
+		h = cloudyKitRouterHandlerTest
+	}
+
+	router := cloudykitrouter.New()
+	for _, route := range routes {
+		router.AddRoute(route.method, route.path, h)
+	}
+	return router
+}
+
+func loadCloudyKitRouterSingle(method, path string, handler cloudykitrouter.Handler) http.Handler {
+	router := cloudykitrouter.New()
+	router.AddRoute(method, path, handler)
 	return router
 }
 

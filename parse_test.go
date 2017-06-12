@@ -56,35 +56,36 @@ var parseAPI = []route{
 }
 
 var (
-	parseAce         http.Handler
-	parseBear        http.Handler
-	parseBeego       http.Handler
-	parseBone        http.Handler
-	parseDenco       http.Handler
-	parseEcho        http.Handler
-	parseGin         http.Handler
-	parseGocraftWeb  http.Handler
-	parseGoji        http.Handler
-	parseGojiv2      http.Handler
-	parseGoJsonRest  http.Handler
-	parseGoRestful   http.Handler
-	parseGorillaMux  http.Handler
-	parseGowwwRouter http.Handler
-	parseHttpRouter  http.Handler
-	parseHttpTreeMux http.Handler
-	parseKocha       http.Handler
-	parseLARS        http.Handler
-	parseMacaron     http.Handler
-	parseMartini     http.Handler
-	parsePat         http.Handler
-	parsePossum      http.Handler
-	parseR2router    http.Handler
-	parseRevel       http.Handler
-	parseRivet       http.Handler
-	parseTango       http.Handler
-	parseTigerTonic  http.Handler
-	parseTraffic     http.Handler
-	parseVulcan      http.Handler
+	parseAce             http.Handler
+	parseBear            http.Handler
+	parseBeego           http.Handler
+	parseBone            http.Handler
+	parseCloudyKitRouter http.Handler
+	parseDenco           http.Handler
+	parseEcho            http.Handler
+	parseGin             http.Handler
+	parseGocraftWeb      http.Handler
+	parseGoji            http.Handler
+	parseGojiv2          http.Handler
+	parseGoJsonRest      http.Handler
+	parseGoRestful       http.Handler
+	parseGorillaMux      http.Handler
+	parseGowwwRouter     http.Handler
+	parseHttpRouter      http.Handler
+	parseHttpTreeMux     http.Handler
+	parseKocha           http.Handler
+	parseLARS            http.Handler
+	parseMacaron         http.Handler
+	parseMartini         http.Handler
+	parsePat             http.Handler
+	parsePossum          http.Handler
+	parseR2router        http.Handler
+	parseRevel           http.Handler
+	parseRivet           http.Handler
+	parseTango           http.Handler
+	parseTigerTonic      http.Handler
+	parseTraffic         http.Handler
+	parseVulcan          http.Handler
 	// parseZeus        http.Handler
 )
 
@@ -201,6 +202,10 @@ func BenchmarkBeego_ParseStatic(b *testing.B) {
 func BenchmarkBone_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseBone, req)
+}
+func BenchmarkCloudyKitRouter_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseCloudyKitRouter, req)
 }
 func BenchmarkDenco_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
@@ -325,6 +330,10 @@ func BenchmarkBone_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseBone, req)
 }
+func BenchmarkCloudyKitRouter_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseCloudyKitRouter, req)
+}
 func BenchmarkDenco_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseDenco, req)
@@ -448,6 +457,10 @@ func BenchmarkBone_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseBone, req)
 }
+func BenchmarkCloudyKitRouter_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseCloudyKitRouter, req)
+}
 func BenchmarkDenco_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseDenco, req)
@@ -566,6 +579,9 @@ func BenchmarkBeego_ParseAll(b *testing.B) {
 }
 func BenchmarkBone_ParseAll(b *testing.B) {
 	benchRoutes(b, parseBone, parseAPI)
+}
+func BenchmarkCloudyKitRouter_ParseAll(b *testing.B) {
+	benchRoutes(b, parseCloudyKitRouter, parseAPI)
 }
 func BenchmarkDenco_ParseAll(b *testing.B) {
 	benchRoutes(b, parseDenco, parseAPI)

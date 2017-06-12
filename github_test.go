@@ -274,35 +274,36 @@ var githubAPI = []route{
 }
 
 var (
-	githubAce         http.Handler
-	githubBear        http.Handler
-	githubBeego       http.Handler
-	githubBone        http.Handler
-	githubDenco       http.Handler
-	githubEcho        http.Handler
-	githubGin         http.Handler
-	githubGocraftWeb  http.Handler
-	githubGoji        http.Handler
-	githubGojiv2      http.Handler
-	githubGoJsonRest  http.Handler
-	githubGoRestful   http.Handler
-	githubGorillaMux  http.Handler
-	githubGowwwRouter http.Handler
-	githubHttpRouter  http.Handler
-	githubHttpTreeMux http.Handler
-	githubKocha       http.Handler
-	githubLARS        http.Handler
-	githubMacaron     http.Handler
-	githubMartini     http.Handler
-	githubPat         http.Handler
-	githubPossum      http.Handler
-	githubR2router    http.Handler
-	githubRevel       http.Handler
-	githubRivet       http.Handler
-	githubTango       http.Handler
-	githubTigerTonic  http.Handler
-	githubTraffic     http.Handler
-	githubVulcan      http.Handler
+	githubAce             http.Handler
+	githubBear            http.Handler
+	githubBeego           http.Handler
+	githubBone            http.Handler
+	githubCloudyKitRouter http.Handler
+	githubDenco           http.Handler
+	githubEcho            http.Handler
+	githubGin             http.Handler
+	githubGocraftWeb      http.Handler
+	githubGoji            http.Handler
+	githubGojiv2          http.Handler
+	githubGoJsonRest      http.Handler
+	githubGoRestful       http.Handler
+	githubGorillaMux      http.Handler
+	githubGowwwRouter     http.Handler
+	githubHttpRouter      http.Handler
+	githubHttpTreeMux     http.Handler
+	githubKocha           http.Handler
+	githubLARS            http.Handler
+	githubMacaron         http.Handler
+	githubMartini         http.Handler
+	githubPat             http.Handler
+	githubPossum          http.Handler
+	githubR2router        http.Handler
+	githubRevel           http.Handler
+	githubRivet           http.Handler
+	githubTango           http.Handler
+	githubTigerTonic      http.Handler
+	githubTraffic         http.Handler
+	githubVulcan          http.Handler
 	// githubZeus        http.Handler
 )
 
@@ -320,6 +321,9 @@ func init() {
 	})
 	calcMem("Bone", func() {
 		githubBone = loadBone(githubAPI)
+	})
+	calcMem("CloudyKitRouter", func() {
+		githubCloudyKitRouter = loadCloudyKitRouter(githubAPI)
 	})
 	calcMem("Denco", func() {
 		githubDenco = loadDenco(githubAPI)
@@ -419,6 +423,10 @@ func BenchmarkBeego_GithubStatic(b *testing.B) {
 func BenchmarkBone_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
 	benchRequest(b, githubBone, req)
+}
+func BenchmarkCloudyKitRouter_GithubStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/user/repos", nil)
+	benchRequest(b, githubCloudyKitRouter, req)
 }
 func BenchmarkDenco_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
@@ -543,6 +551,10 @@ func BenchmarkBone_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubBone, req)
 }
+func BenchmarkCloudyKitRouter_GithubParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
+	benchRequest(b, githubCloudyKitRouter, req)
+}
 func BenchmarkDenco_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubDenco, req)
@@ -661,6 +673,9 @@ func BenchmarkBeego_GithubAll(b *testing.B) {
 }
 func BenchmarkBone_GithubAll(b *testing.B) {
 	benchRoutes(b, githubBone, githubAPI)
+}
+func BenchmarkCloudyKitRouter_GithubAll(b *testing.B) {
+	benchRoutes(b, githubCloudyKitRouter, githubAPI)
 }
 func BenchmarkDenco_GithubAll(b *testing.B) {
 	benchRoutes(b, githubDenco, githubAPI)

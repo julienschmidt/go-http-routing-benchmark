@@ -16,6 +16,7 @@ var (
 		{"Bear", loadBear},
 		{"Beego", loadBeego},
 		{"Bone", loadBone},
+		{"CloudyKitRouter", loadCloudyKitRouter},
 		{"Denco", loadDenco},
 		{"Echo", loadEcho},
 		{"Gin", loadGin},

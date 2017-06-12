@@ -120,6 +120,12 @@ func BenchmarkBone_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkCloudyKitRouter_Param(b *testing.B) {
+	router := loadCloudyKitRouterSingle("GET", "/user/:name", cloudyKitRouterHandler)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkDenco_Param(b *testing.B) {
 	router := loadDencoSingle("GET", "/user/:name", dencoHandler)
 
@@ -309,6 +315,12 @@ func BenchmarkBeego_Param5(b *testing.B) {
 }
 func BenchmarkBone_Param5(b *testing.B) {
 	router := loadBoneSingle("GET", fiveColon, http.HandlerFunc(httpHandlerFunc))
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkCloudyKitRouter_Param5(b *testing.B) {
+	router := loadCloudyKitRouterSingle("GET", fiveColon, cloudyKitRouterHandler)
 
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
@@ -505,6 +517,12 @@ func BenchmarkBone_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkCloudyKitRouter_Param20(b *testing.B) {
+	router := loadCloudyKitRouterSingle("GET", twentyColon, cloudyKitRouterHandler)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkDenco_Param20(b *testing.B) {
 	router := loadDencoSingle("GET", twentyColon, dencoHandler)
 
@@ -693,6 +711,12 @@ func BenchmarkBone_ParamWrite(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkCloudyKitRouter_ParamWrite(b *testing.B) {
+	router := loadCloudyKitRouterSingle("GET", "/user/:name", cloudyKitRouterHandler)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkDenco_ParamWrite(b *testing.B) {
 	router := loadDencoSingle("GET", "/user/:name", dencoHandlerWrite)
 
@@ -747,14 +771,14 @@ func BenchmarkGorillaMux_ParamWrite(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
-func BenchmarkHttpRouter_ParamWrite(b *testing.B) {
-	router := loadHttpRouterSingle("GET", "/user/:name", httpRouterHandleWrite)
+func BenchmarkGowwwRouter_ParamWrite(b *testing.B) {
+	router := loadGowwwRouterSingle("GET", "/user/:name", http.HandlerFunc(gowwwRouterHandleWrite))
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
-func BenchmarkGowwwRouter_ParamWrite(b *testing.B) {
-	router := loadGowwwRouterSingle("GET", "/user/:name", http.HandlerFunc(gowwwRouterHandleWrite))
+func BenchmarkHttpRouter_ParamWrite(b *testing.B) {
+	router := loadHttpRouterSingle("GET", "/user/:name", httpRouterHandleWrite)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)

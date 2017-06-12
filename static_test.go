@@ -172,35 +172,36 @@ var staticRoutes = []route{
 var (
 	staticHttpServeMux http.Handler
 
-	staticAce         http.Handler
-	staticBear        http.Handler
-	staticBeego       http.Handler
-	staticBone        http.Handler
-	staticDenco       http.Handler
-	staticEcho        http.Handler
-	staticGin         http.Handler
-	staticGocraftWeb  http.Handler
-	staticGoji        http.Handler
-	staticGojiv2      http.Handler
-	staticGoJsonRest  http.Handler
-	staticGoRestful   http.Handler
-	staticGorillaMux  http.Handler
-	staticGowwwRouter http.Handler
-	staticHttpRouter  http.Handler
-	staticHttpTreeMux http.Handler
-	staticKocha       http.Handler
-	staticLARS        http.Handler
-	staticMacaron     http.Handler
-	staticMartini     http.Handler
-	staticPat         http.Handler
-	staticPossum      http.Handler
-	staticR2router    http.Handler
-	staticRevel       http.Handler
-	staticRivet       http.Handler
-	staticTango       http.Handler
-	staticTigerTonic  http.Handler
-	staticTraffic     http.Handler
-	staticVulcan      http.Handler
+	staticAce             http.Handler
+	staticBear            http.Handler
+	staticBeego           http.Handler
+	staticBone            http.Handler
+	staticCloudyKitRouter http.Handler
+	staticDenco           http.Handler
+	staticEcho            http.Handler
+	staticGin             http.Handler
+	staticGocraftWeb      http.Handler
+	staticGoji            http.Handler
+	staticGojiv2          http.Handler
+	staticGoJsonRest      http.Handler
+	staticGoRestful       http.Handler
+	staticGorillaMux      http.Handler
+	staticGowwwRouter     http.Handler
+	staticHttpRouter      http.Handler
+	staticHttpTreeMux     http.Handler
+	staticKocha           http.Handler
+	staticLARS            http.Handler
+	staticMacaron         http.Handler
+	staticMartini         http.Handler
+	staticPat             http.Handler
+	staticPossum          http.Handler
+	staticR2router        http.Handler
+	staticRevel           http.Handler
+	staticRivet           http.Handler
+	staticTango           http.Handler
+	staticTigerTonic      http.Handler
+	staticTraffic         http.Handler
+	staticVulcan          http.Handler
 	// staticZeus        http.Handler
 )
 
@@ -226,6 +227,9 @@ func init() {
 	})
 	calcMem("Bone", func() {
 		staticBone = loadBone(staticRoutes)
+	})
+	calcMem("CloudyKitRouter", func() {
+		staticCloudyKitRouter = loadCloudyKitRouter(staticRoutes)
 	})
 	calcMem("Denco", func() {
 		staticDenco = loadDenco(staticRoutes)
@@ -325,6 +329,9 @@ func BenchmarkBear_StaticAll(b *testing.B) {
 }
 func BenchmarkBone_StaticAll(b *testing.B) {
 	benchRoutes(b, staticBone, staticRoutes)
+}
+func BenchmarkCloudyKitRouter_StaticAll(b *testing.B) {
+	benchRoutes(b, staticCloudyKitRouter, staticRoutes)
 }
 func BenchmarkDenco_StaticAll(b *testing.B) {
 	benchRoutes(b, staticDenco, staticRoutes)
