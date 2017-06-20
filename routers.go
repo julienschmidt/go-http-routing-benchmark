@@ -30,7 +30,7 @@ import (
 	possumrouter "github.com/mikespook/possum/router"
 	possumview "github.com/mikespook/possum/view"
 	"github.com/naoina/denco"
-	"github.com/ngc224/bon"
+	"github.com/nissy/bon"
 	"github.com/pressly/chi"
 	"github.com/typepress/rivet"
 )
