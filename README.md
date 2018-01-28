@@ -388,7 +388,7 @@ go test -bench=.
 
 > **Note:** If you run the tests and it SIGQUIT's make the go test timeout longer (#44)
 >
->```
+```
 go test -timeout=2h -bench=.
 ```
 
