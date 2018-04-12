@@ -13,16 +13,6 @@ var (
 		load func(routes []route) http.Handler
 	}{
 		{"Bon", loadBon},
-		{"Beego", loadBeego},
-		{"Chi", loadChi},
-		{"Denco", loadDenco},
-		{"Gin", loadGin},
-		{"HttpRouter", loadHttpRouter},
-		{"LARS", loadLARS},
-		{"Possum", loadPossum},
-		//{"Rivet", loadRivet},
-		//{"Tango", loadTango},
-		{"Vulcan", loadVulcan},
 	}
 
 	// all APIs
@@ -30,9 +20,9 @@ var (
 		name   string
 		routes []route
 	}{
-		{"GitHub", githubAPI},
-		{"GPlus", gplusAPI},
-		{"Parse", parseAPI},
+		{"GitHub", githubAPIColon},
+		{"GPlus", gplusAPIColon},
+		{"Parse", parseAPIColon},
 		{"Static", staticRoutes},
 	}
 )

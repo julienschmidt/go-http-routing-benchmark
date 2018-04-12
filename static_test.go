@@ -170,62 +170,18 @@ var staticRoutes = []route{
 }
 
 var (
-	staticHttpServeMux http.Handler
-	staticBon          http.Handler
-	staticBeego        http.Handler
-	staticChi          http.Handler
-	staticDenco        http.Handler
-	staticGin          http.Handler
-	staticHttpRouter   http.Handler
-	staticLARS         http.Handler
-	staticPossum       http.Handler
-	staticRivet        http.Handler
-	staticTango        http.Handler
-	staticVulcan       http.Handler
+	staticBon http.Handler
+	staticChi http.Handler
 )
 
 func init() {
 	println("#Static Routes:", len(staticRoutes))
 
-	calcMem("HttpServeMux", func() {
-		serveMux := http.NewServeMux()
-		for _, route := range staticRoutes {
-			serveMux.HandleFunc(route.path, httpHandlerFunc)
-		}
-		staticHttpServeMux = serveMux
-	})
 	calcMem("Bon", func() {
 		staticBon = loadBon(staticRoutes)
 	})
-	calcMem("Beego", func() {
-		staticBeego = loadBeego(staticRoutes)
-	})
 	calcMem("Chi", func() {
 		staticChi = loadChi(staticRoutes)
-	})
-	calcMem("Denco", func() {
-		staticDenco = loadDenco(staticRoutes)
-	})
-	calcMem("Gin", func() {
-		staticGin = loadGin(staticRoutes)
-	})
-	calcMem("HttpRouter", func() {
-		staticHttpRouter = loadHttpRouter(staticRoutes)
-	})
-	calcMem("LARS", func() {
-		staticLARS = loadLARS(staticRoutes)
-	})
-	calcMem("Possum", func() {
-		staticPossum = loadPossum(staticRoutes)
-	})
-	calcMem("Rivet", func() {
-		staticRivet = loadRivet(staticRoutes)
-	})
-	calcMem("Tango", func() {
-		staticTango = loadTango(staticRoutes)
-	})
-	calcMem("Vulcan", func() {
-		staticVulcan = loadVulcan(staticRoutes)
 	})
 
 	println()
@@ -236,39 +192,6 @@ func init() {
 func BenchmarkBon_StaticAll(b *testing.B) {
 	benchRoutes(b, staticBon, staticRoutes)
 }
-func BenchmarkHttpServeMux_StaticAll(b *testing.B) {
-	benchRoutes(b, staticHttpServeMux, staticRoutes)
-}
-func BenchmarkBeego_StaticAll(b *testing.B) {
-	benchRoutes(b, staticBeego, staticRoutes)
-}
 func BenchmarkChi_StaticAll(b *testing.B) {
 	benchRoutes(b, staticChi, staticRoutes)
-}
-func BenchmarkDenco_StaticAll(b *testing.B) {
-	benchRoutes(b, staticDenco, staticRoutes)
-}
-func BenchmarkGin_StaticAll(b *testing.B) {
-	benchRoutes(b, staticGin, staticRoutes)
-}
-func BenchmarkHttpRouter_StaticAll(b *testing.B) {
-	benchRoutes(b, staticHttpRouter, staticRoutes)
-}
-func BenchmarkHttpTreeMux_StaticAll(b *testing.B) {
-	benchRoutes(b, staticHttpRouter, staticRoutes)
-}
-func BenchmarkLARS_StaticAll(b *testing.B) {
-	benchRoutes(b, staticLARS, staticRoutes)
-}
-func BenchmarkPossum_StaticAll(b *testing.B) {
-	benchRoutes(b, staticPossum, staticRoutes)
-}
-func BenchmarkRivet_StaticAll(b *testing.B) {
-	benchRoutes(b, staticRivet, staticRoutes)
-}
-func BenchmarkTango_StaticAll(b *testing.B) {
-	benchRoutes(b, staticTango, staticRoutes)
-}
-func BenchmarkVulcan_StaticAll(b *testing.B) {
-	benchRoutes(b, staticVulcan, staticRoutes)
 }
