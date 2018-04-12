@@ -17,7 +17,10 @@ import (
 	// - Make a pull request (without benchmark results) at
 	//   https://github.com/julienschmidt/go-http-routing-benchmark
 
+	"github.com/gin-gonic/gin"
 	"github.com/go-chi/chi"
+	"github.com/labstack/echo"
+	"github.com/naoina/denco"
 	"github.com/nissy/bon"
 )
 
@@ -52,11 +55,12 @@ func init() {
 
 	// makes logging 'webscale' (ignores them)
 	log.SetOutput(new(mockResponseWriter))
+
+	initGin()
 }
 
 // Common
-func httpHandlerFunc(w http.ResponseWriter, r *http.Request) {
-}
+func httpHandlerFunc(w http.ResponseWriter, r *http.Request) {}
 
 func httpHandlerFuncTest(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, r.RequestURI)
@@ -170,6 +174,114 @@ func loadChiSingle(method, path string, handler http.HandlerFunc) http.Handler {
 	}
 
 	return r
+}
+
+// Denco
+func dencoHandler(w http.ResponseWriter, r *http.Request, params denco.Params) {}
+
+func dencoHandlerWrite(w http.ResponseWriter, r *http.Request, params denco.Params) {
+	io.WriteString(w, params.Get("name"))
+}
+
+func dencoHandlerTest(w http.ResponseWriter, r *http.Request, params denco.Params) {
+	io.WriteString(w, r.RequestURI)
+}
+
+func loadDenco(routes []route) http.Handler {
+	h := dencoHandler
+	if loadTestHandler {
+		h = dencoHandlerTest
+	}
+
+	mux := denco.NewMux()
+	handlers := make([]denco.Handler, 0, len(routes))
+	for _, route := range routes {
+		handler := mux.Handler(route.method, route.path, h)
+		handlers = append(handlers, handler)
+	}
+	handler, err := mux.Build(handlers)
+	if err != nil {
+		panic(err)
+	}
+	return handler
+}
+
+func loadDencoSingle(method, path string, h denco.HandlerFunc) http.Handler {
+	mux := denco.NewMux()
+	handler, err := mux.Build([]denco.Handler{mux.Handler(method, path, h)})
+	if err != nil {
+		panic(err)
+	}
+	return handler
+}
+
+// Gin
+func ginHandle(_ *gin.Context) {}
+
+func ginHandleWrite(c *gin.Context) {
+	io.WriteString(c.Writer, c.Params.ByName("name"))
+}
+
+func ginHandleTest(c *gin.Context) {
+	io.WriteString(c.Writer, c.Request.RequestURI)
+}
+
+func initGin() {
+	gin.SetMode(gin.ReleaseMode)
+}
+
+func loadGin(routes []route) http.Handler {
+	h := ginHandle
+	if loadTestHandler {
+		h = ginHandleTest
+	}
+
+	router := gin.New()
+	for _, route := range routes {
+		router.Handle(route.method, route.path, h)
+	}
+	return router
+}
+
+func loadGinSingle(method, path string, handle gin.HandlerFunc) http.Handler {
+	router := gin.New()
+	router.Handle(method, path, handle)
+	return router
+}
+
+// Echo
+func echoHandlerFunc(c echo.Context) error {
+	return nil
+}
+
+func echoHandleWrite(c echo.Context) error {
+	_, err := io.WriteString(c.Response().Writer, c.Param("name"))
+	return err
+}
+
+func echoHandleTest(c echo.Context) error {
+	_, err := io.WriteString(c.Response().Writer, c.Request().RequestURI)
+	return err
+}
+
+func loadEcho(routes []route) http.Handler {
+	h := echoHandlerFunc
+
+	if loadTestHandler {
+		h = echoHandleTest
+	}
+
+	router := echo.New()
+	for _, route := range routes {
+		router.Add(route.method, route.path, h)
+	}
+	return router
+}
+
+func loadEchoSingle(method, path string, handle echo.HandlerFunc) http.Handler {
+	router := echo.New()
+	router.Add(method, path, handle)
+	return router
 }
 
 // Usage notice

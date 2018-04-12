@@ -170,8 +170,11 @@ var staticRoutes = []route{
 }
 
 var (
-	staticBon http.Handler
-	staticChi http.Handler
+	staticBon   http.Handler
+	staticChi   http.Handler
+	staticDenco http.Handler
+	staticGin   http.Handler
+	staticEcho  http.Handler
 )
 
 func init() {
@@ -183,15 +186,32 @@ func init() {
 	calcMem("Chi", func() {
 		staticChi = loadChi(staticRoutes)
 	})
+	calcMem("Denco", func() {
+		staticDenco = loadDenco(staticRoutes)
+	})
+	calcMem("Gin", func() {
+		staticGin = loadGin(staticRoutes)
+	})
+	calcMem("Echo", func() {
+		staticEcho = loadEcho(staticRoutes)
+	})
 
 	println()
 }
 
 // All routes
-
 func BenchmarkBon_StaticAll(b *testing.B) {
 	benchRoutes(b, staticBon, staticRoutes)
 }
 func BenchmarkChi_StaticAll(b *testing.B) {
 	benchRoutes(b, staticChi, staticRoutes)
+}
+func BenchmarkDenco_StaticAll(b *testing.B) {
+	benchRoutes(b, staticDenco, staticRoutes)
+}
+func BenchmarkGin_StaticAll(b *testing.B) {
+	benchRoutes(b, staticGin, staticRoutes)
+}
+func BenchmarkEcho_StaticAll(b *testing.B) {
+	benchRoutes(b, staticEcho, staticRoutes)
 }

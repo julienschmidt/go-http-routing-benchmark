@@ -537,8 +537,11 @@ var githubAPIBrace = []route{
 }
 
 var (
-	githubBon http.Handler
-	githubChi http.Handler
+	githubBon   http.Handler
+	githubChi   http.Handler
+	githubDenco http.Handler
+	githubGin   http.Handler
+	githubEcho  http.Handler
 )
 
 func init() {
@@ -549,6 +552,15 @@ func init() {
 	})
 	calcMem("Chi", func() {
 		githubChi = loadChi(githubAPIBrace)
+	})
+	calcMem("Denco", func() {
+		githubDenco = loadDenco(githubAPIColon)
+	})
+	calcMem("Gin", func() {
+		githubGin = loadGin(githubAPIColon)
+	})
+	calcMem("Echo", func() {
+		githubEcho = loadEcho(githubAPIColon)
 	})
 
 	println()
@@ -563,6 +575,18 @@ func BenchmarkChi_GithubStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/user/repos", nil)
 	benchRequest(b, githubChi, req)
 }
+func BenchmarkDenco_GithubStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/user/repos", nil)
+	benchRequest(b, githubDenco, req)
+}
+func BenchmarkGin_GithubStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/user/repos", nil)
+	benchRequest(b, githubGin, req)
+}
+func BenchmarkEcho_GithubStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/user/repos", nil)
+	benchRequest(b, githubEcho, req)
+}
 
 // Param
 func BenchmarkBon_GithubParam(b *testing.B) {
@@ -573,6 +597,18 @@ func BenchmarkChi_GithubParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
 	benchRequest(b, githubChi, req)
 }
+func BenchmarkDenco_GithubParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
+	benchRequest(b, githubDenco, req)
+}
+func BenchmarkGin_GithubParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
+	benchRequest(b, githubGin, req)
+}
+func BenchmarkEcho_GithubParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/repos/julienschmidt/httprouter/stargazers", nil)
+	benchRequest(b, githubEcho, req)
+}
 
 // All routes
 func BenchmarkBon_GithubAll(b *testing.B) {
@@ -580,4 +616,13 @@ func BenchmarkBon_GithubAll(b *testing.B) {
 }
 func BenchmarkChi_GithubAll(b *testing.B) {
 	benchRoutes(b, githubChi, githubAPIBrace)
+}
+func BenchmarkDenco_GithubAll(b *testing.B) {
+	benchRoutes(b, githubDenco, githubAPIColon)
+}
+func BenchmarkGin_GithubAll(b *testing.B) {
+	benchRoutes(b, githubGin, githubAPIColon)
+}
+func BenchmarkEcho_GithubAll(b *testing.B) {
+	benchRoutes(b, githubEcho, githubAPIColon)
 }
