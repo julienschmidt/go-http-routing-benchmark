@@ -5,6 +5,7 @@
 package main
 
 import (
+	"io"
 	"net/http"
 	"os"
 	"regexp"
@@ -96,12 +97,6 @@ func benchRoutes(b *testing.B, router http.Handler, routes []route) {
 // Micro Benchmarks
 
 // Route with Param (no write)
-func BenchmarkAce_Param(b *testing.B) {
-	router := loadAceSingle("GET", "/user/:name", aceHandle)
-
-	r, _ := http.NewRequest("GET", "/user/gordon", nil)
-	benchRequest(b, router, r)
-}
 func BenchmarkBear_Param(b *testing.B) {
 	router := loadBearSingle("GET", "/user/{name}", bearHandler)
 
@@ -234,14 +229,8 @@ func BenchmarkR2router_Param(b *testing.B) {
 	benchRequest(b, router, r)
 }
 
-func BenchmarkRevel_Param(b *testing.B) {
-	router := loadRevelSingle("GET", "/user/:name", "RevelController.Handle")
-
-	r, _ := http.NewRequest("GET", "/user/gordon", nil)
-	benchRequest(b, router, r)
-}
-func BenchmarkRivet_Param(b *testing.B) {
-	router := loadRivetSingle("GET", "/user/:name", rivetHandler)
+func BenchmarkRTE_Param(b *testing.B) {
+	router := loadRTESingle("GET", "/user/:name", func(w http.ResponseWriter, r *http.Request, _ string) {})
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
@@ -283,12 +272,6 @@ const fiveColon = "/:a/:b/:c/:d/:e"
 const fiveBrace = "/{a}/{b}/{c}/{d}/{e}"
 const fiveRoute = "/test/test/test/test/test"
 
-func BenchmarkAce_Param5(b *testing.B) {
-	router := loadAceSingle("GET", fiveColon, aceHandle)
-
-	r, _ := http.NewRequest("GET", fiveRoute, nil)
-	benchRequest(b, router, r)
-}
 func BenchmarkBear_Param5(b *testing.B) {
 	router := loadBearSingle("GET", fiveBrace, bearHandler)
 
@@ -420,14 +403,9 @@ func BenchmarkR2router_Param5(b *testing.B) {
 	benchRequest(b, router, r)
 }
 
-func BenchmarkRevel_Param5(b *testing.B) {
-	router := loadRevelSingle("GET", fiveColon, "RevelController.Handle")
-
-	r, _ := http.NewRequest("GET", fiveRoute, nil)
-	benchRequest(b, router, r)
-}
-func BenchmarkRivet_Param5(b *testing.B) {
-	router := loadRivetSingle("GET", fiveColon, rivetHandler)
+func BenchmarkRTE_Param5(b *testing.B) {
+	router := loadRTESingle("GET", fiveColon, func(w http.ResponseWriter, r *http.Request, _ [5]string) {
+	})
 
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
@@ -469,12 +447,6 @@ const twentyColon = "/:a/:b/:c/:d/:e/:f/:g/:h/:i/:j/:k/:l/:m/:n/:o/:p/:q/:r/:s/:
 const twentyBrace = "/{a}/{b}/{c}/{d}/{e}/{f}/{g}/{h}/{i}/{j}/{k}/{l}/{m}/{n}/{o}/{p}/{q}/{r}/{s}/{t}"
 const twentyRoute = "/a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p/q/r/s/t"
 
-func BenchmarkAce_Param20(b *testing.B) {
-	router := loadAceSingle("GET", twentyColon, aceHandle)
-
-	r, _ := http.NewRequest("GET", twentyRoute, nil)
-	benchRequest(b, router, r)
-}
 func BenchmarkBear_Param20(b *testing.B) {
 	router := loadBearSingle("GET", twentyBrace, bearHandler)
 
@@ -605,19 +577,6 @@ func BenchmarkR2router_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
-
-func BenchmarkRevel_Param20(b *testing.B) {
-	router := loadRevelSingle("GET", twentyColon, "RevelController.Handle")
-
-	r, _ := http.NewRequest("GET", twentyRoute, nil)
-	benchRequest(b, router, r)
-}
-func BenchmarkRivet_Param20(b *testing.B) {
-	router := loadRivetSingle("GET", twentyColon, rivetHandler)
-
-	r, _ := http.NewRequest("GET", twentyRoute, nil)
-	benchRequest(b, router, r)
-}
 func BenchmarkTango_Param20(b *testing.B) {
 	router := loadTangoSingle("GET", twentyColon, tangoHandler)
 
@@ -651,12 +610,6 @@ func BenchmarkVulcan_Param20(b *testing.B) {
 // }
 
 // Route with Param and write
-func BenchmarkAce_ParamWrite(b *testing.B) {
-	router := loadAceSingle("GET", "/user/:name", aceHandleWrite)
-
-	r, _ := http.NewRequest("GET", "/user/gordon", nil)
-	benchRequest(b, router, r)
-}
 func BenchmarkBear_ParamWrite(b *testing.B) {
 	router := loadBearSingle("GET", "/user/{name}", bearHandlerWrite)
 
@@ -787,16 +740,10 @@ func BenchmarkR2router_ParamWrite(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
-
-func BenchmarkRevel_ParamWrite(b *testing.B) {
-	router := loadRevelSingle("GET", "/user/:name", "RevelController.HandleWrite")
-
-	r, _ := http.NewRequest("GET", "/user/gordon", nil)
-	benchRequest(b, router, r)
-}
-func BenchmarkRivet_ParamWrite(b *testing.B) {
-	router := loadRivetSingle("GET", "/user/:name", rivetHandlerWrite)
-
+func BenchmarkRTE_ParamWrite(b *testing.B) {
+	router := loadRTESingle("GET", "/user/:name", func(w http.ResponseWriter, r *http.Request, name string) {
+		io.WriteString(w, name)
+	})
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }

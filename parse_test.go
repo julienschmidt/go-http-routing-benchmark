@@ -56,7 +56,6 @@ var parseAPI = []route{
 }
 
 var (
-	parseAce         http.Handler
 	parseBear        http.Handler
 	parseBeego       http.Handler
 	parseBone        http.Handler
@@ -78,8 +77,7 @@ var (
 	parsePat         http.Handler
 	parsePossum      http.Handler
 	parseR2router    http.Handler
-	parseRevel       http.Handler
-	parseRivet       http.Handler
+	parseRTE         http.Handler
 	parseTango       http.Handler
 	parseTigerTonic  http.Handler
 	parseTraffic     http.Handler
@@ -90,9 +88,6 @@ var (
 func init() {
 	println("#ParseAPI Routes:", len(parseAPI))
 
-	calcMem("Ace", func() {
-		parseAce = loadAce(parseAPI)
-	})
 	calcMem("Bear", func() {
 		parseBear = loadBear(parseAPI)
 	})
@@ -156,11 +151,8 @@ func init() {
 	calcMem("R2router", func() {
 		parseR2router = loadR2router(parseAPI)
 	})
-	calcMem("Revel", func() {
-		parseRevel = loadRevel(parseAPI)
-	})
-	calcMem("Rivet", func() {
-		parseRivet = loadRivet(parseAPI)
+	calcMem("RTE", func() {
+		parseRTE = loadRTE(parseAPI)
 	})
 	calcMem("Tango", func() {
 		parseTango = loadTango(parseAPI)
@@ -182,10 +174,6 @@ func init() {
 }
 
 // Static
-func BenchmarkAce_ParseStatic(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/1/users", nil)
-	benchRequest(b, parseAce, req)
-}
 func BenchmarkBear_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseBear, req)
@@ -270,13 +258,9 @@ func BenchmarkR2router_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseR2router, req)
 }
-func BenchmarkRevel_ParseStatic(b *testing.B) {
+func BenchmarkRTE_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
-	benchRequest(b, parseRevel, req)
-}
-func BenchmarkRivet_ParseStatic(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/1/users", nil)
-	benchRequest(b, parseRivet, req)
+	benchRequest(b, parseRTE, req)
 }
 func BenchmarkTango_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
@@ -301,10 +285,6 @@ func BenchmarkVulcan_ParseStatic(b *testing.B) {
 // }
 
 // One Param
-func BenchmarkAce_ParseParam(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
-	benchRequest(b, parseAce, req)
-}
 func BenchmarkBear_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseBear, req)
@@ -389,13 +369,9 @@ func BenchmarkR2router_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseR2router, req)
 }
-func BenchmarkRevel_ParseParam(b *testing.B) {
+func BenchmarkRTE_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
-	benchRequest(b, parseRevel, req)
-}
-func BenchmarkRivet_ParseParam(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
-	benchRequest(b, parseRivet, req)
+	benchRequest(b, parseRTE, req)
 }
 func BenchmarkTango_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
@@ -420,10 +396,6 @@ func BenchmarkVulcan_ParseParam(b *testing.B) {
 // }
 
 // Two Params
-func BenchmarkAce_Parse2Params(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
-	benchRequest(b, parseAce, req)
-}
 func BenchmarkBear_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseBear, req)
@@ -508,13 +480,9 @@ func BenchmarkR2router_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseR2router, req)
 }
-func BenchmarkRevel_Parse2Params(b *testing.B) {
+func BenchmarkRTE_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
-	benchRequest(b, parseRevel, req)
-}
-func BenchmarkRivet_Parse2Params(b *testing.B) {
-	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
-	benchRequest(b, parseRivet, req)
+	benchRequest(b, parseRTE, req)
 }
 func BenchmarkTango_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
@@ -539,9 +507,6 @@ func BenchmarkVulcan_Parse2Params(b *testing.B) {
 // }
 
 // All Routes
-func BenchmarkAce_ParseAll(b *testing.B) {
-	benchRoutes(b, parseAce, parseAPI)
-}
 func BenchmarkBear_ParseAll(b *testing.B) {
 	benchRoutes(b, parseBear, parseAPI)
 }
@@ -605,11 +570,8 @@ func BenchmarkPossum_ParseAll(b *testing.B) {
 func BenchmarkR2router_ParseAll(b *testing.B) {
 	benchRoutes(b, parseR2router, parseAPI)
 }
-func BenchmarkRevel_ParseAll(b *testing.B) {
-	benchRoutes(b, parseRevel, parseAPI)
-}
-func BenchmarkRivet_ParseAll(b *testing.B) {
-	benchRoutes(b, parseRivet, parseAPI)
+func BenchmarkRTE_ParseAll(b *testing.B) {
+	benchRoutes(b, parseRTE, parseAPI)
 }
 func BenchmarkTango_ParseAll(b *testing.B) {
 	benchRoutes(b, parseTango, parseAPI)

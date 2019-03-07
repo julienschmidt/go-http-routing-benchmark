@@ -6,12 +6,14 @@ package main
 
 import (
 	"fmt"
+	"github.com/jwilner/rte"
 	"io"
 	"log"
 	"net/http"
 	"os"
 	"regexp"
 	"runtime"
+	"strings"
 
 	// If you add new routers please:
 	// - Keep the benchmark functions etc. alphabetically sorted
@@ -43,11 +45,7 @@ import (
 	"github.com/naoina/kocha-urlrouter"
 	_ "github.com/naoina/kocha-urlrouter/doublearray"
 	"github.com/pilu/traffic"
-	"github.com/plimble/ace"
 	"github.com/rcrowley/go-tigertonic"
-	"github.com/revel/revel"
-	"github.com/robfig/pathtree"
-	"github.com/typepress/rivet"
 	"github.com/ursiform/bear"
 	"github.com/vanng822/r2router"
 	goji "github.com/zenazn/goji/web"
@@ -93,7 +91,6 @@ func init() {
 	initBeego()
 	initGin()
 	initMartini()
-	initRevel()
 	initTango()
 	initTraffic()
 }
@@ -103,36 +100,6 @@ func httpHandlerFunc(w http.ResponseWriter, r *http.Request) {}
 
 func httpHandlerFuncTest(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, r.RequestURI)
-}
-
-// Ace
-func aceHandle(_ *ace.C) {}
-
-func aceHandleWrite(c *ace.C) {
-	io.WriteString(c.Writer, c.Param("name"))
-}
-
-func aceHandleTest(c *ace.C) {
-	io.WriteString(c.Writer, c.Request.RequestURI)
-}
-
-func loadAce(routes []route) http.Handler {
-	h := []ace.HandlerFunc{aceHandle}
-	if loadTestHandler {
-		h = []ace.HandlerFunc{aceHandleTest}
-	}
-
-	router := ace.New()
-	for _, route := range routes {
-		router.Handle(route.method, route.path, h)
-	}
-	return router
-}
-
-func loadAceSingle(method, path string, handle ace.HandlerFunc) http.Handler {
-	router := ace.New()
-	router.Handle(method, path, []ace.HandlerFunc{handle})
-	return router
 }
 
 // bear
@@ -345,7 +312,7 @@ func echoHandlerTest(c echo.Context) error {
 
 func loadEcho(routes []route) http.Handler {
 	var h echo.HandlerFunc = echoHandler
-	if loadTestHandler { 
+	if loadTestHandler {
 		h = echoHandlerTest
 	}
 
@@ -1130,157 +1097,86 @@ func loadR2routerSingle(method, path string, handler r2router.HandlerFunc) http.
 	return router
 }
 
-// Revel (Router only)
-// In the following code some Revel internals are modelled.
-// The original revel code is copyrighted by Rob Figueiredo.
-// See https://github.com/revel/revel/blob/master/LICENSE
-type RevelController struct {
-	*revel.Controller
-	router *revel.Router
-}
-
-func (rc *RevelController) Handle() revel.Result {
-	return revelResult{}
-}
-
-func (rc *RevelController) HandleWrite() revel.Result {
-	return rc.RenderText(rc.Params.Get("name"))
-}
-
-func (rc *RevelController) HandleTest() revel.Result {
-	return rc.RenderText(rc.Request.RequestURI)
-}
-
-type revelResult struct{}
-
-func (rr revelResult) Apply(req *revel.Request, resp *revel.Response) {}
-
-func (rc *RevelController) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	// Dirty hacks, do NOT copy!
-	revel.MainRouter = rc.router
-
-	upgrade := r.Header.Get("Upgrade")
-	if upgrade == "websocket" || upgrade == "Websocket" {
-		panic("Not implemented")
-	} else {
-		var (
-			req  = revel.NewRequest(r)
-			resp = revel.NewResponse(w)
-			c    = revel.NewController(req, resp)
-		)
-		req.Websocket = nil
-		revel.Filters[0](c, revel.Filters[1:])
-		if c.Result != nil {
-			c.Result.Apply(req, resp)
-		} else if c.Response.Status != 0 {
-			panic("Not implemented")
-		}
-		// Close the Writer if we can
-		if w, ok := resp.Out.(io.Closer); ok {
-			w.Close()
-		}
-	}
-}
-
-func initRevel() {
-	// Only use the Revel filters required for this benchmark
-	revel.Filters = []revel.Filter{
-		revel.RouterFilter,
-		revel.ParamsFilter,
-		revel.ActionInvoker,
-	}
-
-	revel.RegisterController((*RevelController)(nil),
-		[]*revel.MethodType{
-			{
-				Name: "Handle",
-			},
-			{
-				Name: "HandleWrite",
-			},
-			{
-				Name: "HandleTest",
-			},
-		})
-}
-
-func loadRevel(routes []route) http.Handler {
-	h := "RevelController.Handle"
-	if loadTestHandler {
-		h = "RevelController.HandleTest"
-	}
-
-	router := revel.NewRouter("")
-
-	// parseRoutes
-	var rs []*revel.Route
-	for _, r := range routes {
-		rs = append(rs, revel.NewRoute(r.method, r.path, h, "", "", 0))
-	}
-	router.Routes = rs
-
-	// updateTree
-	router.Tree = pathtree.New()
-	for _, r := range router.Routes {
-		err := router.Tree.Add(r.TreePath, r)
-		// Allow GETs to respond to HEAD requests.
-		if err == nil && r.Method == "GET" {
-			err = router.Tree.Add("/HEAD"+r.Path, r)
-		}
-		// Error adding a route to the pathtree.
-		if err != nil {
-			panic(err)
-		}
-	}
-
-	rc := new(RevelController)
-	rc.router = router
-	return rc
-}
-
-func loadRevelSingle(method, path, action string) http.Handler {
-	router := revel.NewRouter("")
-
-	route := revel.NewRoute(method, path, action, "", "", 0)
-	if err := router.Tree.Add(route.TreePath, route); err != nil {
-		panic(err)
-	}
-
-	rc := new(RevelController)
-	rc.router = router
-	return rc
-}
-
-// Rivet
-func rivetHandler() {}
-
-func rivetHandlerWrite(c *rivet.Context) {
-	c.WriteString(c.Get("name"))
-}
-
-func rivetHandlerTest(c *rivet.Context) {
-	c.WriteString(c.Req.RequestURI)
-}
-
-func loadRivet(routes []route) http.Handler {
-	var h interface{} = rivetHandler
-	if loadTestHandler {
-		h = rivetHandlerTest
-	}
-
-	router := rivet.New()
+// RTE
+func loadRTE(routes []route) http.Handler {
+	var rtes []rte.Route
 	for _, route := range routes {
-		router.Handle(route.method, route.path, h)
+		rtes = append(rtes, rte.Route{
+			Method:  route.method,
+			Path:    route.path,
+			Handler: newRteHandler(route.path),
+		})
 	}
-	return router
+	return rte.Must(rtes)
 }
 
-func loadRivetSingle(method, path string, handler interface{}) http.Handler {
-	router := rivet.New()
+func loadRTESingle(method, path string, hndlr interface{}) http.Handler {
+	return rte.Must(rte.Routes(method+" "+path, hndlr))
+}
 
-	router.Handle(method, path, handler)
-
-	return router
+func newRteHandler(path string) interface{} {
+	if !loadTestHandler {
+		switch strings.Count(path, ":") {
+		case 0:
+			return func(http.ResponseWriter, *http.Request) {}
+		case 1:
+			return func(http.ResponseWriter, *http.Request, string) {}
+		case 2:
+			return func(http.ResponseWriter, *http.Request, string, string) {}
+		case 3:
+			return func(http.ResponseWriter, *http.Request, string, string, string) {}
+		case 4:
+			return func(http.ResponseWriter, *http.Request, [4]string) {}
+		case 5:
+			return func(http.ResponseWriter, *http.Request, [5]string) {}
+		case 6:
+			return func(http.ResponseWriter, *http.Request, [6]string) {}
+		case 7:
+			return func(http.ResponseWriter, *http.Request, [7]string) {}
+		case 8:
+			return func(http.ResponseWriter, *http.Request, [8]string) {}
+		}
+		panic("too many")
+	}
+	switch strings.Count(path, ":") {
+	case 0:
+		return func(w http.ResponseWriter, r *http.Request) {
+			_, _ = fmt.Fprint(w, r.RequestURI)
+		}
+	case 1:
+		return func(w http.ResponseWriter, r *http.Request, _ string) {
+			_, _ = fmt.Fprint(w, r.RequestURI)
+		}
+	case 2:
+		return func(w http.ResponseWriter, r *http.Request, _, _ string) {
+			_, _ = fmt.Fprint(w, r.RequestURI)
+		}
+	case 3:
+		return func(w http.ResponseWriter, r *http.Request, _, _, _ string) {
+			_, _ = fmt.Fprint(w, r.RequestURI)
+		}
+	case 4:
+		return func(w http.ResponseWriter, r *http.Request, _ [4]string) {
+			_, _ = fmt.Fprint(w, r.RequestURI)
+		}
+	case 5:
+		return func(w http.ResponseWriter, r *http.Request, _ [5]string) {
+			_, _ = fmt.Fprint(w, r.RequestURI)
+		}
+	case 6:
+		return func(w http.ResponseWriter, r *http.Request, _ [6]string) {
+			_, _ = fmt.Fprint(w, r.RequestURI)
+		}
+	case 7:
+		return func(w http.ResponseWriter, r *http.Request, _ [7]string) {
+			_, _ = fmt.Fprint(w, r.RequestURI)
+		}
+	case 8:
+		return func(w http.ResponseWriter, r *http.Request, _ [8]string) {
+			_, _ = fmt.Fprint(w, r.RequestURI)
+		}
+	}
+	panic("too many")
 }
 
 // Tango
