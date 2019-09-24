@@ -41,10 +41,10 @@ var staticRoutes = []route{
 	{"GET", "/share.png"},
 	{"GET", "/sieve.gif"},
 	{"GET", "/tos.html"},
-	{"GET", "/articles/"},
+	{"GET", "/articles"},
 	{"GET", "/articles/go_command.html"},
 	{"GET", "/articles/index.html"},
-	{"GET", "/articles/wiki/"},
+	{"GET", "/articles/wiki"},
 	{"GET", "/articles/wiki/edit.html"},
 	{"GET", "/articles/wiki/final-noclosure.go"},
 	{"GET", "/articles/wiki/final-noerror.go"},
@@ -66,7 +66,7 @@ var staticRoutes = []route{
 	{"GET", "/articles/wiki/test_Test.txt.good"},
 	{"GET", "/articles/wiki/test_view.good"},
 	{"GET", "/articles/wiki/view.html"},
-	{"GET", "/codewalk/"},
+	{"GET", "/codewalk"},
 	{"GET", "/codewalk/codewalk.css"},
 	{"GET", "/codewalk/codewalk.js"},
 	{"GET", "/codewalk/codewalk.xml"},
@@ -78,10 +78,10 @@ var staticRoutes = []route{
 	{"GET", "/codewalk/run"},
 	{"GET", "/codewalk/sharemem.xml"},
 	{"GET", "/codewalk/urlpoll.go"},
-	{"GET", "/devel/"},
+	{"GET", "/devel"},
 	{"GET", "/devel/release.html"},
 	{"GET", "/devel/weekly.html"},
-	{"GET", "/gopher/"},
+	{"GET", "/gopher"},
 	{"GET", "/gopher/appenginegopher.jpg"},
 	{"GET", "/gopher/appenginegophercolor.jpg"},
 	{"GET", "/gopher/appenginelogo.gif"},
@@ -101,14 +101,14 @@ var staticRoutes = []route{
 	{"GET", "/gopher/ref.png"},
 	{"GET", "/gopher/run.png"},
 	{"GET", "/gopher/talks.png"},
-	{"GET", "/gopher/pencil/"},
+	{"GET", "/gopher/pencil"},
 	{"GET", "/gopher/pencil/gopherhat.jpg"},
 	{"GET", "/gopher/pencil/gopherhelmet.jpg"},
 	{"GET", "/gopher/pencil/gophermega.jpg"},
 	{"GET", "/gopher/pencil/gopherrunning.jpg"},
 	{"GET", "/gopher/pencil/gopherswim.jpg"},
 	{"GET", "/gopher/pencil/gopherswrench.jpg"},
-	{"GET", "/play/"},
+	{"GET", "/play"},
 	{"GET", "/play/fib.go"},
 	{"GET", "/play/hello.go"},
 	{"GET", "/play/life.go"},
@@ -117,7 +117,7 @@ var staticRoutes = []route{
 	{"GET", "/play/sieve.go"},
 	{"GET", "/play/solitaire.go"},
 	{"GET", "/play/tree.go"},
-	{"GET", "/progs/"},
+	{"GET", "/progs"},
 	{"GET", "/progs/cgo1.go"},
 	{"GET", "/progs/cgo2.go"},
 	{"GET", "/progs/cgo3.go"},
@@ -172,29 +172,31 @@ var staticRoutes = []route{
 var (
 	staticHttpServeMux http.Handler
 
-	staticAce         http.Handler
-	staticBear        http.Handler
-	staticBeego       http.Handler
-	staticBone        http.Handler
-	staticDenco       http.Handler
-	staticEcho        http.Handler
-	staticGin         http.Handler
-	staticGocraftWeb  http.Handler
-	staticGoji        http.Handler
-	staticGojiv2      http.Handler
-	staticGoJsonRest  http.Handler
-	staticGoRestful   http.Handler
-	staticGorillaMux  http.Handler
-	staticHttpRouter  http.Handler
-	staticHttpTreeMux http.Handler
-	staticKocha       http.Handler
-	staticLARS        http.Handler
-	staticMacaron     http.Handler
-	staticMartini     http.Handler
-	staticPat         http.Handler
-	staticPossum      http.Handler
-	staticR2router    http.Handler
-	// staticRevel       http.Handler
+	staticAce             http.Handler
+	staticBear            http.Handler
+	staticBeego           http.Handler
+	staticBone            http.Handler
+	staticCloudyKitRouter http.Handler
+	staticDenco           http.Handler
+	staticEcho            http.Handler
+	staticGin             http.Handler
+	staticGocraftWeb      http.Handler
+	staticGoji            http.Handler
+	staticGojiv2          http.Handler
+	staticGoJsonRest      http.Handler
+	staticGoRestful       http.Handler
+	staticGorillaMux      http.Handler
+	staticGowwwRouter     http.Handler
+	staticHttpRouter      http.Handler
+	staticHttpTreeMux     http.Handler
+	staticKocha           http.Handler
+	staticLARS            http.Handler
+	staticMacaron         http.Handler
+	staticMartini         http.Handler
+	staticPat             http.Handler
+	staticPossum          http.Handler
+	staticR2router        http.Handler
+	// staticRevel           http.Handler
 	staticRivet      http.Handler
 	staticTango      http.Handler
 	staticTigerTonic http.Handler
@@ -226,6 +228,9 @@ func init() {
 	calcMem("Bone", func() {
 		staticBone = loadBone(staticRoutes)
 	})
+	calcMem("CloudyKitRouter", func() {
+		staticCloudyKitRouter = loadCloudyKitRouter(staticRoutes)
+	})
 	calcMem("Denco", func() {
 		staticDenco = loadDenco(staticRoutes)
 	})
@@ -252,6 +257,9 @@ func init() {
 	})
 	calcMem("GorillaMux", func() {
 		staticGorillaMux = loadGorillaMux(staticRoutes)
+	})
+	calcMem("GowwwRouter", func() {
+		staticGowwwRouter = loadGowwwRouter(staticRoutes)
 	})
 	calcMem("HttpRouter", func() {
 		staticHttpRouter = loadHttpRouter(staticRoutes)
@@ -322,6 +330,9 @@ func BenchmarkBear_StaticAll(b *testing.B) {
 func BenchmarkBone_StaticAll(b *testing.B) {
 	benchRoutes(b, staticBone, staticRoutes)
 }
+func BenchmarkCloudyKitRouter_StaticAll(b *testing.B) {
+	benchRoutes(b, staticCloudyKitRouter, staticRoutes)
+}
 func BenchmarkDenco_StaticAll(b *testing.B) {
 	benchRoutes(b, staticDenco, staticRoutes)
 }
@@ -348,6 +359,9 @@ func BenchmarkGoRestful_StaticAll(b *testing.B) {
 }
 func BenchmarkGorillaMux_StaticAll(b *testing.B) {
 	benchRoutes(b, staticGorillaMux, staticRoutes)
+}
+func BenchmarkGowwwRouter_StaticAll(b *testing.B) {
+	benchRoutes(b, staticGowwwRouter, staticRoutes)
 }
 func BenchmarkHttpRouter_StaticAll(b *testing.B) {
 	benchRoutes(b, staticHttpRouter, staticRoutes)

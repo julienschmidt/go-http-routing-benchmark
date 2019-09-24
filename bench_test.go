@@ -128,6 +128,12 @@ func BenchmarkBone_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkCloudyKitRouter_Param(b *testing.B) {
+	router := loadCloudyKitRouterSingle("GET", "/user/:name", cloudyKitRouterHandler)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkDenco_Param(b *testing.B) {
 	router := loadDencoSingle("GET", "/user/:name", dencoHandler)
 
@@ -178,6 +184,12 @@ func BenchmarkGoRestful_Param(b *testing.B) {
 }
 func BenchmarkGorillaMux_Param(b *testing.B) {
 	router := loadGorillaMuxSingle("GET", "/user/{name}", httpHandlerFunc)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkGowwwRouter_Param(b *testing.B) {
+	router := loadGowwwRouterSingle("GET", "/user/:name", http.HandlerFunc(httpHandlerFunc))
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
@@ -314,6 +326,12 @@ func BenchmarkBone_Param5(b *testing.B) {
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkCloudyKitRouter_Param5(b *testing.B) {
+	router := loadCloudyKitRouterSingle("GET", fiveColon, cloudyKitRouterHandler)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkDenco_Param5(b *testing.B) {
 	router := loadDencoSingle("GET", fiveColon, dencoHandler)
 
@@ -364,6 +382,12 @@ func BenchmarkGoRestful_Param5(b *testing.B) {
 }
 func BenchmarkGorillaMux_Param5(b *testing.B) {
 	router := loadGorillaMuxSingle("GET", fiveBrace, httpHandlerFunc)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkGowwwRouter_Param5(b *testing.B) {
+	router := loadGowwwRouterSingle("GET", fiveColon, http.HandlerFunc(httpHandlerFunc))
 
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
@@ -500,6 +524,12 @@ func BenchmarkBone_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkCloudyKitRouter_Param20(b *testing.B) {
+	router := loadCloudyKitRouterSingle("GET", twentyColon, cloudyKitRouterHandler)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkDenco_Param20(b *testing.B) {
 	router := loadDencoSingle("GET", twentyColon, dencoHandler)
 
@@ -550,6 +580,12 @@ func BenchmarkGoRestful_Param20(b *testing.B) {
 }
 func BenchmarkGorillaMux_Param20(b *testing.B) {
 	router := loadGorillaMuxSingle("GET", twentyBrace, httpHandlerFunc)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkGowwwRouter_Param20(b *testing.B) {
+	router := loadGowwwRouterSingle("GET", twentyColon, http.HandlerFunc(httpHandlerFunc))
 
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
@@ -682,6 +718,12 @@ func BenchmarkBone_ParamWrite(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkCloudyKitRouter_ParamWrite(b *testing.B) {
+	router := loadCloudyKitRouterSingle("GET", "/user/:name", cloudyKitRouterHandler)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkDenco_ParamWrite(b *testing.B) {
 	router := loadDencoSingle("GET", "/user/:name", dencoHandlerWrite)
 
@@ -732,6 +774,12 @@ func BenchmarkGoRestful_ParamWrite(b *testing.B) {
 }
 func BenchmarkGorillaMux_ParamWrite(b *testing.B) {
 	router := loadGorillaMuxSingle("GET", "/user/{name}", gorillaHandlerWrite)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkGowwwRouter_ParamWrite(b *testing.B) {
+	router := loadGowwwRouterSingle("GET", "/user/:name", http.HandlerFunc(gowwwRouterHandleWrite))
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
