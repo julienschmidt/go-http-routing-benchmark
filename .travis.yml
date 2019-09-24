@@ -1,5 +1,4 @@
 sudo: false
 language: go
 go:
-  - 1.8
-  - tip
+  - 1.13.x
