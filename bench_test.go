@@ -45,6 +45,11 @@ func calcMem(name string, load func()) {
 	m := new(runtime.MemStats)
 
 	// before
+	// force GC multiple times, since Go is using a generational GC
+	// TODO: find a better approach
+	runtime.GC()
+	runtime.GC()
+	runtime.GC()
 	runtime.GC()
 	runtime.ReadMemStats(m)
 	before := m.HeapAlloc
@@ -52,6 +57,9 @@ func calcMem(name string, load func()) {
 	load()
 
 	// after
+	runtime.GC()
+	runtime.GC()
+	runtime.GC()
 	runtime.GC()
 	runtime.ReadMemStats(m)
 	after := m.HeapAlloc
@@ -220,7 +228,6 @@ func BenchmarkPat_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
-
 func BenchmarkPossum_Param(b *testing.B) {
 	router := loadPossumSingle("GET", "/user/:name", possumHandler)
 
