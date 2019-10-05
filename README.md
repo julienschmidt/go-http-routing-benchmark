@@ -48,7 +48,7 @@ So keep in mind, that I am not completely unbiased :relieved:
 Benchmark System:
  * Intel Core i5-2500K (4x 3,30GHz + Turbo Boost), CPU-governor: performance
  * 2x 4 GiB DDR3-1333 RAM, dual-channel
- * go version go1.3rc1 linux/amd64
+ * go version go1.13rc1 linux/amd64
  * Ubuntu 14.04 amd64 (Linux Kernel 3.13.0-29), fresh installation
 
 
