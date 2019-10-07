@@ -60,6 +60,7 @@ var (
 	parseBear            http.Handler
 	parseBeego           http.Handler
 	parseBone            http.Handler
+	parseChi             http.Handler
 	parseCloudyKitRouter http.Handler
 	parseDenco           http.Handler
 	parseEcho            http.Handler
@@ -103,6 +104,9 @@ func init() {
 	})
 	calcMem("Bone", func() {
 		parseBone = loadBone(parseAPI)
+	})
+	calcMem("Chi", func() {
+		parseChi = loadChi(parseAPI)
 	})
 	calcMem("Denco", func() {
 		parseDenco = loadDenco(parseAPI)
@@ -202,6 +206,10 @@ func BenchmarkBeego_ParseStatic(b *testing.B) {
 func BenchmarkBone_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseBone, req)
+}
+func BenchmarkChi_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseChi, req)
 }
 func BenchmarkCloudyKitRouter_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
@@ -331,6 +339,10 @@ func BenchmarkBone_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseBone, req)
 }
+func BenchmarkChi_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseChi, req)
+}
 func BenchmarkCloudyKitRouter_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseCloudyKitRouter, req)
@@ -459,6 +471,10 @@ func BenchmarkBone_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseBone, req)
 }
+func BenchmarkChi_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseChi, req)
+}
 func BenchmarkCloudyKitRouter_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseCloudyKitRouter, req)
@@ -582,6 +598,9 @@ func BenchmarkBeego_ParseAll(b *testing.B) {
 }
 func BenchmarkBone_ParseAll(b *testing.B) {
 	benchRoutes(b, parseBone, parseAPI)
+}
+func BenchmarkChi_ParseAll(b *testing.B) {
+	benchRoutes(b, parseChi, parseAPI)
 }
 func BenchmarkCloudyKitRouter_ParseAll(b *testing.B) {
 	benchRoutes(b, parseCloudyKitRouter, parseAPI)

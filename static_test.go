@@ -176,6 +176,7 @@ var (
 	staticBear            http.Handler
 	staticBeego           http.Handler
 	staticBone            http.Handler
+	staticChi             http.Handler
 	staticCloudyKitRouter http.Handler
 	staticDenco           http.Handler
 	staticEcho            http.Handler
@@ -227,6 +228,9 @@ func init() {
 	})
 	calcMem("Bone", func() {
 		staticBone = loadBone(staticRoutes)
+	})
+	calcMem("Chi", func() {
+		staticChi = loadChi(staticRoutes)
 	})
 	calcMem("CloudyKitRouter", func() {
 		staticCloudyKitRouter = loadCloudyKitRouter(staticRoutes)
@@ -329,6 +333,9 @@ func BenchmarkBear_StaticAll(b *testing.B) {
 }
 func BenchmarkBone_StaticAll(b *testing.B) {
 	benchRoutes(b, staticBone, staticRoutes)
+}
+func BenchmarkChi_StaticAll(b *testing.B) {
+	benchRoutes(b, staticChi, staticRoutes)
 }
 func BenchmarkCloudyKitRouter_StaticAll(b *testing.B) {
 	benchRoutes(b, staticCloudyKitRouter, staticRoutes)

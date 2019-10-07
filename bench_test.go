@@ -128,6 +128,12 @@ func BenchmarkBone_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkChi_Param(b *testing.B) {
+	router := loadChiSingle("GET", "/user/{name}", httpHandlerFunc)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkCloudyKitRouter_Param(b *testing.B) {
 	router := loadCloudyKitRouterSingle("GET", "/user/:name", cloudyKitRouterHandler)
 
@@ -322,6 +328,12 @@ func BenchmarkBeego_Param5(b *testing.B) {
 }
 func BenchmarkBone_Param5(b *testing.B) {
 	router := loadBoneSingle("GET", fiveColon, http.HandlerFunc(httpHandlerFunc))
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkChi_Param5(b *testing.B) {
+	router := loadChiSingle("GET", fiveBrace, httpHandlerFunc)
 
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
@@ -524,6 +536,12 @@ func BenchmarkBone_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkChi_Param20(b *testing.B) {
+	router := loadChiSingle("GET", twentyBrace, httpHandlerFunc)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkCloudyKitRouter_Param20(b *testing.B) {
 	router := loadCloudyKitRouterSingle("GET", twentyColon, cloudyKitRouterHandler)
 
@@ -714,6 +732,12 @@ func BenchmarkBeego_ParamWrite(b *testing.B) {
 }
 func BenchmarkBone_ParamWrite(b *testing.B) {
 	router := loadBoneSingle("GET", "/user/:name", http.HandlerFunc(boneHandlerWrite))
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkChi_ParamWrite(b *testing.B) {
+	router := loadChiSingle("GET", "/user/{name}", chiHandleWrite)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)

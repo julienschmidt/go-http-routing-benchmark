@@ -40,6 +40,7 @@ var (
 	gplusBear            http.Handler
 	gplusBeego           http.Handler
 	gplusBone            http.Handler
+	gplusChi             http.Handler
 	gplusCloudyKitRouter http.Handler
 	gplusDenco           http.Handler
 	gplusEcho            http.Handler
@@ -83,6 +84,9 @@ func init() {
 	})
 	calcMem("Bone", func() {
 		gplusBone = loadBone(gplusAPI)
+	})
+	calcMem("Chi", func() {
+		gplusChi = loadChi(gplusAPI)
 	})
 	calcMem("CloudyKitRouter", func() {
 		gplusCloudyKitRouter = loadCloudyKitRouter(gplusAPI)
@@ -185,6 +189,10 @@ func BenchmarkBeego_GPlusStatic(b *testing.B) {
 func BenchmarkBone_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusBone, req)
+}
+func BenchmarkChi_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	benchRequest(b, gplusChi, req)
 }
 func BenchmarkCloudyKitRouter_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
@@ -314,6 +322,10 @@ func BenchmarkBone_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusBone, req)
 }
+func BenchmarkChi_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	benchRequest(b, gplusChi, req)
+}
 func BenchmarkCloudyKitRouter_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusCloudyKitRouter, req)
@@ -442,6 +454,10 @@ func BenchmarkBone_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusBone, req)
 }
+func BenchmarkChi_GPlus2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	benchRequest(b, gplusChi, req)
+}
 func BenchmarkCloudyKitRouter_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusCloudyKitRouter, req)
@@ -565,6 +581,9 @@ func BenchmarkBeego_GPlusAll(b *testing.B) {
 }
 func BenchmarkBone_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusBone, gplusAPI)
+}
+func BenchmarkChi_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusChi, gplusAPI)
 }
 func BenchmarkCloudyKitRouter_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusCloudyKitRouter, gplusAPI)

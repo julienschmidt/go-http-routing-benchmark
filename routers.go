@@ -27,6 +27,7 @@ import (
 	"github.com/dimfeld/httptreemux"
 	"github.com/emicklei/go-restful"
 	"github.com/gin-gonic/gin"
+	"github.com/go-chi/chi"
 	"github.com/go-martini/martini"
 	"github.com/go-zoo/bone"
 	"github.com/gocraft/web"
@@ -289,6 +290,61 @@ func loadBoneSingle(method, path string, handler http.Handler) http.Handler {
 		panic("Unknow HTTP method: " + method)
 	}
 	return router
+}
+
+// chi
+// chi
+func chiHandleWrite(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, chi.URLParam(r, "name"))
+}
+
+func loadChi(routes []route) http.Handler {
+	h := httpHandlerFunc
+	if loadTestHandler {
+		h = httpHandlerFuncTest
+	}
+
+	re := regexp.MustCompile(":([^/]*)")
+
+	mux := chi.NewRouter()
+	for _, route := range routes {
+		path := re.ReplaceAllString(route.path, "{$1}")
+
+		switch route.method {
+		case "GET":
+			mux.Get(path, h)
+		case "POST":
+			mux.Post(path, h)
+		case "PUT":
+			mux.Put(path, h)
+		case "PATCH":
+			mux.Patch(path, h)
+		case "DELETE":
+			mux.Delete(path, h)
+		default:
+			panic("Unknown HTTP method: " + route.method)
+		}
+	}
+	return mux
+}
+
+func loadChiSingle(method, path string, handler http.HandlerFunc) http.Handler {
+	mux := chi.NewRouter()
+	switch method {
+	case "GET":
+		mux.Get(path, handler)
+	case "POST":
+		mux.Post(path, handler)
+	case "PUT":
+		mux.Put(path, handler)
+	case "PATCH":
+		mux.Patch(path, handler)
+	case "DELETE":
+		mux.Delete(path, handler)
+	default:
+		panic("Unknown HTTP method: " + method)
+	}
+	return mux
 }
 
 // CloudyKit Router
