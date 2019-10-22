@@ -22,6 +22,7 @@ import (
 	"github.com/astaxie/beego/context"
 	"github.com/bmizerany/pat"
 	"github.com/go-playground/lars"
+
 	// "github.com/daryl/zeus"
 	cloudykitrouter "github.com/cloudykit/router"
 	"github.com/dimfeld/httptreemux"
@@ -42,13 +43,15 @@ import (
 	possumrouter "github.com/mikespook/possum/router"
 	possumview "github.com/mikespook/possum/view"
 	"github.com/naoina/denco"
-	"github.com/naoina/kocha-urlrouter"
+	urlrouter "github.com/naoina/kocha-urlrouter"
 	_ "github.com/naoina/kocha-urlrouter/doublearray"
 	"github.com/pilu/traffic"
 	"github.com/plimble/ace"
 	"github.com/rcrowley/go-tigertonic"
+
 	// "github.com/revel/pathtree"
 	// "github.com/revel/revel"
+	"github.com/aerogo/aero"
 	"github.com/typepress/rivet"
 	"github.com/ursiform/bear"
 	"github.com/vanng822/r2router"
@@ -136,6 +139,63 @@ func loadAceSingle(method, path string, handle ace.HandlerFunc) http.Handler {
 	router := ace.New()
 	router.Handle(method, path, []ace.HandlerFunc{handle})
 	return router
+}
+
+// Aero
+func aeroHandler(c aero.Context) error {
+	return nil
+}
+
+func aeroHandlerWrite(ctx aero.Context) error {
+	io.WriteString(ctx.Response().Internal(), ctx.Get("name"))
+	return nil
+}
+func aeroHandlerTest(ctx aero.Context) error {
+	io.WriteString(ctx.Response().Internal(), ctx.Request().Path())
+	return nil
+}
+func loadAero(routes []route) http.Handler {
+	var h aero.Handler = aeroHandler
+	if loadTestHandler {
+		h = aeroHandlerTest
+	}
+	app := aero.New()
+	for _, r := range routes {
+		switch r.method {
+		case "GET":
+			app.Get(r.path, h)
+		case "POST":
+			app.Post(r.path, h)
+		case "PUT":
+			app.Put(r.path, h)
+		case "PATCH":
+			app.Router().Add(http.MethodPatch, r.path, h)
+		case "DELETE":
+			app.Delete(r.path, h)
+		default:
+			panic("Unknow HTTP method: " + r.method)
+		}
+	}
+	return app
+}
+func loadAeroSingle(method, path string, h aero.Handler) http.Handler {
+	app := aero.New()
+	switch method {
+	case "GET":
+		app.Get(path, h)
+	case "POST":
+		app.Post(path, h)
+	case "PUT":
+		app.Put(path, h)
+	case "PATCH":
+		app.Router().Add(http.MethodPatch, path, h)
+	case "DELETE":
+		app.Delete(path, h)
+	default:
+		panic("Unknow HTTP method: " + method)
+	}
+	// }
+	return app
 }
 
 // bear

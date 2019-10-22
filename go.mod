@@ -3,6 +3,7 @@ module github.com/julienschmidt/go-http-routing-benchmark
 go 1.13
 
 require (
+	github.com/aerogo/aero v1.3.28
 	github.com/ant0ine/go-json-rest v3.3.2+incompatible
 	github.com/astaxie/beego v1.12.0
 	github.com/bmizerany/pat v0.0.0-20170815010413-6226ea591a40
@@ -26,7 +27,6 @@ require (
 	github.com/gowww/router v0.0.0-20180327195201-5f9c626ef619
 	github.com/gravitational/trace v0.0.0-20190726142706-a535a178675f // indirect
 	github.com/jonboulle/clockwork v0.1.0 // indirect
-	github.com/json-iterator/go v1.1.7 // indirect
 	github.com/julienschmidt/httprouter v1.3.0
 	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
 	github.com/labstack/echo v3.3.10+incompatible
@@ -61,7 +61,6 @@ require (
 	goji.io v2.0.2+incompatible
 	golang.org/x/crypto v0.0.0-20190927123631-a832865fa7ad // indirect
 	golang.org/x/net v0.0.0-20190926025831-c00fd9afed17 // indirect
-	golang.org/x/sys v0.0.0-20190927073244-c990c680b611 // indirect
 	gopkg.in/fsnotify.v1 v1.4.7 // indirect
 	gopkg.in/ini.v1 v1.48.0 // indirect
 	gopkg.in/macaron.v1 v1.3.4

@@ -110,6 +110,12 @@ func BenchmarkAce_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkAero_Param(b *testing.B) {
+	router := loadAeroSingle("GET", "/user/:name", aeroHandler)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkBear_Param(b *testing.B) {
 	router := loadBearSingle("GET", "/user/{name}", bearHandler)
 
@@ -310,6 +316,12 @@ const fiveRoute = "/test/test/test/test/test"
 
 func BenchmarkAce_Param5(b *testing.B) {
 	router := loadAceSingle("GET", fiveColon, aceHandle)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkAero_Param5(b *testing.B) {
+	router := loadAeroSingle("GET", fiveColon, aeroHandler)
 
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
@@ -518,6 +530,12 @@ func BenchmarkAce_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkAero_Param20(b *testing.B) {
+	router := loadAeroSingle("GET", twentyBrace, aeroHandler)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkBear_Param20(b *testing.B) {
 	router := loadBearSingle("GET", twentyBrace, bearHandler)
 
@@ -714,6 +732,12 @@ func BenchmarkVulcan_Param20(b *testing.B) {
 // Route with Param and write
 func BenchmarkAce_ParamWrite(b *testing.B) {
 	router := loadAceSingle("GET", "/user/:name", aceHandleWrite)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkAero_ParamWrite(b *testing.B) {
+	router := loadAeroSingle("GET", "/user/:name", aeroHandlerTest)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)

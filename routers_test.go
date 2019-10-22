@@ -13,6 +13,7 @@ var (
 		load func(routes []route) http.Handler
 	}{
 		{"Ace", loadAce},
+		{"Aero", loadAero},
 		{"Bear", loadBear},
 		{"Beego", loadBeego},
 		{"Bone", loadBone},
