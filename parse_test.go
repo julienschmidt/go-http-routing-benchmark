@@ -57,6 +57,7 @@ var parseAPI = []route{
 
 var (
 	parseAce             http.Handler
+	parseAero            http.Handler
 	parseBear            http.Handler
 	parseBeego           http.Handler
 	parseBone            http.Handler
@@ -95,6 +96,9 @@ func init() {
 
 	calcMem("Ace", func() {
 		parseAce = loadAce(parseAPI)
+	})
+	calcMem("Aero", func() {
+		parseAero = loadAero(parseAPI)
 	})
 	calcMem("Bear", func() {
 		parseBear = loadBear(parseAPI)
@@ -194,6 +198,10 @@ func init() {
 func BenchmarkAce_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseAce, req)
+}
+func BenchmarkAero_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseAero, req)
 }
 func BenchmarkBear_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
@@ -327,6 +335,10 @@ func BenchmarkAce_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseAce, req)
 }
+func BenchmarkAero_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseAero, req)
+}
 func BenchmarkBear_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseBear, req)
@@ -459,6 +471,10 @@ func BenchmarkAce_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseAce, req)
 }
+func BenchmarkAero_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseAero, req)
+}
 func BenchmarkBear_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseBear, req)
@@ -589,6 +605,9 @@ func BenchmarkVulcan_Parse2Params(b *testing.B) {
 // All Routes
 func BenchmarkAce_ParseAll(b *testing.B) {
 	benchRoutes(b, parseAce, parseAPI)
+}
+func BenchmarkAero_ParseAll(b *testing.B) {
+	benchRoutes(b, parseAero, parseAPI)
 }
 func BenchmarkBear_ParseAll(b *testing.B) {
 	benchRoutes(b, parseBear, parseAPI)
