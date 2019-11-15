@@ -3,7 +3,7 @@ module github.com/julienschmidt/go-http-routing-benchmark
 go 1.13
 
 require (
-	github.com/aerogo/aero v1.3.41
+	github.com/aerogo/aero v1.3.42
 	github.com/ant0ine/go-json-rest v3.3.2+incompatible
 	github.com/astaxie/beego v1.12.0
 	github.com/bmizerany/pat v0.0.0-20170815010413-6226ea591a40
