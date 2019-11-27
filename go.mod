@@ -12,15 +12,13 @@ require (
 	github.com/dimfeld/httptreemux v5.0.1+incompatible
 	github.com/emicklei/go-restful v2.10.0+incompatible
 	github.com/fsnotify/fsnotify v1.4.7 // indirect
-	github.com/gin-contrib/sse v0.1.0 // indirect
-	github.com/gin-gonic/gin v1.4.0
+	github.com/gin-gonic/gin v1.5.0
 	github.com/go-chi/chi v4.0.2+incompatible
 	github.com/go-martini/martini v0.0.0-20170121215854-22fa46961aab
 	github.com/go-playground/form v3.1.4+incompatible // indirect
 	github.com/go-playground/lars v4.0.1+incompatible
 	github.com/go-zoo/bone v1.3.0
 	github.com/gocraft/web v0.0.0-20190207150652-9707327fb69b
-	github.com/golang/protobuf v1.3.2 // indirect
 	github.com/gorilla/mux v1.7.3
 	github.com/gorilla/sessions v1.2.0 // indirect
 	github.com/gorilla/websocket v1.4.1 // indirect
@@ -52,7 +50,6 @@ require (
 	github.com/sirupsen/logrus v1.4.2 // indirect
 	github.com/tinylib/msgp v1.1.0 // indirect
 	github.com/typepress/rivet v1.1.1-0.20151208095308-d62b4fcaf6b9
-	github.com/ugorji/go v1.1.7 // indirect
 	github.com/unknwon/com v1.0.1 // indirect
 	github.com/ursiform/bear v1.0.1
 	github.com/vanng822/r2router v0.0.0-20150523112421-1023140a4f30
