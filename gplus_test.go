@@ -50,6 +50,7 @@ var (
 	gplusGoji            http.Handler
 	gplusGojiv2          http.Handler
 	gplusGoJsonRest      http.Handler
+	gplusGolossus        http.Handler
 	gplusGoRestful       http.Handler
 	gplusGorillaMux      http.Handler
 	gplusGowwwRouter     http.Handler
@@ -115,6 +116,9 @@ func init() {
 	})
 	calcMem("GoJsonRest", func() {
 		gplusGoJsonRest = loadGoJsonRest(gplusAPI)
+	})
+	calcMem("Golossus", func() {
+		gplusGolossus = loadGolossus(gplusAPI)
 	})
 	calcMem("GoRestful", func() {
 		gplusGoRestful = loadGoRestful(gplusAPI)
@@ -233,6 +237,10 @@ func BenchmarkGojiv2_GPlusStatic(b *testing.B) {
 func BenchmarkGoJsonRest_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusGoJsonRest, req)
+}
+func BenchmarkGolossus_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	benchRequest(b, gplusGolossus, req)
 }
 func BenchmarkGoRestful_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
@@ -370,6 +378,10 @@ func BenchmarkGoJsonRest_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusGoJsonRest, req)
 }
+func BenchmarkGolossus_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	benchRequest(b, gplusGolossus, req)
+}
 func BenchmarkGoRestful_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusGoRestful, req)
@@ -506,6 +518,10 @@ func BenchmarkGoJsonRest_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusGoJsonRest, req)
 }
+func BenchmarkGolossus_GPlus2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	benchRequest(b, gplusGolossus, req)
+}
 func BenchmarkGoRestful_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusGoRestful, req)
@@ -627,6 +643,9 @@ func BenchmarkGojiv2_GPlusAll(b *testing.B) {
 }
 func BenchmarkGoJsonRest_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusGoJsonRest, gplusAPI)
+}
+func BenchmarkGolossus_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusGolossus, gplusAPI)
 }
 func BenchmarkGoRestful_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusGoRestful, gplusAPI)

@@ -188,6 +188,12 @@ func BenchmarkGoJsonRest_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkGolossus_Param(b *testing.B) {
+	router := loadGolossusSingle("GET", "/user/{name}", httpHandlerFunc)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkGoRestful_Param(b *testing.B) {
 	router := loadGoRestfulSingle("GET", "/user/{name}", goRestfulHandler)
 
@@ -394,6 +400,12 @@ func BenchmarkGojiv2_Param5(b *testing.B) {
 }
 func BenchmarkGoJsonRest_Param5(b *testing.B) {
 	handler := loadGoJsonRestSingle("GET", fiveColon, goJsonRestHandler)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, handler, r)
+}
+func BenchmarkGolossus_Param5(b *testing.B) {
+	handler := loadGolossusSingle("GET", fiveBrace, httpHandlerFunc)
 
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, handler, r)
@@ -608,6 +620,12 @@ func BenchmarkGoJsonRest_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, handler, r)
 }
+func BenchmarkGolossus_Param20(b *testing.B) {
+	handler := loadGolossusSingle("GET", twentyBrace, httpHandlerFunc)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, handler, r)
+}
 func BenchmarkGoRestful_Param20(b *testing.B) {
 	handler := loadGoRestfulSingle("GET", twentyBrace, goRestfulHandler)
 
@@ -810,6 +828,12 @@ func BenchmarkGojiv2_ParamWrite(b *testing.B) {
 }
 func BenchmarkGoJsonRest_ParamWrite(b *testing.B) {
 	handler := loadGoJsonRestSingle("GET", "/user/:name", goJsonRestHandlerWrite)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, handler, r)
+}
+func BenchmarkGolossus_ParamWrite(b *testing.B) {
+	handler := loadGolossusSingle("GET", "/user/{name}", golossusHandlerWrite)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, handler, r)

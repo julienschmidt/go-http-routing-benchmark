@@ -19,6 +19,7 @@ require (
 	github.com/go-playground/lars v4.0.1+incompatible
 	github.com/go-zoo/bone v1.3.0
 	github.com/gocraft/web v0.0.0-20190207150652-9707327fb69b
+	github.com/golossus/routing v1.0.0
 	github.com/gorilla/mux v1.7.3
 	github.com/gorilla/sessions v1.2.0 // indirect
 	github.com/gorilla/websocket v1.4.1 // indirect
