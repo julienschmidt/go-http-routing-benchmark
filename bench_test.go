@@ -531,7 +531,7 @@ func BenchmarkAce_Param20(b *testing.B) {
 	benchRequest(b, router, r)
 }
 func BenchmarkAero_Param20(b *testing.B) {
-	router := loadAeroSingle("GET", twentyBrace, aeroHandler)
+	router := loadAeroSingle("GET", twentyColon, aeroHandler)
 
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
