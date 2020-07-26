@@ -112,6 +112,9 @@ func init() {
 	calcMem("Chi", func() {
 		parseChi = loadChi(parseAPI)
 	})
+	calcMem("CloudyKitRouter", func() {
+		parseCloudyKitRouter = loadCloudyKitRouter(parseAPI)
+	})
 	calcMem("Denco", func() {
 		parseDenco = loadDenco(parseAPI)
 	})
