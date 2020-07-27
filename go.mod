@@ -42,6 +42,7 @@ require (
 	github.com/plimble/ace v0.0.0-20180623113504-ba79f505f416
 	github.com/plimble/sessions v0.0.0-20180326075456-7047d39da9ad // indirect
 	github.com/plimble/utils v0.0.0-20150615054616-fe08d46675cd // indirect
+	github.com/pratikdeoghare/lenrouter v0.0.0-20200820062917-87591fbde452
 	github.com/rcrowley/go-metrics v0.0.0-20190826022208-cac0b30c2563 // indirect
 	github.com/rcrowley/go-tigertonic v0.0.0-20170420123839-fe6b9f080eb7
 	github.com/satori/go.uuid v1.2.1-0.20181028125025-b2ce2384e17b // indirect

@@ -33,6 +33,7 @@ var (
 		{"HttpTreeMux", loadHttpTreeMux},
 		//{"Kocha", loadKocha},
 		{"LARS", loadLARS},
+		{"Lenrouter", loadLenrouter},
 		{"Macaron", loadMacaron},
 		{"Martini", loadMartini},
 		{"Pat", loadPat},

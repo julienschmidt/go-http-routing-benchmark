@@ -57,6 +57,7 @@ var (
 	gplusHttpTreeMux     http.Handler
 	gplusKocha           http.Handler
 	gplusLARS            http.Handler
+	gplusLenrouter       http.Handler
 	gplusMacaron         http.Handler
 	gplusMartini         http.Handler
 	gplusPat             http.Handler
@@ -136,6 +137,9 @@ func init() {
 	})
 	calcMem("LARS", func() {
 		gplusLARS = loadLARS(gplusAPI)
+	})
+	calcMem("Lenrouter", func() {
+		gplusLenrouter = loadLenrouter(gplusAPI)
 	})
 	calcMem("Macaron", func() {
 		gplusMacaron = loadMacaron(gplusAPI)
@@ -261,6 +265,10 @@ func BenchmarkKocha_GPlusStatic(b *testing.B) {
 func BenchmarkLARS_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusLARS, req)
+}
+func BenchmarkLenrouter_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	benchRequest(b, gplusLenrouter, req)
 }
 func BenchmarkMacaron_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
@@ -398,6 +406,10 @@ func BenchmarkLARS_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusLARS, req)
 }
+func BenchmarkLenrouter_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	benchRequest(b, gplusLenrouter, req)
+}
 func BenchmarkMacaron_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusMacaron, req)
@@ -534,6 +546,10 @@ func BenchmarkLARS_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusLARS, req)
 }
+func BenchmarkLenrouter_GPlus2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	benchRequest(b, gplusLenrouter, req)
+}
 func BenchmarkMacaron_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusMacaron, req)
@@ -648,6 +664,9 @@ func BenchmarkKocha_GPlusAll(b *testing.B) {
 }
 func BenchmarkLARS_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusLARS, gplusAPI)
+}
+func BenchmarkLenrouter_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusLenrouter, gplusAPI)
 }
 func BenchmarkMacaron_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusMacaron, gplusAPI)

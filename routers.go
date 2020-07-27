@@ -47,6 +47,7 @@ import (
 	_ "github.com/naoina/kocha-urlrouter/doublearray"
 	"github.com/pilu/traffic"
 	"github.com/plimble/ace"
+	"github.com/pratikdeoghare/lenrouter"
 	"github.com/rcrowley/go-tigertonic"
 
 	// "github.com/revel/pathtree"
@@ -1099,6 +1100,42 @@ func loadLARSSingle(method, path string, h interface{}) http.Handler {
 		panic("Unknow HTTP method: " + method)
 	}
 	return l.Serve()
+}
+
+// lenrouter
+func lenrouterHandle(_ http.ResponseWriter, _ *http.Request, _ lenrouter.Params) {}
+
+func lenrouterHandleWrite(w http.ResponseWriter, _ *http.Request, ps lenrouter.Params) {
+	io.WriteString(w, ps.ByName("name"))
+}
+
+func lenrouterHandleTest(w http.ResponseWriter, r *http.Request, _ lenrouter.Params) {
+	io.WriteString(w, r.RequestURI)
+}
+
+func loadLenrouter(routes []route) http.Handler {
+	h := lenrouterHandle
+	if loadTestHandler {
+		h = lenrouterHandleTest
+	}
+	var endpoints []lenrouter.Endpoint
+	for _, route := range routes {
+		endpoints = append(endpoints, lenrouter.Endpoint{
+			Method:  route.method,
+			Pattern: route.path,
+			Handler: h,
+		})
+	}
+
+	return lenrouter.New(200, 20, endpoints...)
+}
+
+func loadLenrouterSingle(method, path string, handle lenrouter.Handle) http.Handler {
+	return lenrouter.New(200, 20, lenrouter.Endpoint{
+		Method:  method,
+		Pattern: path,
+		Handler: handle,
+	})
 }
 
 // Macaron

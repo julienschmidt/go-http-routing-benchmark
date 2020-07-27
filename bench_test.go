@@ -234,6 +234,12 @@ func BenchmarkLARS_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkLenrouter_Param(b *testing.B) {
+	router := loadLenrouterSingle("GET", "/user/:name", lenrouterHandle)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkMacaron_Param(b *testing.B) {
 	router := loadMacaronSingle("GET", "/user/:name", macaronHandler)
 
@@ -440,6 +446,12 @@ func BenchmarkKocha_Param5(b *testing.B) {
 }
 func BenchmarkLARS_Param5(b *testing.B) {
 	router := loadLARSSingle("GET", fiveColon, larsHandler)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkLenrouter_Param5(b *testing.B) {
+	router := loadLenrouterSingle("GET", fiveColon, lenrouterHandle)
 
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
@@ -654,6 +666,12 @@ func BenchmarkLARS_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkLenrouter_Param20(b *testing.B) {
+	router := loadLenrouterSingle("GET", twentyColon, lenrouterHandle)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkMacaron_Param20(b *testing.B) {
 	router := loadMacaronSingle("GET", twentyColon, macaronHandler)
 
@@ -856,6 +874,12 @@ func BenchmarkKocha_ParamWrite(b *testing.B) {
 }
 func BenchmarkLARS_ParamWrite(b *testing.B) {
 	router := loadLARSSingle("GET", "/user/:name", larsHandlerWrite)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkLenrouter_ParamWrite(b *testing.B) {
+	router := loadLenrouterSingle("GET", "/user/:name", lenrouterHandleWrite)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
