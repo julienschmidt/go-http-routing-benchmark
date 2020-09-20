@@ -32,6 +32,7 @@ import (
 	"github.com/go-martini/martini"
 	"github.com/go-zoo/bone"
 	"github.com/gocraft/web"
+	golossus "github.com/golossus/routing"
 	"github.com/gorilla/mux"
 	gowwwrouter "github.com/gowww/router"
 	"github.com/julienschmidt/httprouter"
@@ -776,6 +777,40 @@ func loadGoJsonRestSingle(method, path string, hfunc rest.HandlerFunc) http.Hand
 	}
 	api.SetApp(router)
 	return api.MakeHandler()
+}
+
+//Golossus
+func golossusHandlerWrite(w http.ResponseWriter, r *http.Request) {
+	params := golossus.GetURLParameters(r)
+	name, _ := params.GetByName("name")
+	io.WriteString(w, name)
+}
+
+func loadGolossus(routes []route) http.Handler {
+	h := httpHandlerFunc
+	if loadTestHandler {
+		h = httpHandlerFuncTest
+	}
+
+	re := regexp.MustCompile(":([^/]*)")
+	router := golossus.NewRouter()
+	for _, route := range routes {
+		err := router.Register(
+			route.method,
+			re.ReplaceAllString(route.path, "{$1}"),
+			h,
+		)
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
+	return &router
+}
+
+func loadGolossusSingle(method, path string, handle http.HandlerFunc) http.Handler {
+	router := golossus.NewRouter()
+	router.Register(method, path, handle)
+	return &router
 }
 
 // go-restful

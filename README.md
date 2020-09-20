@@ -14,6 +14,7 @@ Of course the tested routers can be used for any kind of HTTP request → handle
  * [Denco](https://github.com/naoina/denco)
  * [Gocraft Web](https://github.com/gocraft/web)
  * [Goji](https://github.com/zenazn/goji/)
+ * [Golossus](https://github.com/golossus/routing)
  * [Gorilla Mux](http://www.gorillatoolkit.org/pkg/mux)
  * [http.ServeMux](http://golang.org/pkg/net/http/#ServeMux)
  * [HttpRouter](https://github.com/julienschmidt/httprouter)

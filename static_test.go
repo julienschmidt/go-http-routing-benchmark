@@ -186,6 +186,7 @@ var (
 	staticGoji            http.Handler
 	staticGojiv2          http.Handler
 	staticGoJsonRest      http.Handler
+	staticGolossus        http.Handler
 	staticGoRestful       http.Handler
 	staticGorillaMux      http.Handler
 	staticGowwwRouter     http.Handler
@@ -259,6 +260,9 @@ func init() {
 	})
 	calcMem("GoJsonRest", func() {
 		staticGoJsonRest = loadGoJsonRest(staticRoutes)
+	})
+	calcMem("Golossus", func() {
+		staticGolossus = loadGolossus(staticRoutes)
 	})
 	calcMem("GoRestful", func() {
 		staticGoRestful = loadGoRestful(staticRoutes)
@@ -367,6 +371,9 @@ func BenchmarkGojiv2_StaticAll(b *testing.B) {
 }
 func BenchmarkGoJsonRest_StaticAll(b *testing.B) {
 	benchRoutes(b, staticGoJsonRest, staticRoutes)
+}
+func BenchmarkGolossus_StaticAll(b *testing.B) {
+	benchRoutes(b, staticGolossus, staticRoutes)
 }
 func BenchmarkGoRestful_StaticAll(b *testing.B) {
 	benchRoutes(b, staticGoRestful, staticRoutes)

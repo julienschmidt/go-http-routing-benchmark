@@ -26,6 +26,7 @@ var (
 		{"Goji", loadGoji},
 		{"Gojiv2", loadGojiv2},
 		{"GoJsonRest", loadGoJsonRest},
+		{"Golossus", loadGolossus},
 		{"GoRestful", loadGoRestful},
 		{"GorillaMux", loadGorillaMux},
 		{"GowwwRouter", loadGowwwRouter},
