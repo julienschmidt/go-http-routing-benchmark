@@ -24,6 +24,7 @@ import (
 	"github.com/go-playground/lars"
 
 	// "github.com/daryl/zeus"
+	"github.com/bmf-san/goblin"
 	cloudykitrouter "github.com/cloudykit/router"
 	"github.com/dimfeld/httptreemux"
 	"github.com/emicklei/go-restful"
@@ -353,7 +354,6 @@ func loadBoneSingle(method, path string, handler http.Handler) http.Handler {
 }
 
 // chi
-// chi
 func chiHandleWrite(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, chi.URLParam(r, "name"))
 }
@@ -567,6 +567,30 @@ func loadGin(routes []route) http.Handler {
 func loadGinSingle(method, path string, handle gin.HandlerFunc) http.Handler {
 	router := gin.New()
 	router.Handle(method, path, handle)
+	return router
+}
+
+// goblin
+func goblinHandlerWrite(w http.ResponseWriter, r *http.Request) {
+	io.WriteString(w, goblin.GetParam(r.Context(), "name"))
+}
+
+func loadGoblin(routes []route) http.Handler {
+	h := httpHandlerFunc
+	if loadTestHandler {
+		h = httpHandlerFuncTest
+	}
+
+	router := goblin.NewRouter()
+	for _, route := range routes {
+		router.Methods(route.method).Handler(route.path, http.HandlerFunc(h))
+	}
+	return router
+}
+
+func loadGoblinSingle(method, path string, handler http.Handler) http.Handler {
+	router := goblin.NewRouter()
+	router.Methods(method).Handler(path, handler)
 	return router
 }
 

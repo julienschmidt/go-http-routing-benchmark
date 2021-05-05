@@ -6,6 +6,7 @@ require (
 	github.com/aerogo/aero v1.3.42
 	github.com/ant0ine/go-json-rest v3.3.2+incompatible
 	github.com/astaxie/beego v1.12.0
+	github.com/bmf-san/goblin v0.0.0-20210518151138-ad76fa1fb9ab
 	github.com/bmizerany/pat v0.0.0-20170815010413-6226ea591a40
 	github.com/cloudykit/router v0.0.0-20170501012743-15c4ed71df81
 	github.com/codegangsta/inject v0.0.0-20150114235600-33e0aa1cb7c0 // indirect

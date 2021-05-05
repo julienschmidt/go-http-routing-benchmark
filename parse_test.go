@@ -66,6 +66,7 @@ var (
 	parseDenco           http.Handler
 	parseEcho            http.Handler
 	parseGin             http.Handler
+	parseGoblin          http.Handler
 	parseGocraftWeb      http.Handler
 	parseGoji            http.Handler
 	parseGojiv2          http.Handler
@@ -120,6 +121,9 @@ func init() {
 	})
 	calcMem("Gin", func() {
 		parseGin = loadGin(parseAPI)
+	})
+	calcMem("Goblin", func() {
+		parseGoblin = loadGoblin(parseAPI)
 	})
 	calcMem("GocraftWeb", func() {
 		parseGocraftWeb = loadGocraftWeb(parseAPI)
@@ -234,6 +238,10 @@ func BenchmarkEcho_ParseStatic(b *testing.B) {
 func BenchmarkGin_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseGin, req)
+}
+func BenchmarkGoblin_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseGoblin, req)
 }
 func BenchmarkGocraftWeb_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
@@ -371,6 +379,10 @@ func BenchmarkGin_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseGin, req)
 }
+func BenchmarkGoblin_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseGoblin, req)
+}
 func BenchmarkGocraftWeb_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseGocraftWeb, req)
@@ -507,6 +519,10 @@ func BenchmarkGin_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseGin, req)
 }
+func BenchmarkGoblin_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseGoblin, req)
+}
 func BenchmarkGocraftWeb_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseGocraftWeb, req)
@@ -632,6 +648,9 @@ func BenchmarkEcho_ParseAll(b *testing.B) {
 }
 func BenchmarkGin_ParseAll(b *testing.B) {
 	benchRoutes(b, parseGin, parseAPI)
+}
+func BenchmarkGoblin_ParseAll(b *testing.B) {
+	benchRoutes(b, parseGoblin, parseAPI)
 }
 func BenchmarkGocraftWeb_ParseAll(b *testing.B) {
 	benchRoutes(b, parseGocraftWeb, parseAPI)
