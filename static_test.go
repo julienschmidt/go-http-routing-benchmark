@@ -182,6 +182,7 @@ var (
 	staticDenco           http.Handler
 	staticEcho            http.Handler
 	staticGin             http.Handler
+	staticGoblin          http.Handler
 	staticGocraftWeb      http.Handler
 	staticGoji            http.Handler
 	staticGojiv2          http.Handler
@@ -247,6 +248,9 @@ func init() {
 	})
 	calcMem("Gin", func() {
 		staticGin = loadGin(staticRoutes)
+	})
+	calcMem("Goblin", func() {
+		staticGoblin = loadGin(staticRoutes)
 	})
 	calcMem("GocraftWeb", func() {
 		staticGocraftWeb = loadGocraftWeb(staticRoutes)
@@ -355,6 +359,9 @@ func BenchmarkEcho_StaticAll(b *testing.B) {
 }
 func BenchmarkGin_StaticAll(b *testing.B) {
 	benchRoutes(b, staticGin, staticRoutes)
+}
+func BenchmarkGoblin_StaticAll(b *testing.B) {
+	benchRoutes(b, staticGoblin, staticRoutes)
 }
 func BenchmarkGocraftWeb_StaticAll(b *testing.B) {
 	benchRoutes(b, staticGocraftWeb, staticRoutes)

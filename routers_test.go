@@ -22,6 +22,7 @@ var (
 		{"Denco", loadDenco},
 		{"Echo", loadEcho},
 		{"Gin", loadGin},
+		{"Goblin", loadGoblin},
 		{"GocraftWeb", loadGocraftWeb},
 		{"Goji", loadGoji},
 		{"Gojiv2", loadGojiv2},
