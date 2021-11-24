@@ -27,6 +27,9 @@ import (
 	cloudykitrouter "github.com/cloudykit/router"
 	"github.com/dimfeld/httptreemux"
 	"github.com/emicklei/go-restful"
+	µ "github.com/fogfish/gouldian"
+	"github.com/fogfish/gouldian/optics"
+	"github.com/fogfish/gouldian/server/httpd"
 	"github.com/gin-gonic/gin"
 	"github.com/go-chi/chi"
 	"github.com/go-martini/martini"
@@ -870,6 +873,34 @@ func loadGorillaMuxSingle(method, path string, handler http.HandlerFunc) http.Ha
 	m := mux.NewRouter()
 	m.HandleFunc(path, handler).Methods(method)
 	return m
+}
+
+// gouldian
+type gouldianReqType struct{ Name string }
+
+var gouldianName = optics.ForProduct1(gouldianReqType{})
+
+func gouldianHandle(*µ.Context) error { return nil }
+
+func gouldianHandleWrite(ctx *µ.Context) error {
+	var req gouldianReqType
+	if err := ctx.Get(&req); err != nil {
+		return µ.Status.BadRequest()
+	}
+
+	return µ.Status.OK(µ.WithText(req.Name))
+}
+
+func loadGouldianRouterSingle(method string, path []interface{}, handler func(*µ.Context) error) http.Handler {
+	router := httpd.Serve(
+		µ.Join(
+			µ.Method(method),
+			µ.Path(path...),
+			µ.FMap(handler),
+		),
+	)
+
+	return router
 }
 
 // gowww/router

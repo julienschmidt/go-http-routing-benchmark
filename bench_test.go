@@ -11,6 +11,8 @@ import (
 	"runtime"
 	"strings"
 	"testing"
+
+	"github.com/fogfish/gouldian/optics"
 )
 
 var benchRe *regexp.Regexp
@@ -196,6 +198,12 @@ func BenchmarkGoRestful_Param(b *testing.B) {
 }
 func BenchmarkGorillaMux_Param(b *testing.B) {
 	router := loadGorillaMuxSingle("GET", "/user/{name}", httpHandlerFunc)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkGouldianRouter_Param(b *testing.B) {
+	router := loadGouldianRouterSingle("GET", []interface{}{"user", gouldianName}, gouldianHandle)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
@@ -410,6 +418,16 @@ func BenchmarkGorillaMux_Param5(b *testing.B) {
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkGouldianRouter_Param5(b *testing.B) {
+	type Five struct{ A1, A2, A3, A4, A5 string }
+	a1, a2, a3, a4, a5 := optics.ForProduct5(Five{})
+	path := []interface{}{a1, a2, a3, a4, a5}
+
+	router := loadGouldianRouterSingle("GET", path, gouldianHandle)
+
+	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkGowwwRouter_Param5(b *testing.B) {
 	router := loadGowwwRouterSingle("GET", fiveColon, http.HandlerFunc(httpHandlerFunc))
 
@@ -620,6 +638,17 @@ func BenchmarkGorillaMux_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkGouldianRouter_Param20(b *testing.B) {
+	type Head struct{ A1, A2, A3, A4, A5, A6, A7, A8, A9, A0 string }
+	a1, a2, a3, a4, a5, a6, a7, a8, a9, a0 := optics.ForProduct10(Head{})
+
+	path := []interface{}{a1, a2, a3, a4, a5, a6, a7, a8, a9, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a0}
+	router := loadGouldianRouterSingle("GET", path, gouldianHandle)
+
+	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	benchRequest(b, router, r)
+}
+
 func BenchmarkGowwwRouter_Param20(b *testing.B) {
 	router := loadGowwwRouterSingle("GET", twentyColon, http.HandlerFunc(httpHandlerFunc))
 
