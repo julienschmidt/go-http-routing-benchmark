@@ -12,6 +12,7 @@ import (
 	"os"
 	"regexp"
 	"runtime"
+	"strings"
 
 	// If you add new routers please:
 	// - Keep the benchmark functions etc. alphabetically sorted
@@ -880,6 +881,12 @@ type gouldianReqType struct{ Name string }
 
 var gouldianName = optics.ForProduct1(gouldianReqType{})
 
+type gouldianReqLargeType struct {
+	V0, V1, V2, V3, V4, V5, V6, V7, V8, V9 string
+}
+
+var gldV0, gldV1, gldV2, gldV3, gldV4, gldV5, gldV6, gldV7, gldV8, gldV9 = optics.ForProduct10(gouldianReqLargeType{})
+
 func gouldianHandle(*µ.Context) error { return nil }
 
 func gouldianHandleWrite(ctx *µ.Context) error {
@@ -889,6 +896,43 @@ func gouldianHandleWrite(ctx *µ.Context) error {
 	}
 
 	return µ.Status.OK(µ.WithText(req.Name))
+}
+
+func gouldianHandleTest(ctx *µ.Context) error {
+	return µ.Status.OK(µ.WithText(ctx.Request.RequestURI))
+}
+
+func loadGouldianRouter(routes []route) http.Handler {
+	h := gouldianHandle
+	if loadTestHandler {
+		h = gouldianHandleTest
+	}
+
+	seq := make([]µ.Endpoint, 0, len(routes))
+	for _, ep := range routes {
+		lens := []interface{}{gldV0, gldV1, gldV2, gldV3, gldV4, gldV5, gldV6, gldV7, gldV8, gldV9}
+		segs := []interface{}{}
+		path := strings.Split(ep.path, "/")[1:]
+		for _, seg := range path {
+			switch {
+			case len(seg) == 0:
+				break
+			case seg[0] != ':':
+				segs = append(segs, seg)
+				continue
+			default:
+				segs = append(segs, lens[0])
+				lens = lens[1:]
+			}
+		}
+		seq = append(seq, µ.Join(
+			µ.Method(ep.method),
+			µ.Path(segs...),
+			h,
+		))
+	}
+
+	return httpd.Serve(µ.Or(seq...))
 }
 
 func loadGouldianRouterSingle(method string, path []interface{}, handler func(*µ.Context) error) http.Handler {

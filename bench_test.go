@@ -11,8 +11,6 @@ import (
 	"runtime"
 	"strings"
 	"testing"
-
-	"github.com/fogfish/gouldian/optics"
 )
 
 var benchRe *regexp.Regexp
@@ -419,10 +417,7 @@ func BenchmarkGorillaMux_Param5(b *testing.B) {
 	benchRequest(b, router, r)
 }
 func BenchmarkGouldianRouter_Param5(b *testing.B) {
-	type Five struct{ A1, A2, A3, A4, A5 string }
-	a1, a2, a3, a4, a5 := optics.ForProduct5(Five{})
-	path := []interface{}{a1, a2, a3, a4, a5}
-
+	path := []interface{}{gldV0, gldV1, gldV2, gldV3, gldV4}
 	router := loadGouldianRouterSingle("GET", path, gouldianHandle)
 
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
@@ -639,10 +634,7 @@ func BenchmarkGorillaMux_Param20(b *testing.B) {
 	benchRequest(b, router, r)
 }
 func BenchmarkGouldianRouter_Param20(b *testing.B) {
-	type Head struct{ A1, A2, A3, A4, A5, A6, A7, A8, A9, A0 string }
-	a1, a2, a3, a4, a5, a6, a7, a8, a9, a0 := optics.ForProduct10(Head{})
-
-	path := []interface{}{a1, a2, a3, a4, a5, a6, a7, a8, a9, a0, a1, a2, a3, a4, a5, a6, a7, a8, a9, a0}
+	path := []interface{}{gldV0, gldV1, gldV2, gldV3, gldV4, gldV5, gldV6, gldV7, gldV8, gldV9, gldV0, gldV1, gldV2, gldV3, gldV4, gldV5, gldV6, gldV7, gldV8, gldV9}
 	router := loadGouldianRouterSingle("GET", path, gouldianHandle)
 
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
@@ -851,6 +843,12 @@ func BenchmarkGoRestful_ParamWrite(b *testing.B) {
 }
 func BenchmarkGorillaMux_ParamWrite(b *testing.B) {
 	router := loadGorillaMuxSingle("GET", "/user/{name}", gorillaHandlerWrite)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkGouldianRouter_ParamWrite(b *testing.B) {
+	router := loadGouldianRouterSingle("GET", []interface{}{"user", gouldianName}, gouldianHandleWrite)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
