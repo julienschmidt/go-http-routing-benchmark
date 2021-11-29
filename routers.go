@@ -908,7 +908,7 @@ func loadGouldianRouter(routes []route) http.Handler {
 		h = gouldianHandleTest
 	}
 
-	seq := make([]µ.Endpoint, 0, len(routes))
+	seq := make([]µ.Routable, 0, len(routes))
 	for _, ep := range routes {
 		lens := []interface{}{gldV0, gldV1, gldV2, gldV3, gldV4, gldV5, gldV6, gldV7, gldV8, gldV9}
 		segs := []interface{}{}
@@ -925,22 +925,23 @@ func loadGouldianRouter(routes []route) http.Handler {
 				lens = lens[1:]
 			}
 		}
-		seq = append(seq, µ.Join(
-			µ.Method(ep.method),
-			µ.Path(segs...),
-			h,
-		))
+		seq = append(seq,
+			µ.Route(
+				µ.Path(segs...),
+				µ.Method(ep.method),
+				h,
+			))
 	}
 
-	return httpd.Serve(µ.Or(seq...))
+	return httpd.Serve(seq...)
 }
 
 func loadGouldianRouterSingle(method string, path []interface{}, handler func(*µ.Context) error) http.Handler {
 	router := httpd.Serve(
-		µ.Join(
-			µ.Method(method),
+		µ.Route(
 			µ.Path(path...),
-			µ.FMap(handler),
+			µ.Method(method),
+			handler,
 		),
 	)
 

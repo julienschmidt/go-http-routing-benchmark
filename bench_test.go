@@ -417,10 +417,10 @@ func BenchmarkGorillaMux_Param5(b *testing.B) {
 	benchRequest(b, router, r)
 }
 func BenchmarkGouldianRouter_Param5(b *testing.B) {
-	path := []interface{}{gldV0, gldV1, gldV2, gldV3, gldV4}
+	path := []interface{}{"r", gldV0, gldV1, gldV2, gldV3, gldV4}
 	router := loadGouldianRouterSingle("GET", path, gouldianHandle)
 
-	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	r, _ := http.NewRequest("GET", "/r"+fiveRoute, nil)
 	benchRequest(b, router, r)
 }
 func BenchmarkGowwwRouter_Param5(b *testing.B) {
@@ -634,10 +634,10 @@ func BenchmarkGorillaMux_Param20(b *testing.B) {
 	benchRequest(b, router, r)
 }
 func BenchmarkGouldianRouter_Param20(b *testing.B) {
-	path := []interface{}{gldV0, gldV1, gldV2, gldV3, gldV4, gldV5, gldV6, gldV7, gldV8, gldV9, gldV0, gldV1, gldV2, gldV3, gldV4, gldV5, gldV6, gldV7, gldV8, gldV9}
+	path := []interface{}{"r", gldV0, gldV1, gldV2, gldV3, gldV4, gldV5, gldV6, gldV7, gldV8, gldV9, gldV0, gldV1, gldV2, gldV3, gldV4, gldV5, gldV6, gldV7, gldV8, gldV9}
 	router := loadGouldianRouterSingle("GET", path, gouldianHandle)
 
-	r, _ := http.NewRequest("GET", twentyRoute, nil)
+	r, _ := http.NewRequest("GET", "/r"+twentyRoute, nil)
 	benchRequest(b, router, r)
 }
 

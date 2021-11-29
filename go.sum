@@ -68,8 +68,8 @@ github.com/elazarl/go-bindata-assetfs v1.0.0 h1:G/bYguwHIzWq9ZoyUQqrjTmJbbYn3j3C
 github.com/elazarl/go-bindata-assetfs v1.0.0/go.mod h1:v+YaWX3bdea5J/mo8dSETolEo7R71Vk1u8bnjau5yw4=
 github.com/emicklei/go-restful v2.10.0+incompatible h1:l6Soi8WCOOVAeCo4W98iBFC6Og7/X8bpRt51oNLZ2C8=
 github.com/emicklei/go-restful v2.10.0+incompatible/go.mod h1:otzb+WCGbkyDHkqmQmT5YD2WR4BBwUdeQoFo8l/7tVs=
-github.com/fogfish/gouldian v1.3.1 h1:WC9mWrws0Mg7ltDBxrAm3KzrSIgYZNambi4sd+EWgtI=
-github.com/fogfish/gouldian v1.3.1/go.mod h1:pwL6eiqvM9HxBpSRQ06SvkDWtpqtRPJBliATFSweL6k=
+github.com/fogfish/gouldian v1.4.0 h1:MoRMUizHSlIREfmLmVYtdx5famZPx4vKIBmgLLgK/AQ=
+github.com/fogfish/gouldian v1.4.0/go.mod h1:pwL6eiqvM9HxBpSRQ06SvkDWtpqtRPJBliATFSweL6k=
 github.com/fogfish/guid v1.0.0 h1:Wf19/7IWFAQvuvfJDEc/Jr47OzFm+Mk+zHJnvo6S31k=
 github.com/fogfish/guid v1.0.0/go.mod h1:5iZJAJEepH9rXpnNOi+UYIIzjX57yQqMpXF6K/nKEEg=
 github.com/fogfish/it v0.9.1 h1:Pu+qgqBV2ilZDzZzPIbUIhMIkdpHgbGUsdEwVQvBxNQ=
