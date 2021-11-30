@@ -52,6 +52,7 @@ import (
 	// "github.com/revel/pathtree"
 	// "github.com/revel/revel"
 	"github.com/aerogo/aero"
+	"github.com/junbin-yang/see"
 	"github.com/typepress/rivet"
 	"github.com/ursiform/bear"
 	"github.com/vanng822/r2router"
@@ -1452,6 +1453,40 @@ func loadRivetSingle(method, path string, handler interface{}) http.Handler {
 
 	router.Handle(method, path, handler)
 
+	return router
+}
+
+// See
+func seeHandle(_ *see.Context) {}
+
+func seeHandleWrite(c *see.Context) {
+	io.WriteString(c.Writer, c.Param("name"))
+}
+
+func seeHandleTest(c *see.Context) {
+	io.WriteString(c.Writer, c.RequestURI)
+}
+
+func initSee() {
+	see.SetMode(see.ReleaseMode)
+}
+
+func loadSee(routes []route) http.Handler {
+	h := seeHandle
+	if loadTestHandler {
+		h = seeHandleTest
+	}
+
+	router := see.New()
+	for _, route := range routes {
+		router.Handle(route.method, route.path, h)
+	}
+	return router
+}
+
+func loadSeeSingle(method, path string, handle see.HandlerFunc) http.Handler {
+	router := see.New()
+	router.Handle(method, path, handle)
 	return router
 }
 

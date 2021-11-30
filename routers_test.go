@@ -45,6 +45,7 @@ var (
 		{"Traffic", loadTraffic},
 		{"Vulcan", loadVulcan},
 		// {"Zeus", loadZeus},
+		{"See", loadSee},
 	}
 
 	// all APIs
