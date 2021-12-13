@@ -84,6 +84,7 @@ var (
 	parseR2router        http.Handler
 	parseRevel           http.Handler
 	parseRivet           http.Handler
+	parseSee             http.Handler
 	parseTango           http.Handler
 	parseTigerTonic      http.Handler
 	parseTraffic         http.Handler
@@ -177,6 +178,9 @@ func init() {
 	// })
 	calcMem("Rivet", func() {
 		parseRivet = loadRivet(parseAPI)
+	})
+	calcMem("See", func() {
+		parseSee = loadSee(parseAPI)
 	})
 	calcMem("Tango", func() {
 		parseTango = loadTango(parseAPI)
@@ -310,6 +314,10 @@ func BenchmarkR2router_ParseStatic(b *testing.B) {
 func BenchmarkRivet_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseRivet, req)
+}
+func BenchmarkSee_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseSee, req)
 }
 func BenchmarkTango_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
@@ -447,6 +455,10 @@ func BenchmarkRivet_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseRivet, req)
 }
+func BenchmarkSee_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseSee, req)
+}
 func BenchmarkTango_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseTango, req)
@@ -583,6 +595,10 @@ func BenchmarkRivet_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseRivet, req)
 }
+func BenchmarkSee_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseSee, req)
+}
 func BenchmarkTango_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseTango, req)
@@ -690,6 +706,9 @@ func BenchmarkR2router_ParseAll(b *testing.B) {
 // }
 func BenchmarkRivet_ParseAll(b *testing.B) {
 	benchRoutes(b, parseRivet, parseAPI)
+}
+func BenchmarkSee_ParseAll(b *testing.B) {
+	benchRoutes(b, parseSee, parseAPI)
 }
 func BenchmarkTango_ParseAll(b *testing.B) {
 	benchRoutes(b, parseTango, parseAPI)

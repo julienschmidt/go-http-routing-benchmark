@@ -64,6 +64,7 @@ var (
 	gplusR2router        http.Handler
 	gplusRevel           http.Handler
 	gplusRivet           http.Handler
+	gplusSee             http.Handler
 	gplusTango           http.Handler
 	gplusTigerTonic      http.Handler
 	gplusTraffic         http.Handler
@@ -157,6 +158,9 @@ func init() {
 	// })
 	calcMem("Rivet", func() {
 		gplusRivet = loadRivet(gplusAPI)
+	})
+	calcMem("See", func() {
+		gplusSee = loadSee(gplusAPI)
 	})
 	calcMem("Tango", func() {
 		gplusTango = loadTango(gplusAPI)
@@ -290,6 +294,10 @@ func BenchmarkR2router_GPlusStatic(b *testing.B) {
 func BenchmarkRivet_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusRivet, req)
+}
+func BenchmarkSee_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	benchRequest(b, gplusSee, req)
 }
 func BenchmarkTango_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
@@ -427,6 +435,10 @@ func BenchmarkRivet_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusRivet, req)
 }
+func BenchmarkSee_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	benchRequest(b, gplusSee, req)
+}
 func BenchmarkTango_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusTango, req)
@@ -563,6 +575,10 @@ func BenchmarkRivet_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusRivet, req)
 }
+func BenchmarkSee_GPlus2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	benchRequest(b, gplusSee, req)
+}
 func BenchmarkTango_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusTango, req)
@@ -670,6 +686,9 @@ func BenchmarkR2router_GPlusAll(b *testing.B) {
 // }
 func BenchmarkRivet_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusRivet, gplusAPI)
+}
+func BenchmarkSee_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusSee, gplusAPI)
 }
 func BenchmarkTango_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusTango, gplusAPI)
