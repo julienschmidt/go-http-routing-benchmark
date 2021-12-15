@@ -188,6 +188,7 @@ var (
 	staticGoJsonRest      http.Handler
 	staticGoRestful       http.Handler
 	staticGorillaMux      http.Handler
+	staticGouldian        http.Handler
 	staticGowwwRouter     http.Handler
 	staticHttpRouter      http.Handler
 	staticHttpTreeMux     http.Handler
@@ -265,6 +266,9 @@ func init() {
 	})
 	calcMem("GorillaMux", func() {
 		staticGorillaMux = loadGorillaMux(staticRoutes)
+	})
+	calcMem("Gouldian", func() {
+		staticGouldian = loadGouldianRouter(staticRoutes)
 	})
 	calcMem("GowwwRouter", func() {
 		staticGowwwRouter = loadGowwwRouter(staticRoutes)
@@ -373,6 +377,9 @@ func BenchmarkGoRestful_StaticAll(b *testing.B) {
 }
 func BenchmarkGorillaMux_StaticAll(b *testing.B) {
 	benchRoutes(b, staticGorillaMux, staticRoutes)
+}
+func BenchmarkGouldian_StaticAll(b *testing.B) {
+	benchRoutes(b, staticGouldian, staticRoutes)
 }
 func BenchmarkGowwwRouter_StaticAll(b *testing.B) {
 	benchRoutes(b, staticGowwwRouter, staticRoutes)

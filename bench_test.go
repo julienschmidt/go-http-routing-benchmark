@@ -200,6 +200,12 @@ func BenchmarkGorillaMux_Param(b *testing.B) {
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkGouldianRouter_Param(b *testing.B) {
+	router := loadGouldianRouterSingle("GET", []interface{}{"user", gouldianName}, gouldianHandle)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
 func BenchmarkGowwwRouter_Param(b *testing.B) {
 	router := loadGowwwRouterSingle("GET", "/user/:name", http.HandlerFunc(httpHandlerFunc))
 
@@ -408,6 +414,13 @@ func BenchmarkGorillaMux_Param5(b *testing.B) {
 	router := loadGorillaMuxSingle("GET", fiveBrace, httpHandlerFunc)
 
 	r, _ := http.NewRequest("GET", fiveRoute, nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkGouldianRouter_Param5(b *testing.B) {
+	path := []interface{}{"r", gldV0, gldV1, gldV2, gldV3, gldV4}
+	router := loadGouldianRouterSingle("GET", path, gouldianHandle)
+
+	r, _ := http.NewRequest("GET", "/r"+fiveRoute, nil)
 	benchRequest(b, router, r)
 }
 func BenchmarkGowwwRouter_Param5(b *testing.B) {
@@ -620,6 +633,14 @@ func BenchmarkGorillaMux_Param20(b *testing.B) {
 	r, _ := http.NewRequest("GET", twentyRoute, nil)
 	benchRequest(b, router, r)
 }
+func BenchmarkGouldianRouter_Param20(b *testing.B) {
+	path := []interface{}{"r", gldV0, gldV1, gldV2, gldV3, gldV4, gldV5, gldV6, gldV7, gldV8, gldV9, gldV0, gldV1, gldV2, gldV3, gldV4, gldV5, gldV6, gldV7, gldV8, gldV9}
+	router := loadGouldianRouterSingle("GET", path, gouldianHandle)
+
+	r, _ := http.NewRequest("GET", "/r"+twentyRoute, nil)
+	benchRequest(b, router, r)
+}
+
 func BenchmarkGowwwRouter_Param20(b *testing.B) {
 	router := loadGowwwRouterSingle("GET", twentyColon, http.HandlerFunc(httpHandlerFunc))
 
@@ -822,6 +843,12 @@ func BenchmarkGoRestful_ParamWrite(b *testing.B) {
 }
 func BenchmarkGorillaMux_ParamWrite(b *testing.B) {
 	router := loadGorillaMuxSingle("GET", "/user/{name}", gorillaHandlerWrite)
+
+	r, _ := http.NewRequest("GET", "/user/gordon", nil)
+	benchRequest(b, router, r)
+}
+func BenchmarkGouldianRouter_ParamWrite(b *testing.B) {
+	router := loadGouldianRouterSingle("GET", []interface{}{"user", gouldianName}, gouldianHandleWrite)
 
 	r, _ := http.NewRequest("GET", "/user/gordon", nil)
 	benchRequest(b, router, r)

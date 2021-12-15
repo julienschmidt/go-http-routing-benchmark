@@ -52,6 +52,7 @@ var (
 	gplusGoJsonRest      http.Handler
 	gplusGoRestful       http.Handler
 	gplusGorillaMux      http.Handler
+	gplusGouldian        http.Handler
 	gplusGowwwRouter     http.Handler
 	gplusHttpRouter      http.Handler
 	gplusHttpTreeMux     http.Handler
@@ -121,6 +122,9 @@ func init() {
 	})
 	calcMem("GorillaMux", func() {
 		gplusGorillaMux = loadGorillaMux(gplusAPI)
+	})
+	calcMem("Gouldian", func() {
+		gplusGouldian = loadGouldianRouter(gplusAPI)
 	})
 	calcMem("GowwwRouter", func() {
 		gplusGowwwRouter = loadGowwwRouter(gplusAPI)
@@ -241,6 +245,10 @@ func BenchmarkGoRestful_GPlusStatic(b *testing.B) {
 func BenchmarkGorillaMux_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
 	benchRequest(b, gplusGorillaMux, req)
+}
+func BenchmarkGouldian_GPlusStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people", nil)
+	benchRequest(b, gplusGouldian, req)
 }
 func BenchmarkGowwwRouter_GPlusStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people", nil)
@@ -378,6 +386,10 @@ func BenchmarkGorillaMux_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusGorillaMux, req)
 }
+func BenchmarkGouldian_GPlusParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
+	benchRequest(b, gplusGouldian, req)
+}
 func BenchmarkGowwwRouter_GPlusParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327", nil)
 	benchRequest(b, gplusGowwwRouter, req)
@@ -514,6 +526,10 @@ func BenchmarkGorillaMux_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusGorillaMux, req)
 }
+func BenchmarkGouldian_GPlus2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
+	benchRequest(b, gplusGouldian, req)
+}
 func BenchmarkGowwwRouter_GPlus2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/people/118051310819094153327/activities/123456789", nil)
 	benchRequest(b, gplusGowwwRouter, req)
@@ -633,6 +649,9 @@ func BenchmarkGoRestful_GPlusAll(b *testing.B) {
 }
 func BenchmarkGorillaMux_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusGorillaMux, gplusAPI)
+}
+func BenchmarkGouldian_GPlusAll(b *testing.B) {
+	benchRoutes(b, gplusGouldian, gplusAPI)
 }
 func BenchmarkGowwwRouter_GPlusAll(b *testing.B) {
 	benchRoutes(b, gplusGowwwRouter, gplusAPI)

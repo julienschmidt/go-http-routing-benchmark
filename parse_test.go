@@ -72,6 +72,7 @@ var (
 	parseGoJsonRest      http.Handler
 	parseGoRestful       http.Handler
 	parseGorillaMux      http.Handler
+	parseGouldian        http.Handler
 	parseGowwwRouter     http.Handler
 	parseHttpRouter      http.Handler
 	parseHttpTreeMux     http.Handler
@@ -141,6 +142,9 @@ func init() {
 	})
 	calcMem("GorillaMux", func() {
 		parseGorillaMux = loadGorillaMux(parseAPI)
+	})
+	calcMem("Gouldian", func() {
+		parseGouldian = loadGouldianRouter(parseAPI)
 	})
 	calcMem("GowwwRouter", func() {
 		parseGowwwRouter = loadGowwwRouter(parseAPI)
@@ -261,6 +265,10 @@ func BenchmarkGoRestful_ParseStatic(b *testing.B) {
 func BenchmarkGorillaMux_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
 	benchRequest(b, parseGorillaMux, req)
+}
+func BenchmarkGouldian_ParseStatic(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/users", nil)
+	benchRequest(b, parseGouldian, req)
 }
 func BenchmarkGowwwRouter_ParseStatic(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/users", nil)
@@ -398,6 +406,10 @@ func BenchmarkGorillaMux_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseGorillaMux, req)
 }
+func BenchmarkGouldian_ParseParam(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
+	benchRequest(b, parseGouldian, req)
+}
 func BenchmarkGowwwRouter_ParseParam(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go", nil)
 	benchRequest(b, parseGowwwRouter, req)
@@ -534,6 +546,10 @@ func BenchmarkGorillaMux_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseGorillaMux, req)
 }
+func BenchmarkGouldian_Parse2Params(b *testing.B) {
+	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
+	benchRequest(b, parseGouldian, req)
+}
 func BenchmarkGowwwRouter_Parse2Params(b *testing.B) {
 	req, _ := http.NewRequest("GET", "/1/classes/go/123456789", nil)
 	benchRequest(b, parseGowwwRouter, req)
@@ -653,6 +669,9 @@ func BenchmarkGoRestful_ParseAll(b *testing.B) {
 }
 func BenchmarkGorillaMux_ParseAll(b *testing.B) {
 	benchRoutes(b, parseGorillaMux, parseAPI)
+}
+func BenchmarkGouldian_ParseAll(b *testing.B) {
+	benchRoutes(b, parseGouldian, parseAPI)
 }
 func BenchmarkGowwwRouter_ParseAll(b *testing.B) {
 	benchRoutes(b, parseGowwwRouter, parseAPI)
