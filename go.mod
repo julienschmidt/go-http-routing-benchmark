@@ -46,6 +46,7 @@ require (
 	github.com/rcrowley/go-tigertonic v0.0.0-20170420123839-fe6b9f080eb7
 	github.com/satori/go.uuid v1.2.1-0.20181028125025-b2ce2384e17b // indirect
 	github.com/shiena/ansicolor v0.0.0-20151119151921-a422bbe96644 // indirect
+	github.com/shohruhadham/nanomux v0.0.0-20220326193150-fc7db4f157b1
 	github.com/sirupsen/logrus v1.4.2 // indirect
 	github.com/tinylib/msgp v1.1.0 // indirect
 	github.com/typepress/rivet v1.1.1-0.20151208095308-d62b4fcaf6b9

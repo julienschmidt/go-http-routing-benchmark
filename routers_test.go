@@ -35,6 +35,7 @@ var (
 		{"LARS", loadLARS},
 		{"Macaron", loadMacaron},
 		{"Martini", loadMartini},
+		{"NanoMux", loadNanoMux},
 		{"Pat", loadPat},
 		{"Possum", loadPossum},
 		{"R2router", loadR2router},

@@ -195,6 +195,7 @@ var (
 	staticLARS            http.Handler
 	staticMacaron         http.Handler
 	staticMartini         http.Handler
+	staticNanoMux         http.Handler
 	staticPat             http.Handler
 	staticPossum          http.Handler
 	staticR2router        http.Handler
@@ -286,6 +287,9 @@ func init() {
 	})
 	calcMem("Martini", func() {
 		staticMartini = loadMartini(staticRoutes)
+	})
+	calcMem("NanoMux", func() {
+		staticNanoMux = loadNanoMux(staticRoutes)
 	})
 	calcMem("Pat", func() {
 		staticPat = loadPat(staticRoutes)
@@ -394,6 +398,9 @@ func BenchmarkMacaron_StaticAll(b *testing.B) {
 }
 func BenchmarkMartini_StaticAll(b *testing.B) {
 	benchRoutes(b, staticMartini, staticRoutes)
+}
+func BenchmarkNanoMux_StaticAll(b *testing.B) {
+	benchRoutes(b, staticNanoMux, staticRoutes)
 }
 func BenchmarkPat_StaticAll(b *testing.B) {
 	benchRoutes(b, staticPat, staticRoutes)

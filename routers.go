@@ -48,6 +48,7 @@ import (
 	"github.com/pilu/traffic"
 	"github.com/plimble/ace"
 	"github.com/rcrowley/go-tigertonic"
+	nm "github.com/shohruhadham/nanomux"
 
 	// "github.com/revel/pathtree"
 	// "github.com/revel/revel"
@@ -1190,6 +1191,54 @@ func loadMartiniSingle(method, path string, handler interface{}) http.Handler {
 	martini := martini.New()
 	martini.Action(router.Handle)
 	return martini
+}
+
+// NanoMux
+func nanoMuxHandler(_ http.ResponseWriter, _ *http.Request, _ *nm.Args) bool {
+	return true
+}
+
+func nanoMuxHandlerWrite(
+	w http.ResponseWriter,
+	_ *http.Request,
+	args *nm.Args,
+) bool {
+	io.WriteString(w, args.HostPathValues().Get("name"))
+	return true
+}
+
+func nanoMuxHandlerTest(
+	w http.ResponseWriter,
+	r *http.Request,
+	_ *nm.Args,
+) bool {
+	io.WriteString(w, r.RequestURI)
+	return true
+}
+
+func loadNanoMux(routes []route) http.Handler {
+	var handler = nanoMuxHandler
+	if loadTestHandler {
+		handler = nanoMuxHandlerTest
+	}
+
+	var re = regexp.MustCompile(":([^/]*)")
+	var router = nm.NewRouter()
+	for _, route := range routes {
+		router.SetURLHandlerFor(
+			route.method,
+			re.ReplaceAllString(route.path, "{$1}"),
+			handler,
+		)
+	}
+
+	return router
+}
+
+func loadNanoMuxSingle(method, path string, handler nm.Handler) http.Handler {
+	var router = nm.NewRouter()
+	router.SetURLHandlerFor(method, path, handler)
+	return router
 }
 
 // pat
