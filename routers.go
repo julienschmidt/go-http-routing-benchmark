@@ -118,6 +118,14 @@ func aceHandleWrite(c *ace.C) {
 	io.WriteString(c.Writer, c.Param("name"))
 }
 
+func aceHandleParams(c *ace.C) {
+	c.Param("a")
+	c.Param("b")
+	c.Param("c")
+	c.Param("d")
+	c.Param("e")
+}
+
 func aceHandleTest(c *ace.C) {
 	io.WriteString(c.Writer, c.Request.RequestURI)
 }
@@ -150,6 +158,16 @@ func aeroHandlerWrite(ctx aero.Context) error {
 	io.WriteString(ctx.Response().Internal(), ctx.Get("name"))
 	return nil
 }
+
+func aeroHandlerParams(c aero.Context) error {
+	c.Get("a")
+	c.Get("b")
+	c.Get("c")
+	c.Get("d")
+	c.Get("e")
+	return nil
+}
+
 func aeroHandlerTest(ctx aero.Context) error {
 	io.WriteString(ctx.Response().Internal(), ctx.Request().Path())
 	return nil
@@ -205,6 +223,14 @@ func bearHandlerWrite(w http.ResponseWriter, _ *http.Request, ctx *bear.Context)
 	io.WriteString(w, ctx.Params["name"])
 }
 
+func bearHandlerParams(w http.ResponseWriter, _ *http.Request, ctx *bear.Context) {
+	_ = ctx.Params["a"]
+	_ = ctx.Params["b"]
+	_ = ctx.Params["c"]
+	_ = ctx.Params["d"]
+	_ = ctx.Params["e"]
+}
+
 func bearHandlerTest(w http.ResponseWriter, r *http.Request, _ *bear.Context) {
 	io.WriteString(w, r.RequestURI)
 }
@@ -244,6 +270,14 @@ func beegoHandler(ctx *context.Context) {}
 
 func beegoHandlerWrite(ctx *context.Context) {
 	ctx.WriteString(ctx.Input.Param(":name"))
+}
+
+func beegoHandlerParams(ctx *context.Context) {
+	ctx.Input.Param(":a")
+	ctx.Input.Param(":b")
+	ctx.Input.Param(":c")
+	ctx.Input.Param(":d")
+	ctx.Input.Param(":e")
 }
 
 func beegoHandlerTest(ctx *context.Context) {
@@ -307,6 +341,14 @@ func boneHandlerWrite(rw http.ResponseWriter, req *http.Request) {
 	io.WriteString(rw, bone.GetValue(req, "name"))
 }
 
+func boneHandlerParams(rw http.ResponseWriter, req *http.Request) {
+	bone.GetValue(req, "a")
+	bone.GetValue(req, "b")
+	bone.GetValue(req, "c")
+	bone.GetValue(req, "d")
+	bone.GetValue(req, "e")
+}
+
 func loadBone(routes []route) http.Handler {
 	h := http.HandlerFunc(httpHandlerFunc)
 	if loadTestHandler {
@@ -353,9 +395,16 @@ func loadBoneSingle(method, path string, handler http.Handler) http.Handler {
 }
 
 // chi
-// chi
 func chiHandleWrite(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, chi.URLParam(r, "name"))
+}
+
+func chiHandleParams(w http.ResponseWriter, r *http.Request) {
+	chi.URLParam(r, "a")
+	chi.URLParam(r, "b")
+	chi.URLParam(r, "c")
+	chi.URLParam(r, "d")
+	chi.URLParam(r, "e")
 }
 
 func loadChi(routes []route) http.Handler {
@@ -414,6 +463,14 @@ func cloudyKitRouterHandlerWrite(w http.ResponseWriter, _ *http.Request, ps clou
 	io.WriteString(w, ps.ByName("name"))
 }
 
+func cloudyKitRouterHandlerParams(_ http.ResponseWriter, _ *http.Request, ps cloudykitrouter.Parameter) {
+	ps.ByName("a")
+	ps.ByName("b")
+	ps.ByName("c")
+	ps.ByName("d")
+	ps.ByName("e")
+}
+
 func cloudyKitRouterHandlerTest(w http.ResponseWriter, r *http.Request, _ cloudykitrouter.Parameter) {
 	io.WriteString(w, r.RequestURI)
 }
@@ -442,6 +499,14 @@ func dencoHandler(w http.ResponseWriter, r *http.Request, params denco.Params) {
 
 func dencoHandlerWrite(w http.ResponseWriter, r *http.Request, params denco.Params) {
 	io.WriteString(w, params.Get("name"))
+}
+
+func dencoHandlerParams(w http.ResponseWriter, r *http.Request, params denco.Params) {
+	params.Get("a")
+	params.Get("b")
+	params.Get("c")
+	params.Get("d")
+	params.Get("e")
 }
 
 func dencoHandlerTest(w http.ResponseWriter, r *http.Request, params denco.Params) {
@@ -483,6 +548,15 @@ func echoHandler(c echo.Context) error {
 
 func echoHandlerWrite(c echo.Context) error {
 	io.WriteString(c.Response(), c.Param("name"))
+	return nil
+}
+
+func echoHandlerParams(c echo.Context) error {
+	c.Param("a")
+	c.Param("b")
+	c.Param("c")
+	c.Param("d")
+	c.Param("e")
 	return nil
 }
 
@@ -540,7 +614,15 @@ func loadEchoSingle(method, path string, h echo.HandlerFunc) http.Handler {
 func ginHandle(_ *gin.Context) {}
 
 func ginHandleWrite(c *gin.Context) {
-	io.WriteString(c.Writer, c.Params.ByName("name"))
+	io.WriteString(c.Writer, c.Param("name"))
+}
+
+func ginHandleParams(c *gin.Context) {
+	c.Param("a")
+	c.Param("b")
+	c.Param("c")
+	c.Param("d")
+	c.Param("e")
 }
 
 func ginHandleTest(c *gin.Context) {
@@ -577,6 +659,14 @@ func gocraftWebHandler(w web.ResponseWriter, r *web.Request) {}
 
 func gocraftWebHandlerWrite(w web.ResponseWriter, r *web.Request) {
 	io.WriteString(w, r.PathParams["name"])
+}
+
+func gocraftWebHandlerParams(w web.ResponseWriter, r *web.Request) {
+	_ = r.PathParams["a"]
+	_ = r.PathParams["b"]
+	_ = r.PathParams["c"]
+	_ = r.PathParams["d"]
+	_ = r.PathParams["e"]
 }
 
 func gocraftWebHandlerTest(w web.ResponseWriter, r *web.Request) {
@@ -629,8 +719,18 @@ func loadGocraftWebSingle(method, path string, handler interface{}) http.Handler
 }
 
 // goji
-func gojiFuncWrite(c goji.C, w http.ResponseWriter, r *http.Request) {
+func gojiHandler(c goji.C, w http.ResponseWriter, r *http.Request) {}
+
+func gojiHandlerWrite(c goji.C, w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, c.URLParams["name"])
+}
+
+func gojiHandlerParams(c goji.C, w http.ResponseWriter, r *http.Request) {
+	_ = c.URLParams["a"]
+	_ = c.URLParams["b"]
+	_ = c.URLParams["c"]
+	_ = c.URLParams["d"]
+	_ = c.URLParams["e"]
 }
 
 func loadGoji(routes []route) http.Handler {
@@ -683,6 +783,14 @@ func gojiv2Handler(w http.ResponseWriter, r *http.Request) {}
 
 func gojiv2HandlerWrite(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, gojiv2pat.Param(r, "name"))
+}
+
+func gojiv2HandlerParams(w http.ResponseWriter, r *http.Request) {
+	gojiv2pat.Param(r, "a")
+	gojiv2pat.Param(r, "b")
+	gojiv2pat.Param(r, "c")
+	gojiv2pat.Param(r, "d")
+	gojiv2pat.Param(r, "e")
 }
 
 func gojiv2HandlerTest(w http.ResponseWriter, r *http.Request) {
@@ -741,6 +849,14 @@ func goJsonRestHandlerWrite(w rest.ResponseWriter, req *rest.Request) {
 	io.WriteString(w.(io.Writer), req.PathParam("name"))
 }
 
+func goJsonRestHandlerParams(w rest.ResponseWriter, req *rest.Request) {
+	req.PathParam("a")
+	req.PathParam("b")
+	req.PathParam("c")
+	req.PathParam("d")
+	req.PathParam("e")
+}
+
 func goJsonRestHandlerTest(w rest.ResponseWriter, req *rest.Request) {
 	io.WriteString(w.(io.Writer), req.RequestURI)
 }
@@ -783,6 +899,14 @@ func goRestfulHandler(r *restful.Request, w *restful.Response) {}
 
 func goRestfulHandlerWrite(r *restful.Request, w *restful.Response) {
 	io.WriteString(w, r.PathParameter("name"))
+}
+
+func goRestfulHandlerParams(r *restful.Request, w *restful.Response) {
+	r.PathParameter("a")
+	r.PathParameter("b")
+	r.PathParameter("c")
+	r.PathParameter("d")
+	r.PathParameter("e")
 }
 
 func goRestfulHandlerTest(r *restful.Request, w *restful.Response) {
@@ -849,6 +973,15 @@ func gorillaHandlerWrite(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, params["name"])
 }
 
+func gorillaHandlerParams(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	_ = params["a"]
+	_ = params["b"]
+	_ = params["c"]
+	_ = params["d"]
+	_ = params["e"]
+}
+
 func loadGorillaMux(routes []route) http.Handler {
 	h := httpHandlerFunc
 	if loadTestHandler {
@@ -877,6 +1010,14 @@ func gowwwRouterHandleWrite(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, gowwwrouter.Parameter(r, "name"))
 }
 
+func gowwwRouterHandleParams(w http.ResponseWriter, r *http.Request) {
+	gowwwrouter.Parameter(r, "a")
+	gowwwrouter.Parameter(r, "b")
+	gowwwrouter.Parameter(r, "c")
+	gowwwrouter.Parameter(r, "d")
+	gowwwrouter.Parameter(r, "e")
+}
+
 func loadGowwwRouter(routes []route) http.Handler {
 	h := httpHandlerFunc
 	if loadTestHandler {
@@ -901,6 +1042,14 @@ func httpRouterHandle(_ http.ResponseWriter, _ *http.Request, _ httprouter.Param
 
 func httpRouterHandleWrite(w http.ResponseWriter, _ *http.Request, ps httprouter.Params) {
 	io.WriteString(w, ps.ByName("name"))
+}
+
+func httpRouterHandleParams(w http.ResponseWriter, _ *http.Request, ps httprouter.Params) {
+	ps.ByName("a")
+	ps.ByName("b")
+	ps.ByName("c")
+	ps.ByName("d")
+	ps.ByName("e")
 }
 
 func httpRouterHandleTest(w http.ResponseWriter, r *http.Request, _ httprouter.Params) {
@@ -931,6 +1080,14 @@ func httpTreeMuxHandler(_ http.ResponseWriter, _ *http.Request, _ map[string]str
 
 func httpTreeMuxHandlerWrite(w http.ResponseWriter, _ *http.Request, vars map[string]string) {
 	io.WriteString(w, vars["name"])
+}
+
+func httpTreeMuxHandlerParams(w http.ResponseWriter, _ *http.Request, vars map[string]string) {
+	_ = vars["a"]
+	_ = vars["b"]
+	_ = vars["c"]
+	_ = vars["d"]
+	_ = vars["e"]
 }
 
 func httpTreeMuxHandlerTest(w http.ResponseWriter, r *http.Request, _ map[string]string) {
@@ -973,6 +1130,7 @@ func (h *kochaHandler) Post(w http.ResponseWriter, r *http.Request)   {}
 func (h *kochaHandler) Put(w http.ResponseWriter, r *http.Request)    {}
 func (h *kochaHandler) Patch(w http.ResponseWriter, r *http.Request)  {}
 func (h *kochaHandler) Delete(w http.ResponseWriter, r *http.Request) {}
+
 func (h *kochaHandler) kochaHandlerWrite(w http.ResponseWriter, r *http.Request) {
 	var name string
 	for _, param := range h.params {
@@ -1039,11 +1197,18 @@ func loadKochaSingle(method, path string, handler *kochaHandler, hfunc http.Hand
 }
 
 // LARS
-func larsHandler(c lars.Context) {
-}
+func larsHandler(c lars.Context) {}
 
 func larsHandlerWrite(c lars.Context) {
 	io.WriteString(c.Response(), c.Param("name"))
+}
+
+func larsHandlerParams(c lars.Context) {
+	c.Param("a")
+	c.Param("b")
+	c.Param("c")
+	c.Param("d")
+	c.Param("e")
 }
 
 func larsHandlerTest(c lars.Context) {
@@ -1108,6 +1273,15 @@ func macaronHandlerWrite(c *macaron.Context) string {
 	return c.Params("name")
 }
 
+func macaronHandlerParams(c *macaron.Context) string {
+	c.Params("a")
+	c.Params("b")
+	c.Params("c")
+	c.Params("d")
+	c.Params("e")
+	return ""
+}
+
 func macaronHandlerTest(c *macaron.Context) string {
 	return c.Req.RequestURI
 }
@@ -1136,6 +1310,15 @@ func martiniHandler() {}
 
 func martiniHandlerWrite(params martini.Params) string {
 	return params["name"]
+}
+
+func martiniHandlerParams(params martini.Params) string {
+	_ = params["a"]
+	_ = params["b"]
+	_ = params["c"]
+	_ = params["d"]
+	_ = params["e"]
+	return ""
 }
 
 func initMartini() {
@@ -1197,6 +1380,15 @@ func patHandlerWrite(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, r.URL.Query().Get(":name"))
 }
 
+func patHandlerParams(w http.ResponseWriter, r *http.Request) {
+	q := r.URL.Query()
+	q.Get(":a")
+	q.Get(":b")
+	q.Get(":c")
+	q.Get(":d")
+	q.Get(":e")
+}
+
 func loadPat(routes []route) http.Handler {
 	h := http.HandlerFunc(httpHandlerFunc)
 	if loadTestHandler {
@@ -1248,6 +1440,16 @@ func possumHandlerWrite(c *possum.Context) error {
 	return nil
 }
 
+func possumHandlerParams(c *possum.Context) error {
+	q := c.Request.URL.Query()
+	q.Get(":a")
+	q.Get(":b")
+	q.Get(":c")
+	q.Get(":d")
+	q.Get(":e")
+	return nil
+}
+
 func possumHandlerTest(c *possum.Context) error {
 	io.WriteString(c.Response, c.Request.RequestURI)
 	return nil
@@ -1277,6 +1479,14 @@ func r2routerHandler(w http.ResponseWriter, req *http.Request, _ r2router.Params
 
 func r2routerHandleWrite(w http.ResponseWriter, req *http.Request, params r2router.Params) {
 	io.WriteString(w, params.Get("name"))
+}
+
+func r2routerHandleParams(w http.ResponseWriter, req *http.Request, params r2router.Params) {
+	params.Get("a")
+	params.Get("b")
+	params.Get("c")
+	params.Get("d")
+	params.Get("e")
 }
 
 func r2routerHandleTest(w http.ResponseWriter, req *http.Request, _ r2router.Params) {
@@ -1430,6 +1640,14 @@ func rivetHandlerWrite(c *rivet.Context) {
 	c.WriteString(c.Get("name"))
 }
 
+func rivetHandlerParams(c *rivet.Context) {
+	c.Get("a")
+	c.Get("b")
+	c.Get("c")
+	c.Get("d")
+	c.Get("e")
+}
+
 func rivetHandlerTest(c *rivet.Context) {
 	c.WriteString(c.Req.RequestURI)
 }
@@ -1460,6 +1678,15 @@ func tangoHandler(ctx *tango.Context) {}
 
 func tangoHandlerWrite(ctx *tango.Context) {
 	ctx.Write([]byte(ctx.Params().Get(":name")))
+}
+
+func tangoHandlerParams(ctx *tango.Context) {
+	p := ctx.Params()
+	p.Get(":a")
+	p.Get(":b")
+	p.Get(":c")
+	p.Get(":d")
+	p.Get(":e")
 }
 
 func tangoHandlerTest(ctx *tango.Context) {
@@ -1495,6 +1722,15 @@ func tigerTonicHandlerWrite(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, r.URL.Query().Get("name"))
 }
 
+func tigerTonicHandlerParams(w http.ResponseWriter, r *http.Request) {
+	q := r.URL.Query()
+	q.Get("a")
+	q.Get("b")
+	q.Get("c")
+	q.Get("d")
+	q.Get("e")
+}
+
 func loadTigerTonic(routes []route) http.Handler {
 	h := httpHandlerFunc
 	if loadTestHandler {
@@ -1520,6 +1756,15 @@ func trafficHandler(w traffic.ResponseWriter, r *traffic.Request) {}
 
 func trafficHandlerWrite(w traffic.ResponseWriter, r *traffic.Request) {
 	io.WriteString(w, r.URL.Query().Get("name"))
+}
+
+func trafficHandlerParams(w traffic.ResponseWriter, r *traffic.Request) {
+	q := r.URL.Query()
+	q.Get("a")
+	q.Get("b")
+	q.Get("c")
+	q.Get("d")
+	q.Get("e")
 }
 
 func trafficHandlerTest(w traffic.ResponseWriter, r *traffic.Request) {
@@ -1580,6 +1825,15 @@ func vulcanHandler(w http.ResponseWriter, r *http.Request) {}
 
 func vulcanHandlerWrite(w http.ResponseWriter, r *http.Request) {
 	io.WriteString(w, r.URL.Query().Get("name"))
+}
+
+func vulcanHandlerParams(w http.ResponseWriter, r *http.Request) {
+	q := r.URL.Query()
+	q.Get("a")
+	q.Get("b")
+	q.Get("c")
+	q.Get("d")
+	q.Get("e")
 }
 
 func loadVulcan(routes []route) http.Handler {
